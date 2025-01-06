@@ -1,4 +1,5 @@
-const BASE_URL = 'http://127.0.0.1:8000/api/proxy/filter/page'
+// const BASE_URL = 'http://127.0.0.1:8000/api/proxy/filter/page'
+const BASE_URL = `${import.meta.env.VITE_API_URL}/api/proxy/filter/page`
 
 /**
  * Функция для получения автомобилей с учетом фильтров и страницы.

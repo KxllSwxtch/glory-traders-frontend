@@ -35,6 +35,12 @@ const CarList = () => {
 	const [availableGenerations, setAvailableGenerations] = useState([])
 	const [isFiltersOpen, setIsFiltersOpen] = useState(false)
 
+	// 🔄 Автоматическая загрузка автомобилей при первой загрузке страницы
+	useEffect(() => {
+		const initialQueryParams = { page: 1, filters: {} }
+		dispatch(fetchCarsAsync(initialQueryParams))
+	}, [dispatch])
+
 	// Подгружаем модели на основе выбранного производителя
 	useEffect(() => {
 		if (filters.manufacturerId) {

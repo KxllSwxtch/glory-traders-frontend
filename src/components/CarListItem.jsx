@@ -24,7 +24,7 @@ const CarListItem = ({ car }) => {
 	const location = useLocation()
 
 	return (
-		<div className='bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden flex flex-col justify-between w-full max-w-[300px] md:max-w-[400px] mx-auto'>
+		<div className='bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden flex flex-col justify-between w-full max-w-[400px] md:max-w-[400px]  mx-auto'>
 			{/* Изображение */}
 			<div className='relative h-50 w-full'>
 				{imageSrc ? (
@@ -71,7 +71,7 @@ const CarListItem = ({ car }) => {
 							pathname: `/cars/${car.id}`,
 							search: location.search, // Передаём queryParams
 						}}
-						className='mt-4 block bg-red-500 text-white py-2 rounded-md font-medium hover:bg-red-600 transition'
+						className='mt-4 block bg-orange-500 text-white py-2 rounded-md font-medium hover:bg-orange-600 transition'
 					>
 						Подробнее
 					</Link>

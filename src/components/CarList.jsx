@@ -11,6 +11,7 @@ import manufacturers from '../data/manufacturers'
 import models from '../data/models'
 import generations from '../data/generations'
 import colors from '../data/colors'
+import { FaFilter } from 'react-icons/fa'
 
 const CarList = () => {
 	const dispatch = useDispatch()
@@ -166,6 +167,11 @@ const CarList = () => {
 		navigate('/catalog')
 	}
 
+	// Обработчик открытия/закрытия фильтров на мобильных устройствах
+	const toggleFilters = () => {
+		setIsFiltersOpen(!isFiltersOpen)
+	}
+
 	const currentYear = new Date().getUTCFullYear()
 	const yearTwoPlaceholder = `до ${currentYear}`
 
@@ -174,9 +180,10 @@ const CarList = () => {
 			{/* Кнопка для мобильных устройств */}
 			<div className='lg:hidden mb-4'>
 				<button
-					className='bg-red-500 text-white p-2 rounded'
-					onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+					className='bg-orange-500 text-white p-2 rounded flex items-center justify-center m-auto mt-2 w-full'
+					onClick={toggleFilters}
 				>
+					<FaFilter className='mr-2' />
 					{isFiltersOpen ? 'Скрыть фильтры' : 'Показать фильтры'}
 				</button>
 			</div>
@@ -322,7 +329,12 @@ const CarList = () => {
 
 						{/* Кнопка "Применить" */}
 						<button
-							onClick={applyFilters}
+							onClick={() => {
+								applyFilters()
+								if (window.innerWidth < 1024) {
+									setIsFiltersOpen(false)
+								}
+							}}
 							className='bg-red-500 text-white p-2 rounded hover:bg-red-600'
 						>
 							Применить

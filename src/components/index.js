@@ -8,7 +8,9 @@ import AdvantagesSection from './AdvantagesSection'
 import ScrollToTop from './ScrollToTop'
 import Loader from './Loader'
 import Modal from './Modal'
+import ThemeToggle from './ThemeToggle'
 export {
+	ThemeToggle,
 	CarList,
 	Modal,
 	Header,

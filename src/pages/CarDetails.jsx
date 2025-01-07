@@ -73,7 +73,7 @@ const CarDetails = () => {
 	}
 
 	return (
-		<div className='container mx-auto p-4'>
+		<div className='container mx-auto p-4 dark:bg-gray-900 dark:text-white'>
 			<div className='flex flex-wrap'>
 				{/* Левая часть - карусель изображений */}
 				<div className='w-full md:w-2/3 p-4'>
@@ -97,13 +97,13 @@ const CarDetails = () => {
 						</div>
 						<button
 							onClick={handlePrevImage}
-							className='absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75'
+							className='absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 dark:bg-gray-800 dark:hover:bg-gray-700'
 						>
 							&#8592;
 						</button>
 						<button
 							onClick={handleNextImage}
-							className='absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75'
+							className='absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 dark:bg-gray-800 dark:hover:bg-gray-700'
 						>
 							&#8594;
 						</button>
@@ -119,8 +119,8 @@ const CarDetails = () => {
 								alt={`Car thumbnail ${index + 1}`}
 								className={`w-24 h-24 object-cover rounded cursor-pointer border ${
 									currentImageIndex === index
-										? 'border-red-500'
-										: 'border-gray-300'
+										? 'border-red-500 dark:border-red-400'
+										: 'border-gray-300 dark:border-gray-600'
 								}`}
 								onClick={() => setCurrentImageIndex(index)}
 							/>
@@ -130,25 +130,27 @@ const CarDetails = () => {
 
 				{/* Правая часть - информация */}
 				<div className='w-full md:w-1/3 p-4'>
-					<h1 className='text-3xl font-bold mb-4'>{car.title.toUpperCase()}</h1>
-					<p className='text-lg font-semibold text-gray-600 mb-2'>
+					<h1 className='text-3xl font-bold mb-4 dark:text-orange-400'>
+						{car.title.toUpperCase()}
+					</h1>
+					<p className='text-lg font-semibold text-gray-600 mb-2 dark:text-gray-300'>
 						Стоимость автомобиля в Южной Корее:
 					</p>
-					<p className='text-4xl font-bold text-red-600 mb-4'>
+					<p className='text-4xl font-bold text-red-600 mb-4 dark:text-red-400'>
 						{car.lots?.original_price?.toLocaleString()} ₩
 					</p>
 
-					<button className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-700 transition text-sm'>
+					<button className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-700 transition text-sm dark:bg-orange-600 dark:hover:bg-orange-700'>
 						Рассчитать автомобиль под ключ до Владивостока
 					</button>
 
-					<p className='text-lg font-semibold text-gray-600 mb-2'>
+					<p className='text-lg font-semibold text-gray-600 mb-2 dark:text-gray-300'>
 						Задать вопрос менеджеру:
 					</p>
 					<div className='flex gap-4 mb-6'>
 						<a
 							href='https://t.me/GLORY_TRADERS'
-							className='text-blue-500 text-2xl hover:text-blue-600 transition'
+							className='text-blue-500 text-2xl hover:text-blue-600 transition dark:text-blue-400 dark:hover:text-blue-500'
 							aria-label='Telegram'
 							target='_blank'
 							rel='noopener noreferrer'
@@ -157,7 +159,7 @@ const CarDetails = () => {
 						</a>
 						<a
 							href='https://wa.me/821023297807'
-							className='text-green-500 text-2xl hover:text-green-600 transition'
+							className='text-green-500 text-2xl hover:text-green-600 transition dark:text-green-400 dark:hover:text-green-500'
 							aria-label='WhatsApp'
 							target='_blank'
 							rel='noopener noreferrer'
@@ -165,10 +167,10 @@ const CarDetails = () => {
 							<FaWhatsapp />
 						</a>
 					</div>
-					<button className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2'>
+					<button className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'>
 						Получить предложение
 					</button>
-					<button className='w-full bg-orange-500 text-white py-2 rounded-md font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2'>
+					<button className='w-full bg-orange-500 text-white py-2 rounded-md font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'>
 						Поделиться ссылкой
 					</button>
 				</div>
@@ -176,8 +178,10 @@ const CarDetails = () => {
 
 			{/* Описание */}
 			<div className='mt-6'>
-				<h2 className='text-xl font-bold text-red-500 mb-4'>Описание авто</h2>
-				<ul className='text-gray-700'>
+				<h2 className='text-xl font-bold text-red-500 mb-4 dark:text-red-400'>
+					Описание авто
+				</h2>
+				<ul className='text-gray-700 dark:text-gray-300'>
 					<li>
 						<strong>Комплектация:</strong> {car.configuration || 'N/A'}
 					</li>

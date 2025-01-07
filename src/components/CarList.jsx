@@ -196,7 +196,7 @@ const CarList = () => {
 			{/* Кнопка для мобильных устройств */}
 			<div className='lg:hidden mb-4'>
 				<button
-					className='bg-orange-500 text-white p-2 rounded flex items-center justify-center m-auto mt-2 w-full'
+					className='bg-orange-500 text-white p-2 rounded flex items-center justify-center m-auto mt-2 w-full dark:bg-orange-600 dark:text-white'
 					onClick={toggleFilters}
 				>
 					<FaFilter className='mr-2' />
@@ -208,17 +208,19 @@ const CarList = () => {
 			<div
 				className={`transition-all duration-300 lg:w-1/4 lg:block ${
 					isFiltersOpen ? 'max-h-screen' : 'max-h-0 overflow-hidden'
-				} lg:max-h-none lg:border-r lg:pr-4`}
+				} lg:max-h-none lg:border-r lg:pr-4 dark:lg:border-gray-700`}
 			>
-				<div className='p-4 border rounded-lg bg-gray-100 lg:bg-white lg:border-0'>
-					<h2 className='text-lg font-bold mb-4'>Фильтры</h2>
+				<div className='p-4 border rounded-lg bg-gray-100 lg:bg-white lg:border-0 dark:bg-gray-800 dark:border-gray-700'>
+					<h2 className='text-lg font-bold mb-4 text-black dark:text-white'>
+						Фильтры
+					</h2>
 					<div className='grid grid-cols-1 gap-4'>
 						{/* Марка */}
 						<select
 							name='manufacturerId'
 							value={filters.manufacturerId}
 							onChange={handleFilterChange}
-							className='p-2 border rounded'
+							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
 						>
 							<option value=''>Выберите марку</option>
 							{manufacturers.map((brand) => (
@@ -233,7 +235,7 @@ const CarList = () => {
 							name='modelId'
 							value={filters.modelId}
 							onChange={handleFilterChange}
-							className='p-2 border rounded'
+							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
 							disabled={!filters.manufacturerId}
 						>
 							<option value=''>Выберите модель</option>
@@ -249,7 +251,7 @@ const CarList = () => {
 							name='generationId'
 							value={filters.generationId}
 							onChange={handleFilterChange}
-							className='p-2 border rounded'
+							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
 							disabled={!filters.modelId}
 						>
 							<option value=''>Выберите поколение</option>
@@ -265,7 +267,7 @@ const CarList = () => {
 							name='colorsId'
 							value={filters.colorsId}
 							onChange={handleFilterChange}
-							className='p-2 border rounded'
+							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
 						>
 							<option value=''>Выберите цвет</option>
 							{colors.map((color) => (
@@ -280,7 +282,7 @@ const CarList = () => {
 							name='fuelId'
 							value={filters.fuelId}
 							onChange={handleFilterChange}
-							className='p-2 border rounded'
+							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
 						>
 							<option value=''>Тип топлива</option>
 							<option value='1'>Дизель</option>
@@ -296,7 +298,7 @@ const CarList = () => {
 							name='transmissionId'
 							value={filters.transmissionId}
 							onChange={handleFilterChange}
-							className='p-2 border rounded'
+							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
 						>
 							<option value=''>Тип трансмиссии</option>
 							<option value='1'>Автоматическая</option>
@@ -310,7 +312,7 @@ const CarList = () => {
 							placeholder='от 1950 и выше'
 							value={filters.yearOneId}
 							onChange={handleFilterChange}
-							className='p-2 border rounded'
+							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
 						/>
 
 						{/* Год до */}
@@ -320,7 +322,7 @@ const CarList = () => {
 							placeholder={yearTwoPlaceholder}
 							value={filters.yearTwoId}
 							onChange={handleFilterChange}
-							className='p-2 border rounded'
+							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
 						/>
 
 						{/* Пробег от */}
@@ -330,7 +332,7 @@ const CarList = () => {
 							placeholder='Пробег от'
 							value={filters.mileageOneId}
 							onChange={handleFilterChange}
-							className='p-2 border rounded'
+							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
 						/>
 
 						{/* Пробег до */}
@@ -340,7 +342,7 @@ const CarList = () => {
 							placeholder='Пробег до'
 							value={filters.mileageTwoId}
 							onChange={handleFilterChange}
-							className='p-2 border rounded'
+							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
 						/>
 
 						{/* Кнопка "Применить" */}
@@ -351,7 +353,7 @@ const CarList = () => {
 									setIsFiltersOpen(false)
 								}
 							}}
-							className='bg-red-500 text-white p-2 rounded hover:bg-red-600'
+							className='bg-red-500 text-white p-2 rounded hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700'
 						>
 							Применить
 						</button>
@@ -359,7 +361,7 @@ const CarList = () => {
 						{/* Кнопка сброса фильтров */}
 						<button
 							onClick={resetFilters}
-							className='bg-red-500 text-white p-2 rounded hover:bg-red-600'
+							className='bg-red-500 text-white p-2 rounded hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700'
 						>
 							Сбросить
 						</button>
@@ -369,15 +371,17 @@ const CarList = () => {
 
 			{/* Список автомобилей */}
 			<div className='lg:w-3/4 lg:pl-4'>
-				{error && <p className='text-red-500'>Ошибка: {error}</p>}
+				{error && (
+					<p className='text-red-500 dark:text-red-400'>Ошибка: {error}</p>
+				)}
 				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
 					{cars.map((car, index) => (
 						<CarListItem key={index} car={car} />
 					))}
 				</div>
-				{loading && <p>Загрузка...</p>}
+				{loading && <p className='text-black dark:text-white'>Загрузка...</p>}
 				{!loading && cars.length === 0 && (
-					<p className='text-center text-gray-500'>
+					<p className='text-center text-gray-500 dark:text-gray-300'>
 						Нет подходящих автомобилей.
 					</p>
 				)}

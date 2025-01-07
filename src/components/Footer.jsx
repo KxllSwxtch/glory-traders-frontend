@@ -3,12 +3,12 @@ import LOGO_SRC from '../assets/logo.png'
 
 const Footer = () => {
 	return (
-		<footer className='bg-black text-white py-8'>
+		<footer className='bg-black dark:bg-gray-900 text-white py-8'>
 			<div className='container mx-auto px-4'>
 				<div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
 					{/* Логотип */}
 					<div>
-						<img src={LOGO_SRC} alt='Mike Auto Logo' className='h-12 mb-4' />
+						<img src={LOGO_SRC} alt='Mike Auto Logo' className='h-40 mb-4' />
 					</div>
 
 					{/* Информация */}

@@ -18,7 +18,10 @@ const steps = [
 				<br />
 				позвоните нам по номеру
 				<br />
-				<a href='tel:+821023297807' className='text-orange-600 font-bold'>
+				<a
+					href='tel:+821023297807'
+					className='text-orange-600 dark:text-orange-400 font-bold'
+				>
 					+82 10-2329-7807
 				</a>
 			</>
@@ -73,22 +76,26 @@ const steps = [
 
 const OrderProcessSection = () => {
 	return (
-		<section className='py-16 bg-white'>
+		<section className='py-16 bg-white dark:bg-gray-900 transition-colors duration-300'>
 			<div className='container mx-auto px-4'>
-				<h2 className='text-3xl font-bold text-center text-orange-600 mb-12'>
+				<h2 className='text-3xl font-bold text-center text-orange-600 dark:text-orange-400 mb-12'>
 					Порядок покупки авто:
 				</h2>
 				<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8'>
 					{steps.map((step, index) => (
 						<div
 							key={index}
-							className='flex flex-col items-center text-center space-y-3'
+							className='flex flex-col items-center text-center space-y-3 bg-gray-100 dark:bg-gray-800 p-4 rounded-lg shadow-lg transition-colors duration-300'
 						>
-							<div className='w-12 h-12 flex items-center justify-center bg-orange-600 rounded-full shadow-lg'>
+							<div className='w-12 h-12 flex items-center justify-center bg-orange-600 dark:bg-orange-500 rounded-full shadow-lg'>
 								{step.icon}
 							</div>
-							<h3 className='text-base font-semibold'>{step.title}</h3>
-							<p className='text-sm text-gray-600'>{step.description}</p>
+							<h3 className='text-base font-semibold text-gray-900 dark:text-white'>
+								{step.title}
+							</h3>
+							<p className='text-sm text-gray-600 dark:text-gray-300'>
+								{step.description}
+							</p>
 						</div>
 					))}
 				</div>

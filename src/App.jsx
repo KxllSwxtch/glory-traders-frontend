@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Header, Footer, ScrollToTop } from './components'
-import { Home, Catalog, Contacts, CarDetails } from './pages'
+import { Home, Catalog, Contacts, CarDetails, PrivacyPolicy } from './pages'
 
 function App() {
 	return (
@@ -16,6 +16,7 @@ function App() {
 							<Route path='/catalog' element={<Catalog />} />
 							<Route path='/contacts' element={<Contacts />} />
 							<Route path='/cars/:id' element={<CarDetails />} />
+							<Route path='/privacy-policy' element={<PrivacyPolicy />} />
 						</Routes>
 					</div>
 				</main>

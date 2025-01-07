@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Светлая тема */
+html {
+	background-color: #ffffff;
+	color: #333333;
+}
+
+/* Тёмная тема */
+html.dark {
+	background-color: #1a202c;
+	color: #ffffff;
+}

@@ -4,12 +4,7 @@ import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa'
 import HEROVIDEO_SRC from '../assets/herovideo.mp4'
 import manufacturers from '../data/manufacturers'
 import models from '../data/models'
-
-const generations = {
-	a3: ['8L', '8P', '8V'],
-	a4: ['B6', 'B7', 'B8'],
-	x5: ['E53', 'E70', 'F15'],
-}
+import generations from '../data/generations'
 
 const HeroSection = () => {
 	const [selectedBrand, setSelectedBrand] = useState('')
@@ -138,8 +133,8 @@ const HeroSection = () => {
 								Выберите поколение
 							</option>
 							{availableGenerations.map((gen) => (
-								<option key={gen} value={gen}>
-									{gen}
+								<option key={gen.id} value={gen.id}>
+									{gen.name}
 								</option>
 							))}
 						</select>

@@ -74,8 +74,9 @@ const HeroSection = () => {
 			<video
 				className='absolute inset-0 w-full h-full object-cover'
 				src={HEROVIDEO_SRC}
-				autoPlay
 				loop
+				playsInline
+				autoPlay
 				muted
 			></video>
 

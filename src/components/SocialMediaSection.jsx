@@ -4,14 +4,15 @@ import {
 	FaTelegramPlane,
 	FaWhatsapp,
 	FaTiktok,
+	FaInstagram,
 } from 'react-icons/fa'
 
 const socialLinks = [
 	{ icon: FaYoutube, url: 'https://www.youtube.com/@vyacheslavkhon/' },
 	// { icon: SiOdnoklassniki, url: 'https://ok.ru' },
 	// { icon: FaTiktok, url: 'https://tiktok.com' },
-	// { icon: FaVk, url: 'https://vk.com' },
-	{ icon: FaTelegramPlane, url: 'https://t.me/+HMBi9tn_wKw1OGVl' },
+	{ icon: FaInstagram, url: 'https://www.instagram.com/glory_traders_' },
+	{ icon: FaTelegramPlane, url: 'https://t.me/GLORYTRADERS' },
 	{ icon: FaWhatsapp, url: 'https://wa.me/821023297807' },
 ]
 

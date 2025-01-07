@@ -46,7 +46,7 @@ const Footer = () => {
 					<div>
 						<h4 className='text-lg font-semibold mb-4'>Контакты</h4>
 						<ul className='space-y-2'>
-							<li>Телефон: +7 (993) 600-91-12</li>
+							<li>Телефон: +8 210-2329-7807</li>
 							<li>
 								E-mail:{' '}
 								<a
@@ -57,7 +57,8 @@ const Footer = () => {
 								</a>
 							</li>
 							<li>
-								Адрес: Россия, г. Москва, ул. Земляной Вал 8, 6 этаж (1 кольцо)
+								Адрес: 104호, 128-1 Jigok-ro, Danwon-gu, Ansan-si, Gyeonggi-do
+								(Южная Корея)
 							</li>
 						</ul>
 					</div>

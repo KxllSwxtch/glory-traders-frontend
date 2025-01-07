@@ -23,7 +23,7 @@ const Header = () => {
 				{/* Логотип */}
 				<div className='flex items-center space-x-4'>
 					<Link to='/'>
-						<img src={LOGO_SRC} alt='Mike Auto Logo' className='h-16' />
+						<img src={LOGO_SRC} alt='Glory Traders Logo' className='h-16' />
 					</Link>
 				</div>
 
@@ -50,7 +50,7 @@ const Header = () => {
 					{/* Ссылки на соцсети */}
 					<div className='flex items-center space-x-4'>
 						<a
-							href='https://t.me/+HMBi9tn_wKw1OGVl'
+							href='https://t.me/GLORYTRADERS'
 							target='__blank'
 							rel='noopener noreferrer'
 							className='text-gray-600 hover:text-gray-800 transition'
@@ -74,6 +74,18 @@ const Header = () => {
 							/>
 						</a>
 						<a
+							href='https://www.instagram.com/glory_traders_'
+							className='text-gray-600 hover:text-gray-800 transition'
+							target='__blank'
+							rel='noopener noreferrer'
+						>
+							<img
+								src='https://cdn-icons-png.flaticon.com/512/174/174855.png' // Instagram
+								alt='Instagram'
+								className='h-6 w-6'
+							/>
+						</a>
+						{/* <a
 							href='#'
 							className='text-white hover:text-gray-800 transition'
 							target='__blank'
@@ -84,14 +96,14 @@ const Header = () => {
 								alt='Phone'
 								className='h-6 w-6 invert'
 							/>
-						</a>
+						</a> */}
 					</div>
 				</nav>
 
 				{/* Иконки соц сетей для мобильной версии */}
 				<div className='flex items-center space-x-4 md:hidden'>
 					<a
-						href='https://t.me/+HMBi9tn_wKw1OGVl'
+						href='https://t.me/GLORYTRADERS'
 						target='__blank'
 						rel='noopener noreferrer'
 						className='text-gray-600 hover:text-gray-800 transition'
@@ -115,6 +127,18 @@ const Header = () => {
 						/>
 					</a>
 					<a
+						href='https://www.instagram.com/glory_traders_'
+						className='text-gray-600 hover:text-gray-800 transition'
+						target='__blank'
+						rel='noopener noreferrer'
+					>
+						<img
+							src='https://cdn-icons-png.flaticon.com/512/174/174855.png' // Instagram
+							alt='Instagram'
+							className='h-6 w-6'
+						/>
+					</a>
+					{/* <a
 						href='#'
 						className='text-gray-600 hover:text-gray-800 transition'
 						target='__blank'
@@ -125,7 +149,7 @@ const Header = () => {
 							alt='Phone'
 							className='h-6 w-6'
 						/>
-					</a>
+					</a> */}
 				</div>
 
 				{/* Кнопка-гамбургер (мобильное меню) */}

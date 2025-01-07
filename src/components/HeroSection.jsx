@@ -156,7 +156,7 @@ const HeroSection = () => {
 
 				<div className='flex space-x-4'>
 					<a
-						href='https://t.me/+HMBi9tn_wKw1OGVl'
+						href='https://t.me/GLORYTRADERS'
 						target='_blank'
 						rel='noopener noreferrer'
 						className='flex items-center bg-orange-600 text-white px-6 py-2 rounded shadow hover:bg-red-700 transition space-x-2'

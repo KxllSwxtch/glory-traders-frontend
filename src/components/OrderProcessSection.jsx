@@ -18,8 +18,8 @@ const steps = [
 				<br />
 				позвоните нам по номеру
 				<br />
-				<a href='tel:+79936009112' className='text-orange-600 font-bold'>
-					+7 (993) 600-91-12
+				<a href='tel:+821023297807' className='text-orange-600 font-bold'>
+					+82 10-2329-7807
 				</a>
 			</>
 		),

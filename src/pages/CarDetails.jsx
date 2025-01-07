@@ -1,35 +1,51 @@
 import { useEffect, useState, useRef } from 'react'
 import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { fetchCarsAsync } from '../redux/slices/carsSlice'
 import { Loader } from '../components'
 
 const CarDetails = () => {
 	const { id } = useParams()
+	const location = useLocation()
 	const dispatch = useDispatch()
 	const thumbnailContainerRef = useRef(null)
 
+	// Данные из стора
 	const { cars, loading, error, currentPage } = useSelector(
 		(state) => state.cars,
 	)
 
-	const car = cars.find((car) => car.id === Number(id) || car.id === id)
+	console.log(cars)
 
+	// Поиск автомобиля в сторе
+	const car = cars.find((car) => car.id === Number(id))
+
+	// Текущее изображение для карусели
 	const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
+	// Запрос данных при первом рендере, если автомобиля нет в сторе
 	useEffect(() => {
 		if (!car) {
-			dispatch(fetchCarsAsync({ page: currentPage || 1, filters: {} }))
+			const searchParams = new URLSearchParams(location.search)
+			const manufacturerId = searchParams.get('manufacturerId')
+			dispatch(
+				fetchCarsAsync({
+					page: currentPage || 1,
+					filters: { manufacturerId },
+				}),
+			)
 		}
-	}, [car, dispatch, currentPage])
+	}, [car, dispatch, location.search, currentPage, id])
 
+	// Устанавливаем первый индекс изображения при изменении автомобиля
 	useEffect(() => {
 		if (car && car.images?.images_original_big?.length > 1) {
 			setCurrentImageIndex(0)
 		}
 	}, [car])
 
+	// Авто-прокрутка миниатюр при смене изображения
 	useEffect(() => {
 		if (thumbnailContainerRef.current) {
 			const thumbnails = thumbnailContainerRef.current.children
@@ -44,18 +60,13 @@ const CarDetails = () => {
 		}
 	}, [currentImageIndex])
 
-	if (error) {
+	// Обработка ошибок и загрузки
+	if (error)
 		return <p className='text-red-500'>Ошибка загрузки данных: {error}</p>
-	}
+	if (loading) return <Loader />
+	if (!car) return <p>Данные автомобиля не найдены.</p>
 
-	if (loading) {
-		return <Loader />
-	}
-
-	if (!car) {
-		return <p>Данные автомобиля не найдены.</p>
-	}
-
+	// Переключение изображений
 	const handleNextImage = () => {
 		setCurrentImageIndex((prevIndex) =>
 			prevIndex + 1 < car.images?.images_original_big.length
@@ -72,6 +83,7 @@ const CarDetails = () => {
 		)
 	}
 
+	// Отображение контента
 	return (
 		<div className='container mx-auto p-4 dark:bg-gray-900 dark:text-white'>
 			<div className='flex flex-wrap'>

@@ -71,6 +71,7 @@ const CarListItem = ({ car }) => {
 							pathname: `/cars/${car.id}`,
 							search: location.search, // Передаём queryParams
 						}}
+						target='_blank'
 						className='mt-4 block bg-orange-500 text-white py-2 rounded-md font-medium hover:bg-orange-600 transition dark:bg-orange-600 dark:hover:bg-orange-700'
 					>
 						Подробнее

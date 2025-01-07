@@ -147,7 +147,7 @@ const CarDetails = () => {
 					</p>
 					<div className='flex gap-4 mb-6'>
 						<a
-							href='https://t.me/+HMBi9tn_wKw1OGVl'
+							href='https://t.me/GLORY_TRADERS'
 							className='text-blue-500 text-2xl hover:text-blue-600 transition'
 							aria-label='Telegram'
 							target='_blank'

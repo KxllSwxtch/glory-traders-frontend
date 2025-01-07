@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { fetchCarsAsync, setFilters } from '../redux/slices/carsSlice'
+import {
+	fetchCarsAsync,
+	setFilters,
+	setCurrentPage,
+} from '../redux/slices/carsSlice'
 import CarListItem from './CarListItem'
 import Pagination from './Pagination'
 // import Loader from './Loader'
@@ -41,7 +45,7 @@ const CarList = () => {
 	const [availableGenerations, setAvailableGenerations] = useState([])
 	const [isFiltersOpen, setIsFiltersOpen] = useState(false)
 
-	// Считываем фильтры из URL при первом рендере и отправляем запрос на сервер
+	// ✅ Считываем фильтры и страницу из URL при первом рендере
 	useEffect(() => {
 		const searchParams = new URLSearchParams(location.search)
 
@@ -60,18 +64,17 @@ const CarList = () => {
 			mileageTwoId: searchParams.get('mileageTwoId') || '',
 		}
 
+		const pageFromURL = parseInt(searchParams.get('page')) || 1
+
 		setFiltersState(initialFilters)
+		dispatch(setCurrentPage(pageFromURL))
 
-		const timeout = setTimeout(() => {
-			dispatch(
-				fetchCarsAsync({
-					page: 1,
-					filters: initialFilters,
-				}),
-			)
-		}, 500)
-
-		return () => clearTimeout(timeout)
+		dispatch(
+			fetchCarsAsync({
+				page: pageFromURL,
+				filters: initialFilters,
+			}),
+		)
 	}, [dispatch, location.search])
 
 	// Подгружаем модели на основе выбранного производителя
@@ -94,7 +97,8 @@ const CarList = () => {
 		}
 	}, [filters.modelId])
 
-	const updateURLParams = (updatedFilters) => {
+	// ✅ Обновляем URL-параметры
+	const updateURLParams = (updatedFilters, page = currentPage) => {
 		const queryParams = new URLSearchParams()
 
 		Object.entries(updatedFilters).forEach(([key, value]) => {
@@ -103,22 +107,28 @@ const CarList = () => {
 			}
 		})
 
+		queryParams.set('page', page)
+
 		navigate(`/catalog?${queryParams.toString()}`)
 	}
 
-	const applyFilters = (updatedFilters = filters) => {
-		const queryParams = {
-			page: 1,
-			filters: {
-				...Object.fromEntries(
-					Object.entries(updatedFilters).filter(([_, value]) => value !== ''),
-				),
-			},
-		}
+	// ✅ Обновление фильтров и страницы
+	const applyFilters = (updatedFilters = filters, page = currentPage) => {
+		updateURLParams(updatedFilters, page)
 
-		dispatch(fetchCarsAsync(queryParams))
+		dispatch(
+			fetchCarsAsync({
+				page,
+				filters: {
+					...Object.fromEntries(
+						Object.entries(updatedFilters).filter(([_, value]) => value !== ''),
+					),
+				},
+			}),
+		)
 	}
 
+	// ✅ Обработчик изменения фильтров
 	const handleFilterChange = (e) => {
 		const { name, value } = e.target
 
@@ -140,10 +150,16 @@ const CarList = () => {
 		}
 
 		setFiltersState(updatedFilters)
-		updateURLParams(updatedFilters)
-		applyFilters(updatedFilters)
+		applyFilters(updatedFilters, 1)
 	}
 
+	// ✅ Обработчик изменения страницы
+	const handlePageChange = (page) => {
+		dispatch(setCurrentPage(page))
+		applyFilters(filters, page)
+	}
+
+	// ✅ Сброс фильтров
 	const resetFilters = () => {
 		const initialFilters = {
 			manufacturerId: '',
@@ -369,9 +385,7 @@ const CarList = () => {
 					<Pagination
 						currentPage={currentPage}
 						totalPages={totalPages}
-						onPageChange={(page) =>
-							dispatch({ type: 'cars/setCurrentPage', payload: page })
-						}
+						onPageChange={handlePageChange}
 					/>
 				)}
 			</div>

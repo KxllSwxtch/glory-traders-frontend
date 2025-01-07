@@ -76,8 +76,8 @@ const Contacts = () => {
 					</div>
 
 					<h2 className='text-2xl font-semibold mt-8 mb-4'>E-mail:</h2>
-					<a href='mailto:info@mike-auto.ru' className='text-red-500'>
-						info@mike-auto.ru
+					<a href='mailto:glory_traders@bk.ru' className='text-red-500'>
+						glory_traders@bk.ru
 					</a>
 				</div>
 
@@ -91,7 +91,7 @@ const Contacts = () => {
 					</p> */}
 					<p>
 						<a href='tel:+8210-2329-7807' className='text-red-500'>
-							+82(10)-2329-7807
+							+82 10-2329-7807
 						</a>{' '}
 						— Вячеслав
 					</p>

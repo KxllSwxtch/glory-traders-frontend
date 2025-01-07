@@ -9,6 +9,7 @@ import Pagination from './Pagination'
 // filters
 import manufacturers from '../data/manufacturers'
 import models from '../data/models'
+import generations from '../data/generations'
 import colors from '../data/colors'
 
 const CarList = () => {
@@ -60,7 +61,6 @@ const CarList = () => {
 
 		setFiltersState(initialFilters)
 
-		// Добавляем задержку перед отправкой запроса
 		const timeout = setTimeout(() => {
 			dispatch(
 				fetchCarsAsync({
@@ -68,9 +68,8 @@ const CarList = () => {
 					filters: initialFilters,
 				}),
 			)
-		}, 500) // Задержка 500 мс
+		}, 500)
 
-		// Очищаем таймер при каждом изменении фильтров
 		return () => clearTimeout(timeout)
 	}, [dispatch, location.search])
 
@@ -87,8 +86,7 @@ const CarList = () => {
 	// Подгружаем поколения на основе выбранной модели
 	useEffect(() => {
 		if (filters.modelId) {
-			const generationsForModel =
-				manufacturers[filters.modelId]?.generations || []
+			const generationsForModel = generations[filters.modelId] || []
 			setAvailableGenerations(generationsForModel)
 		} else {
 			setAvailableGenerations([])
@@ -98,18 +96,15 @@ const CarList = () => {
 	const updateURLParams = (updatedFilters) => {
 		const queryParams = new URLSearchParams()
 
-		// Проходим по всем фильтрам и добавляем их в URL
 		Object.entries(updatedFilters).forEach(([key, value]) => {
 			if (value !== '' && value !== null) {
 				queryParams.append(key, value)
 			}
 		})
 
-		// Обновляем URL, не перезагружая страницу
 		navigate(`/catalog?${queryParams.toString()}`)
 	}
 
-	// Обновление URL-параметров и отправка запроса
 	const applyFilters = (updatedFilters = filters) => {
 		const queryParams = {
 			page: 1,
@@ -123,32 +118,31 @@ const CarList = () => {
 		dispatch(fetchCarsAsync(queryParams))
 	}
 
-	// Обработчик изменений фильтров (поиск автоматически запускается)
 	const handleFilterChange = (e) => {
 		const { name, value } = e.target
 
-		// Если это поле для года или пробега, то приводим к числу
-		const numericFields = [
-			'yearOneId',
-			'yearTwoId',
-			'mileageOneId',
-			'mileageTwoId',
-		]
-		const updatedValue = numericFields.includes(name) ? Number(value) : value
-
-		const updatedFilters = {
+		let updatedFilters = {
 			...filters,
-			[name]: updatedValue,
+			[name]: value,
+		}
+
+		if (name === 'modelId') {
+			updatedFilters.generationId = ''
+		}
+
+		if (name === 'manufacturerId') {
+			updatedFilters = {
+				...updatedFilters,
+				modelId: '',
+				generationId: '',
+			}
 		}
 
 		setFiltersState(updatedFilters)
 		updateURLParams(updatedFilters)
-
-		// 🔄 Автоматический запрос на сервер при изменении фильтра
 		applyFilters(updatedFilters)
 	}
 
-	// Сброс фильтров
 	const resetFilters = () => {
 		const initialFilters = {
 			manufacturerId: '',
@@ -237,11 +231,8 @@ const CarList = () => {
 						>
 							<option value=''>Выберите поколение</option>
 							{availableGenerations.map((generation) => (
-								<option
-									key={generation.GENERATIONID}
-									value={generation.GENERATIONID}
-								>
-									{generation.NAME}
+								<option key={generation.id} value={generation.id}>
+									{generation.name}
 								</option>
 							))}
 						</select>

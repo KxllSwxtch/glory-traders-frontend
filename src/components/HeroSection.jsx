@@ -146,7 +146,7 @@ const HeroSection = () => {
 					</div>
 
 					<button
-						className='bg-red-500 text-white p-2 rounded mt-4 w-full hover:bg-red-600 transition'
+						className='bg-orange-500 text-white p-2 rounded mt-4 w-full hover:bg-orange-600 transition cursor-pointer'
 						onClick={handleSearch}
 						disabled={!selectedBrand}
 					>

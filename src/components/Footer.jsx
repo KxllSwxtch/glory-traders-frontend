@@ -46,14 +46,14 @@ const Footer = () => {
 					<div>
 						<h4 className='text-lg font-semibold mb-4'>Контакты</h4>
 						<ul className='space-y-2'>
-							<li>Телефон: +8 210-2329-7807</li>
+							<li>Телефон: +82 10-2329-7807</li>
 							<li>
 								E-mail:{' '}
 								<a
-									href='mailto:info@mike-auto.ru'
+									href='mailto:glory_traders@bk.ru'
 									className='text-gray-300 hover:text-white transition'
 								>
-									info@mike-auto.ru
+									glory_traders@bk.ru
 								</a>
 							</li>
 							<li>

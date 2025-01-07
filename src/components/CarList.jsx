@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { fetchCarsAsync, setFilters } from '../redux/slices/carsSlice'
 import CarListItem from './CarListItem'
 import Pagination from './Pagination'
-import Loader from './Loader'
+// import Loader from './Loader'
 
 // filters
 import manufacturers from '../data/manufacturers'
@@ -12,6 +13,9 @@ import colors from '../data/colors'
 
 const CarList = () => {
 	const dispatch = useDispatch()
+	const location = useLocation()
+	const navigate = useNavigate()
+
 	const { cars, loading, error, currentPage, totalPages } = useSelector(
 		(state) => state.cars,
 	)
@@ -35,11 +39,40 @@ const CarList = () => {
 	const [availableGenerations, setAvailableGenerations] = useState([])
 	const [isFiltersOpen, setIsFiltersOpen] = useState(false)
 
-	// 🔄 Автоматическая загрузка автомобилей при первой загрузке страницы
+	// Считываем фильтры из URL при первом рендере и отправляем запрос на сервер
 	useEffect(() => {
-		const initialQueryParams = { page: 1, filters: {} }
-		dispatch(fetchCarsAsync(initialQueryParams))
-	}, [dispatch])
+		const searchParams = new URLSearchParams(location.search)
+
+		const initialFilters = {
+			manufacturerId: searchParams.get('manufacturerId') || '',
+			modelId: searchParams.get('modelId') || '',
+			generationId: searchParams.get('generationId') || '',
+			colorsId: searchParams.get('colorsId') || '',
+			fuelId: searchParams.get('fuelId') || '',
+			transmissionId: searchParams.get('transmissionId') || '',
+			mountOneId: searchParams.get('mountOneId') || '',
+			mountTwoId: searchParams.get('mountTwoId') || '',
+			yearOneId: searchParams.get('yearOneId') || '',
+			yearTwoId: searchParams.get('yearTwoId') || '',
+			mileageOneId: searchParams.get('mileageOneId') || '',
+			mileageTwoId: searchParams.get('mileageTwoId') || '',
+		}
+
+		setFiltersState(initialFilters)
+
+		// Добавляем задержку перед отправкой запроса
+		const timeout = setTimeout(() => {
+			dispatch(
+				fetchCarsAsync({
+					page: 1,
+					filters: initialFilters,
+				}),
+			)
+		}, 500) // Задержка 500 мс
+
+		// Очищаем таймер при каждом изменении фильтров
+		return () => clearTimeout(timeout)
+	}, [dispatch, location.search])
 
 	// Подгружаем модели на основе выбранного производителя
 	useEffect(() => {
@@ -62,26 +95,57 @@ const CarList = () => {
 		}
 	}, [filters.modelId])
 
-	// Функция для отправки запроса с применёнными фильтрами
-	const applyFilters = () => {
+	const updateURLParams = (updatedFilters) => {
+		const queryParams = new URLSearchParams()
+
+		// Проходим по всем фильтрам и добавляем их в URL
+		Object.entries(updatedFilters).forEach(([key, value]) => {
+			if (value !== '' && value !== null) {
+				queryParams.append(key, value)
+			}
+		})
+
+		// Обновляем URL, не перезагружая страницу
+		navigate(`/catalog?${queryParams.toString()}`)
+	}
+
+	// Обновление URL-параметров и отправка запроса
+	const applyFilters = (updatedFilters = filters) => {
 		const queryParams = {
-			page: currentPage,
+			page: 1,
 			filters: {
 				...Object.fromEntries(
-					Object.entries(filters).filter(([_, value]) => value !== ''),
+					Object.entries(updatedFilters).filter(([_, value]) => value !== ''),
 				),
 			},
 		}
+
 		dispatch(fetchCarsAsync(queryParams))
 	}
 
-	// Обработчик изменений фильтров
+	// Обработчик изменений фильтров (поиск автоматически запускается)
 	const handleFilterChange = (e) => {
 		const { name, value } = e.target
-		setFiltersState((prevFilters) => ({
-			...prevFilters,
-			[name]: value,
-		}))
+
+		// Если это поле для года или пробега, то приводим к числу
+		const numericFields = [
+			'yearOneId',
+			'yearTwoId',
+			'mileageOneId',
+			'mileageTwoId',
+		]
+		const updatedValue = numericFields.includes(name) ? Number(value) : value
+
+		const updatedFilters = {
+			...filters,
+			[name]: updatedValue,
+		}
+
+		setFiltersState(updatedFilters)
+		updateURLParams(updatedFilters)
+
+		// 🔄 Автоматический запрос на сервер при изменении фильтра
+		applyFilters(updatedFilters)
 	}
 
 	// Сброс фильтров
@@ -100,10 +164,12 @@ const CarList = () => {
 			mileageOneId: '',
 			mileageTwoId: '',
 		}
+
 		setFiltersState(initialFilters)
 		setAvailableModels([])
 		setAvailableGenerations([])
 		dispatch(setFilters(initialFilters))
+		navigate('/catalog')
 	}
 
 	const currentYear = new Date().getUTCFullYear()
@@ -263,20 +329,20 @@ const CarList = () => {
 							className='p-2 border rounded'
 						/>
 
-						{/* Кнопка "Применить фильтры" */}
+						{/* Кнопка "Применить" */}
 						<button
 							onClick={applyFilters}
 							className='bg-red-500 text-white p-2 rounded hover:bg-red-600'
 						>
-							Применить фильтры
+							Применить
 						</button>
 
 						{/* Кнопка сброса фильтров */}
 						<button
 							onClick={resetFilters}
-							className='bg-red-500 text-white p-2 rounded hover:bg-red-600 mt-2'
+							className='bg-red-500 text-white p-2 rounded hover:bg-red-600'
 						>
-							Сбросить фильтры
+							Сбросить
 						</button>
 					</div>
 				</div>

@@ -18,12 +18,12 @@ const Header = () => {
 	}
 
 	return (
-		<header className='bg-white shadow-md py-4 fixed top-0 left-0 w-full z-50'>
+		<header className='bg-black shadow-md py-4 fixed top-0 left-0 w-full z-50'>
 			<div className='container mx-auto flex items-center justify-between px-4'>
 				{/* Логотип */}
 				<div className='flex items-center space-x-4'>
 					<Link to='/'>
-						<img src={LOGO_SRC} alt='Mike Auto Logo' className='h-12' />
+						<img src={LOGO_SRC} alt='Mike Auto Logo' className='h-16' />
 					</Link>
 				</div>
 
@@ -31,19 +31,19 @@ const Header = () => {
 				<nav className='hidden md:flex items-center space-x-8'>
 					<Link
 						to='/'
-						className='text-gray-700 hover:text-gray-900 font-medium transition'
+						className='text-white hover:text-gray-900 font-medium transition'
 					>
 						Главная
 					</Link>
 					<Link
 						to='/catalog'
-						className='text-gray-700 hover:text-gray-900 font-medium transition'
+						className='text-white hover:text-gray-900 font-medium transition'
 					>
 						Каталог авто из Кореи
 					</Link>
 					<Link
 						to='/contacts'
-						className='text-gray-700 hover:text-gray-900 font-medium transition'
+						className='text-white hover:text-gray-900 font-medium transition'
 					>
 						Контакты
 					</Link>
@@ -75,14 +75,14 @@ const Header = () => {
 						</a>
 						<a
 							href='#'
-							className='text-gray-600 hover:text-gray-800 transition'
+							className='text-white hover:text-gray-800 transition'
 							target='__blank'
 							rel='noopener noreferrer'
 						>
 							<img
 								src='https://cdn-icons-png.flaticon.com/512/597/597177.png' // Phone
 								alt='Phone'
-								className='h-6 w-6'
+								className='h-6 w-6 invert'
 							/>
 						</a>
 					</div>

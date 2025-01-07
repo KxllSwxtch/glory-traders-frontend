@@ -2,27 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa'
 import HEROVIDEO_SRC from '../assets/herovideo.mp4'
-
-const brands = [
-	{ id: 8, name: 'Aston Martin' },
-	{ id: 9, name: 'Audi' },
-	{ id: 16, name: 'BMW' },
-	{ id: 48, name: 'Ford' },
-	{ id: 140, name: 'Toyota' },
-]
-
-const models = {
-	9: [
-		{ id: 'a3', name: 'A3' },
-		{ id: 'a4', name: 'A4' },
-		{ id: 'q5', name: 'Q5' },
-	],
-	16: [
-		{ id: 'x1', name: 'X1' },
-		{ id: 'x3', name: 'X3' },
-		{ id: 'x5', name: 'X5' },
-	],
-}
+import manufacturers from '../data/manufacturers'
+import models from '../data/models'
 
 const generations = {
 	a3: ['8L', '8P', '8V'],
@@ -38,6 +19,25 @@ const HeroSection = () => {
 	const [selectedGeneration, setSelectedGeneration] = useState('')
 
 	const navigate = useNavigate()
+
+	const handleBrandChange = (e) => {
+		const newBrand = e.target.value
+		setSelectedBrand(newBrand)
+
+		// Сбрасываем модель и поколение при смене марки
+		setSelectedModel('')
+		setAvailableGenerations([])
+		setSelectedGeneration('')
+	}
+
+	// Обработчик изменения модели
+	const handleModelChange = (e) => {
+		const newModel = e.target.value
+		setSelectedModel(newModel)
+
+		// Сбрасываем поколение при смене модели
+		setSelectedGeneration('')
+	}
 
 	// Обновление моделей при выборе марки
 	useEffect(() => {
@@ -63,13 +63,14 @@ const HeroSection = () => {
 
 	// Обработчик поиска
 	const handleSearch = () => {
-		navigate('/catalog', {
-			state: {
-				manufacturerId: selectedBrand,
-				modelId: selectedModel,
-				generationId: selectedGeneration,
-			},
-		})
+		const queryParams = new URLSearchParams()
+
+		if (selectedBrand) queryParams.append('manufacturerId', selectedBrand)
+		if (selectedModel) queryParams.append('modelId', selectedModel)
+		if (selectedGeneration)
+			queryParams.append('generationId', selectedGeneration)
+
+		navigate(`/catalog?${queryParams.toString()}`)
 	}
 
 	return (
@@ -97,14 +98,14 @@ const HeroSection = () => {
 				<div className='bg-white p-4 rounded-lg shadow-lg mb-6'>
 					<div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
 						<select
-							className='p-2 border rounded'
+							className='p-2 border rounded text-black'
 							value={selectedBrand}
-							onChange={(e) => setSelectedBrand(e.target.value)}
+							onChange={handleBrandChange}
 						>
 							<option value='' disabled>
 								Выберите марку
 							</option>
-							{brands.map((brand) => (
+							{manufacturers.map((brand) => (
 								<option key={brand.id} value={brand.id}>
 									{brand.name}
 								</option>
@@ -112,9 +113,9 @@ const HeroSection = () => {
 						</select>
 
 						<select
-							className='p-2 border rounded'
+							className='p-2 border rounded text-black'
 							value={selectedModel}
-							onChange={(e) => setSelectedModel(e.target.value)}
+							onChange={handleModelChange}
 							disabled={!selectedBrand}
 						>
 							<option value='' disabled>
@@ -128,7 +129,7 @@ const HeroSection = () => {
 						</select>
 
 						<select
-							className='p-2 border rounded'
+							className='p-2 border rounded text-black'
 							value={selectedGeneration}
 							onChange={(e) => setSelectedGeneration(e.target.value)}
 							disabled={!selectedModel}

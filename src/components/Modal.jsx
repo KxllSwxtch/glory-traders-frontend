@@ -6,6 +6,7 @@ const Modal = ({ isOpen, onClose }) => {
 		name: '',
 		email: '',
 		phone: '',
+		message: '',
 		agreement: false,
 		contactMethod: '',
 	})
@@ -31,18 +32,33 @@ const Modal = ({ isOpen, onClose }) => {
 	// Обработчик отправки формы
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		console.log('Отправлено:', formData)
 
-		// Убираем отправленные данные с полей
+		if (!formData.agreement) {
+			alert('Пожалуйста, дайте согласие на обработку персональных данных.')
+			return
+		}
+
+		// Формируем текст сообщения
+		const message = `Здравствуйте! Меня зовут ${formData.name}. Оставил у вас заявку на сайте.%0A%0AE-mail: ${formData.email}%0AТелефон: ${formData.phone}%0AСпособ связи: ${formData.contactMethod}%0A%0A${formData.message}`
+
+		// Перенаправляем на WhatsApp
+		window.open(`https://wa.me/821023297807?text=${message}`, '_blank')
+
+		clearForm()
+
+		// Закрываем модалку
+		onClose()
+	}
+
+	const clearForm = () =>
 		setFormData({
 			name: '',
 			email: '',
 			phone: '',
+			message: '',
 			agreement: false,
 			contactMethod: '',
 		})
-		onClose()
-	}
 
 	// Если окно закрыто, не рендерим ничего
 	if (!isOpen) return null
@@ -87,6 +103,7 @@ const Modal = ({ isOpen, onClose }) => {
 							id='name'
 							name='name'
 							type='text'
+							placeholder='Введите ваше имя'
 							className='w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-500'
 							value={formData.name}
 							onChange={handleChange}
@@ -103,6 +120,7 @@ const Modal = ({ isOpen, onClose }) => {
 							id='email'
 							name='email'
 							type='email'
+							placeholder='Введите вашу электронную почту'
 							className='w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-500'
 							value={formData.email}
 							onChange={handleChange}
@@ -122,6 +140,23 @@ const Modal = ({ isOpen, onClose }) => {
 							className='w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-500'
 							value={formData.phone}
 							onChange={handleChange}
+							placeholder='Введите ваш номер телефона'
+							required
+						/>
+					</div>
+
+					<div>
+						<label className='block text-sm font-bold mb-1' htmlFor='phone'>
+							Сообщение <span className='text-red-500'>*</span>
+						</label>
+						<input
+							id='message'
+							name='message'
+							type='text'
+							className='w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-500'
+							value={formData.message}
+							onChange={handleChange}
+							placeholder='Введите ваш запрос'
 							required
 						/>
 					</div>

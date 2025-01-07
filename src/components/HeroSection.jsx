@@ -95,7 +95,7 @@ const HeroSection = () => {
 				</p>
 
 				{/* Форма поиска */}
-				<div className='bg-white p-4 rounded-lg shadow-lg mb-6'>
+				<div className='bg-white p-4 rounded-lg shadow-lg mb-6 w-full sm:max-w-lg md:max-w-xl lg:max-w-2xl'>
 					<div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
 						<select
 							className='p-2 border rounded text-black'
@@ -159,16 +159,16 @@ const HeroSection = () => {
 						href='https://t.me/GLORYTRADERS'
 						target='_blank'
 						rel='noopener noreferrer'
-						className='flex items-center bg-orange-600 text-white px-6 py-2 rounded shadow hover:bg-red-700 transition space-x-2'
+						className='flex items-center bg-blue-500 text-white px-6 py-2 rounded shadow hover:bg-blue-600 transition space-x-2'
 					>
 						<FaTelegramPlane className='text-lg' />
-						<span>Telegram</span>
+						<span>Телеграм</span>
 					</a>
 					<a
 						href='https://wa.me/821023297807'
 						target='_blank'
 						rel='noopener noreferrer'
-						className='flex items-center bg-orange-700 text-white px-6 py-2 rounded shadow hover:bg-red-700 transition space-x-2'
+						className='flex items-center bg-green-500 text-white px-6 py-2 rounded shadow hover:bg-green-600 transition space-x-2'
 					>
 						<FaWhatsapp className='text-lg' />
 						<span>WhatsApp</span>

@@ -31,19 +31,19 @@ const Header = () => {
 				<nav className='hidden md:flex items-center space-x-8'>
 					<Link
 						to='/'
-						className='text-white hover:text-gray-900 font-medium transition'
+						className='text-white hover:text-gray-400 font-medium transition'
 					>
 						Главная
 					</Link>
 					<Link
 						to='/catalog'
-						className='text-white hover:text-gray-900 font-medium transition'
+						className='text-white hover:text-gray-400 font-medium transition'
 					>
 						Каталог авто из Кореи
 					</Link>
 					<Link
 						to='/contacts'
-						className='text-white hover:text-gray-900 font-medium transition'
+						className='text-white hover:text-gray-400 font-medium transition'
 					>
 						Контакты
 					</Link>

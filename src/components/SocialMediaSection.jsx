@@ -1,19 +1,34 @@
 import {
 	FaYoutube,
-	FaVk,
 	FaTelegramPlane,
 	FaWhatsapp,
-	FaTiktok,
 	FaInstagram,
 } from 'react-icons/fa'
 
+// Объект с цветами для каждой соцсети
+const iconColors = {
+	youtube: 'text-red-600',
+	instagram: 'text-pink-500',
+	telegram: 'text-blue-500',
+	whatsapp: 'text-green-500',
+	vk: 'text-blue-700',
+	tiktok: 'text-black',
+}
+
+// Список соцсетей
 const socialLinks = [
-	{ icon: FaYoutube, url: 'https://www.youtube.com/@vyacheslavkhon/' },
-	// { icon: SiOdnoklassniki, url: 'https://ok.ru' },
-	// { icon: FaTiktok, url: 'https://tiktok.com' },
-	{ icon: FaInstagram, url: 'https://www.instagram.com/glory_traders_' },
-	{ icon: FaTelegramPlane, url: 'https://t.me/GLORYTRADERS' },
-	{ icon: FaWhatsapp, url: 'https://wa.me/821023297807' },
+	{
+		icon: FaYoutube,
+		url: 'https://www.youtube.com/@vyacheslavkhon/',
+		name: 'youtube',
+	},
+	{
+		icon: FaInstagram,
+		url: 'https://www.instagram.com/glory_traders_',
+		name: 'instagram',
+	},
+	{ icon: FaTelegramPlane, url: 'https://t.me/GLORYTRADERS', name: 'telegram' },
+	{ icon: FaWhatsapp, url: 'https://wa.me/821023297807', name: 'whatsapp' },
 ]
 
 const SocialMediaSection = () => {
@@ -28,15 +43,17 @@ const SocialMediaSection = () => {
 				<div className='flex justify-center space-x-8'>
 					{socialLinks.map((link, index) => {
 						const Icon = link.icon
+						const colorClass = iconColors[link.name] || 'text-gray-700'
+
 						return (
 							<a
 								key={index}
 								href={link.url}
 								target='_blank'
 								rel='noopener noreferrer'
-								className='text-gray-700 hover:text-orange-600 transition duration-300'
+								className={`${colorClass} hover:brightness-75 transition duration-300`}
 							>
-								<Icon className='text-3xl' />
+								<Icon className='text-4xl' />
 							</a>
 						)
 					})}

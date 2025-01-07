@@ -223,11 +223,13 @@ const CarList = () => {
 							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
 						>
 							<option value=''>Выберите марку</option>
-							{manufacturers.map((brand) => (
-								<option key={brand.id} value={brand.id}>
-									{brand.name}
-								</option>
-							))}
+							{manufacturers
+								.sort((a, b) => (a.name > b.name ? 1 : -1))
+								.map((brand) => (
+									<option key={brand.id} value={brand.id}>
+										{brand.name}
+									</option>
+								))}
 						</select>
 
 						{/* Модель */}
@@ -239,11 +241,13 @@ const CarList = () => {
 							disabled={!filters.manufacturerId}
 						>
 							<option value=''>Выберите модель</option>
-							{availableModels.map((model) => (
-								<option key={model.id} value={model.id}>
-									{model.name}
-								</option>
-							))}
+							{availableModels
+								.sort((a, b) => (a.name > b.name ? 1 : -1))
+								.map((model) => (
+									<option key={model.id} value={model.id}>
+										{model.name}
+									</option>
+								))}
 						</select>
 
 						{/* Поколение */}

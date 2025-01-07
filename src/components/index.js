@@ -7,8 +7,10 @@ import SocialMediaSection from './SocialMediaSection'
 import AdvantagesSection from './AdvantagesSection'
 import ScrollToTop from './ScrollToTop'
 import Loader from './Loader'
+import Modal from './Modal'
 export {
 	CarList,
+	Modal,
 	Header,
 	Footer,
 	HeroSection,

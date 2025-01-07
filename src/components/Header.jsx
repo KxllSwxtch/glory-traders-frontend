@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Modal } from '../components'
 import LOGO_SRC from '../assets/logo.png'
 
 const Header = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false) // Состояние для открытия/закрытия мобильного меню
+	const [isModalOpen, setIsModalOpen] = useState(false) // Состояние модального окна
 
 	// Функция для переключения состояния меню
 	const toggleMenu = () => {
@@ -47,6 +49,13 @@ const Header = () => {
 					>
 						Контакты
 					</Link>
+					{/* Кнопка "Оставить заявку" */}
+					<button
+						onClick={() => setIsModalOpen(true)}
+						className='bg-white text-gray-700 font-medium px-4 py-2 rounded-full shadow hover:bg-gray-200 transition'
+					>
+						Оставить заявку
+					</button>
 					{/* Ссылки на соцсети */}
 					<div className='flex items-center space-x-4'>
 						<a
@@ -203,15 +212,17 @@ const Header = () => {
 					>
 						Контакты
 					</Link>
-					<Link
-						to='/contacts'
-						className='bg-white text-black px-4 py-2 rounded hover:bg-gray-200'
-						onClick={closeMenu}
+					{/* Кнопка "Оставить заявку" */}
+					<button
+						onClick={() => setIsModalOpen(true)}
+						className='bg-white text-gray-700 font-medium px-4 py-2 rounded-full shadow hover:bg-gray-200 transition'
 					>
 						Оставить заявку
-					</Link>
+					</button>
 				</div>
 			</div>
+
+			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 		</header>
 	)
 }

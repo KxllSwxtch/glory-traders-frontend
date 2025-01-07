@@ -131,7 +131,7 @@ const Contacts = () => {
 				<iframe
 					className='w-full h-full'
 					src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3172.1066325738334!2d126.79099337591968!3d37.33998413708656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b6fc4da4d6353%3A0xdac96eac3a27b309!2s104%2C%20128-1%20Jigok-ro%2C%20Danwon-gu%2C%20Ansan-si%2C%20Gyeonggi-do!5e0!3m2!1sen!2skr!4v1736222550455!5m2!1sen!2skr'
-					allowfullscreen=''
+					allowFullScreen=''
 					loading='lazy'
 					referrerPolicy='no-referrer-when-downgrade'
 				></iframe>

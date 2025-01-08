@@ -43,7 +43,7 @@ const CarListItem = ({ car }) => {
 			{/* Содержимое карточки */}
 			<div className='p-6 flex-grow flex flex-col'>
 				<h2 className='text-xl font-bold text-gray-800 mb-3 text-center uppercase dark:text-white'>
-					{car.title}
+					{car.manufacturer_name} {car.title}
 				</h2>
 				<ul className='text-sm text-gray-600 mb-6 space-y-1 dark:text-gray-300'>
 					<li>

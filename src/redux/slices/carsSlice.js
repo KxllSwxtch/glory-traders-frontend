@@ -44,9 +44,10 @@ const carsSlice = createSlice({
 			})
 			.addCase(fetchCarsAsync.fulfilled, (state, action) => {
 				state.loading = false
-				state.cars = action.payload.data.sort((a, b) =>
-					a.year > b.year ? -1 : 1,
-				)
+				state.cars = action.payload.data
+				// .sort((a, b) =>
+				// 	a.year > b.year ? -1 : 1,
+				// )
 				state.totalPages = action.payload.pageCount
 			})
 			.addCase(fetchCarsAsync.rejected, (state, action) => {

@@ -263,11 +263,13 @@ const CarList = () => {
 							disabled={!filters.modelId}
 						>
 							<option value=''>Выберите поколение</option>
-							{availableGenerations.map((generation) => (
-								<option key={generation.id} value={generation.id}>
-									{generation.name}
-								</option>
-							))}
+							{availableGenerations
+								.sort((a, b) => (a.name > b.name ? 1 : -1))
+								.map((generation) => (
+									<option key={generation.id} value={generation.id}>
+										{generation.name}
+									</option>
+								))}
 						</select>
 
 						{/* Цвет */}

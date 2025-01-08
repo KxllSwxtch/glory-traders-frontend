@@ -28,10 +28,12 @@ const CarDetails = () => {
 		if (!car) {
 			const searchParams = new URLSearchParams(location.search)
 			const manufacturerId = searchParams.get('manufacturerId')
+			const modelId = searchParams.get('modelId') || ''
+			const generationId = searchParams.get('generationId') || ''
 			dispatch(
 				fetchCarsAsync({
 					page: currentPage || 1,
-					filters: { manufacturerId },
+					filters: { manufacturerId, modelId, generationId },
 				}),
 			)
 		}

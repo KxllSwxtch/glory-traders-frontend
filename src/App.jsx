@@ -1,6 +1,13 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Header, Footer, ScrollToTop } from './components'
-import { Home, Catalog, Contacts, CarDetails, PrivacyPolicy } from './pages'
+import {
+	Home,
+	Catalog,
+	Contacts,
+	CarDetails,
+	PrivacyPolicy,
+	Calculator,
+} from './pages'
 
 function App() {
 	return (
@@ -17,6 +24,7 @@ function App() {
 							<Route path='/contacts' element={<Contacts />} />
 							<Route path='/cars/:id' element={<CarDetails />} />
 							<Route path='/privacy-policy' element={<PrivacyPolicy />} />
+							<Route path='/calculator' element={<Calculator />} />
 						</Routes>
 					</div>
 				</main>

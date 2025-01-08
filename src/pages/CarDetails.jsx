@@ -3,6 +3,7 @@ import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, useLocation } from 'react-router-dom'
 import { fetchCarsAsync } from '../redux/slices/carsSlice'
+import colors from '../data/colors'
 import { Loader } from '../components'
 
 const CarDetails = () => {
@@ -15,8 +16,6 @@ const CarDetails = () => {
 	const { cars, loading, error, currentPage } = useSelector(
 		(state) => state.cars,
 	)
-
-	console.log(cars)
 
 	// Поиск автомобиля в сторе
 	const car = cars.find((car) => car.id === Number(id))
@@ -83,6 +82,9 @@ const CarDetails = () => {
 		)
 	}
 
+	// Выводим цвет автомобиля в текст
+	const carColor = colors.filter((item) => item.id === car.color)[0].name
+
 	// Отображение контента
 	return (
 		<div className='container mx-auto p-4 dark:bg-gray-900 dark:text-white'>
@@ -146,15 +148,22 @@ const CarDetails = () => {
 						{car.title.toUpperCase()}
 					</h1>
 					<p className='text-lg font-semibold text-gray-600 mb-2 dark:text-gray-300'>
-						Стоимость автомобиля в Южной Корее:
+						Цена под ключ во Владивостоке
 					</p>
 					<p className='text-4xl font-bold text-red-600 mb-4 dark:text-red-400'>
-						{car.lots?.original_price?.toLocaleString()} ₩
+						{car.lots?.total_all_format?.toLocaleString()} ₽
 					</p>
 
 					<button className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-700 transition text-sm dark:bg-orange-600 dark:hover:bg-orange-700'>
-						Рассчитать автомобиль под ключ до Владивостока
+						Показать детали расчёта
 					</button>
+
+					<p className='text-md font-normal text-gray-600 mb-6 dark:text-gray-300'>
+						Стоимость автомобиля в Южной Корее:{' '}
+						<span className='font-bold text-orange-600'>
+							{car.lots?.original_price?.toLocaleString()} ₩
+						</span>
+					</p>
 
 					<p className='text-lg font-semibold text-gray-600 mb-2 dark:text-gray-300'>
 						Задать вопрос менеджеру:
@@ -206,7 +215,7 @@ const CarDetails = () => {
 						{car.lots?.odometer_km?.toLocaleString() || 'N/A'} км
 					</li>
 					<li>
-						<strong>Цвет:</strong> {car.color || 'N/A'}
+						<strong>Цвет:</strong> {carColor || 'N/A'}
 					</li>
 					<li>
 						<strong>Объём двигателя:</strong>{' '}

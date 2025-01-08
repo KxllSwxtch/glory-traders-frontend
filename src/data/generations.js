@@ -57,21 +57,25 @@ const generations = {
 	],
 	2765: [
 		{
-			id: 5511,
-			name: 'III',
-		},
-		{
 			id: 5871,
-			name: 'I',
+			name: 'I (2004-2007)',
 		},
 		{
 			id: 5872,
-			name: 'II',
+			name: 'II (2011-2018)',
+		},
+		{
+			id: 5511,
+			name: 'III (2019-2022)',
 		},
 		{
 			id: 5873,
-			name: 'I 2',
+			name: 'I 2 (2008-2009)',
 		},
+		// {
+		// 	id: 5874,
+		// 	name: 'I 3 ()',
+		// },
 	],
 	3217: [
 		{
@@ -93,6 +97,18 @@ const generations = {
 		{
 			id: 4088,
 			name: 'Tivoli',
+		},
+	],
+	399: [
+		{
+			id: 1948,
+			name: 'Santamo (1995-2002)',
+		},
+	],
+	397: [
+		{
+			id: 1949,
+			name: 'Scoupe (1990-1995)',
 		},
 	],
 	400: [
@@ -300,15 +316,15 @@ const generations = {
 	2764: [
 		{
 			id: 5509,
-			name: 'I',
+			name: 'I (2010-2014)',
 		},
 		{
 			id: 5516,
-			name: 'II',
+			name: 'II (2015-2020)',
 		},
 		{
 			id: 6834,
-			name: 'III',
+			name: 'III (2021-текущий год)',
 		},
 	],
 	2668: [
@@ -431,20 +447,20 @@ const generations = {
 	],
 	435: [
 		{
-			id: 2128,
-			name: 'II',
+			id: 2126,
+			name: 'I (1998-2005)',
 		},
 		{
-			id: 2188,
-			name: 'IV',
+			id: 2128,
+			name: 'II (2005-2014)',
 		},
 		{
 			id: 5768,
-			name: 'III',
+			name: 'III (2014-2019)',
 		},
 		{
 			id: 6832,
-			name: 'IV',
+			name: 'IV (2020-текущий год)',
 		},
 	],
 	1600: [
@@ -520,15 +536,19 @@ const generations = {
 	448: [
 		{
 			id: 2171,
-			name: 'I',
+			name: 'I (2002-2008)',
 		},
 		{
 			id: 2173,
-			name: 'II',
+			name: 'II (2009-2014)',
+		},
+		{
+			id: 2175,
+			name: 'III Prime ()',
 		},
 		{
 			id: 6455,
-			name: 'IV',
+			name: 'IV (2020-текущий год)',
 		},
 	],
 	1034: [
@@ -740,7 +760,7 @@ const generations = {
 	441: [
 		{
 			id: 2145,
-			name: 'I',
+			name: 'I (2003-2011)',
 		},
 	],
 	570: [

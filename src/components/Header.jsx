@@ -222,6 +222,12 @@ const Header = () => {
 					>
 						Контакты
 					</Link>
+					<Link
+						to='/calculator'
+						className='text-xl font-semibold hover:text-gray-300'
+					>
+						Калькулятор
+					</Link>
 					{/* Кнопка "Оставить заявку" */}
 					<button
 						onClick={() => setIsModalOpen(true)}

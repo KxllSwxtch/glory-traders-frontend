@@ -268,16 +268,16 @@ const CalculatorPage = () => {
 
 			{/* Результаты расчета */}
 			{result && (
-				<div className='bg-gray-100 p-4 rounded-lg mt-8'>
-					<h2 className='text-xl font-bold text-orange-600 mb-4'>
+				<div className='bg-gray-100 dark:bg-gray-800 p-4 rounded-lg mt-8'>
+					<h2 className='text-xl font-bold text-orange-600 dark:text-orange-400 mb-4'>
 						Итоговая цена с доставкой из Кореи: ~{result.totalPrice} ₽
 					</h2>
-					<span>
+					<span className='text-gray-700 dark:text-gray-300'>
 						В связи с изменением курса возможны изменения в цене. Для уточнения
-						звоните или пишите нам на WhatsApp{'    '}
+						звоните или пишите нам на WhatsApp{' '}
 						<a
 							href='https://wa.me/821023297807'
-							className='text-gray-600 hover:text-gray-800 transition inline-block'
+							className='text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition inline-block'
 							target='__blank'
 							rel='noopener noreferrer'
 						>
@@ -292,14 +292,30 @@ const CalculatorPage = () => {
 					<br />
 					<br />
 
-					<h2 className='font-bold'>Детали Расчёта</h2>
-					<p>Цена авто в Корее: {result.details.priceInKorea} ₽</p>
-					<p>Пошлина: {result.details.duty} ₽</p>
-					<p>Таможенный сбор: {result.details.customsFee} ₽</p>
-					<p>Утилизационный сбор: {result.details.recyclingFee} ₽</p>
-					<p>Расходы на доставку: {result.details.deliveryCost} ₽</p>
-					<p>Расходы на оформление: {result.details.paperworkCost} ₽</p>
-					<p>Комиссия компании: {result.details.companyFee} ₽</p>
+					<h2 className='font-bold text-gray-900 dark:text-gray-100'>
+						Детали Расчёта
+					</h2>
+					<p className='text-gray-700 dark:text-gray-300'>
+						Цена авто в Корее: {result.details.priceInKorea} ₽
+					</p>
+					<p className='text-gray-700 dark:text-gray-300'>
+						Пошлина: {result.details.duty} ₽
+					</p>
+					<p className='text-gray-700 dark:text-gray-300'>
+						Таможенный сбор: {result.details.customsFee} ₽
+					</p>
+					<p className='text-gray-700 dark:text-gray-300'>
+						Утилизационный сбор: {result.details.recyclingFee} ₽
+					</p>
+					<p className='text-gray-700 dark:text-gray-300'>
+						Расходы на доставку: {result.details.deliveryCost} ₽
+					</p>
+					<p className='text-gray-700 dark:text-gray-300'>
+						Расходы на оформление: {result.details.paperworkCost} ₽
+					</p>
+					<p className='text-gray-700 dark:text-gray-300'>
+						Комиссия компании: {result.details.companyFee} ₽
+					</p>
 				</div>
 			)}
 		</div>

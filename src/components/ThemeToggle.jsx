@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { FaSun, FaMoon } from 'react-icons/fa'
 
-const ThemeToggle = () => {
+const ThemeToggle = ({ closeMenu }) => {
 	const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
 
 	useEffect(() => {
@@ -15,6 +15,7 @@ const ThemeToggle = () => {
 
 	const toggleTheme = () => {
 		setTheme(theme === 'light' ? 'dark' : 'light')
+		closeMenu()
 	}
 
 	return (

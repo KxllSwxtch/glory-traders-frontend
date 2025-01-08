@@ -106,7 +106,7 @@ const Header = () => {
 								className='h-6 w-6'
 							/>
 						</a>
-						<ThemeToggle />
+						<ThemeToggle closeMenu={closeMenu} />
 
 						{/* <a
 							href='#'
@@ -240,7 +240,7 @@ const Header = () => {
 					>
 						Оставить заявку
 					</button>
-					<ThemeToggle />
+					<ThemeToggle closeMenu={closeMenu} />
 				</div>
 			</div>
 

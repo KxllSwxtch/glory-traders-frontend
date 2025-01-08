@@ -12,9 +12,8 @@ const CalculatorPage = () => {
 	const [forPersonalUse, setForPersonalUse] = useState(true)
 	const [result, setResult] = useState(null)
 
-	// Расчёт стоимости
+	// Расчет стоимости
 	const calculatePrice = () => {
-		// Удаляем запятые и приводим к числу
 		const basePrice = Number(price.replace(/,/g, ''))
 
 		if (isNaN(basePrice) || basePrice === 0) {
@@ -26,36 +25,58 @@ const CalculatorPage = () => {
 		const rubPrice = basePrice * rates[currency]
 
 		// Пошлины и сборы
-		const duty = rubPrice * 0.1 // 10% пошлина
-		const customsFee = 11746 // Фиксированный таможенный сбор
-		const recyclingFee = forPersonalUse ? 3400 : 5200 // Утилизационный сбор
+		const duty = rubPrice * 0.1
+		const customsFee = 11746
+		const recyclingFee = forPersonalUse ? 3400 : 5200
 
-		// Доставка и оформление
-		const deliveryCost = 300000 // Средняя стоимость доставки
-		const paperworkCost = 80000 // Средняя стоимость оформления
-		const companyFee = 50000 // Комиссия компании
+		// Расходы по Корее
+		const logisticsKorea = 1000 * rates['USD']
+		const companyFeeKorea = 250 * rates['USD']
 
-		// Общая стоимость
-		const totalPrice =
+		// Расходы по РФ
+		const russianExpensesMin = 80000
+		const russianExpensesMax = 120000
+
+		// Логистика по РФ
+		const deliveryCostMin = 150000
+		const deliveryCostMax = 300000
+
+		// Общая стоимость (минимальная и максимальная)
+		const totalMin =
 			rubPrice +
 			duty +
 			customsFee +
 			recyclingFee +
-			deliveryCost +
-			paperworkCost +
-			companyFee
+			logisticsKorea +
+			companyFeeKorea +
+			russianExpensesMin +
+			deliveryCostMin
+
+		const totalMax =
+			rubPrice +
+			duty +
+			customsFee +
+			recyclingFee +
+			logisticsKorea +
+			companyFeeKorea +
+			russianExpensesMax +
+			deliveryCostMax
 
 		// Устанавливаем результат
 		setResult({
-			totalPrice: totalPrice.toLocaleString(),
+			totalMin: totalMin.toLocaleString(),
+			totalMax: Math.round(totalMax, 2).toLocaleString(),
 			details: {
 				priceInKorea: rubPrice.toLocaleString(),
 				duty: duty.toLocaleString(),
 				customsFee: customsFee.toLocaleString(),
 				recyclingFee: recyclingFee.toLocaleString(),
-				deliveryCost: deliveryCost.toLocaleString(),
-				paperworkCost: paperworkCost.toLocaleString(),
-				companyFee: companyFee.toLocaleString(),
+				logisticsKorea: logisticsKorea.toLocaleString(),
+				companyFeeKorea: companyFeeKorea.toLocaleString(),
+				russianExpensesMin: russianExpensesMin.toLocaleString(),
+				russianExpensesMax: russianExpensesMax.toLocaleString(),
+				deliveryCostMin: deliveryCostMin.toLocaleString(),
+				deliveryCostMax: deliveryCostMax.toLocaleString(),
 			},
 		})
 	}
@@ -268,54 +289,93 @@ const CalculatorPage = () => {
 
 			{/* Результаты расчета */}
 			{result && (
-				<div className='bg-gray-100 dark:bg-gray-800 p-4 rounded-lg mt-8'>
-					<h2 className='text-xl font-bold text-orange-600 dark:text-orange-400 mb-4'>
-						Итоговая цена с доставкой из Кореи: ~{result.totalPrice} ₽
+				<div className='bg-gray-100 dark:bg-gray-800 p-6 rounded-lg mt-8 shadow-lg'>
+					<h2 className='text-2xl font-bold text-orange-600 dark:text-orange-400 mb-4'>
+						Итоговая цена с доставкой из Кореи: ~
+						{result.totalMax.toLocaleString()} ₽
 					</h2>
-					<span className='text-gray-700 dark:text-gray-300'>
-						В связи с изменением курса возможны изменения в цене. Для уточнения
-						звоните или пишите нам на WhatsApp{' '}
+					<p className='text-gray-700 dark:text-gray-300 mb-6'>
+						Итоговая стоимость может изменяться в зависимости от курса валют и
+						других факторов. Свяжитесь с нами для уточнения деталей:
 						<a
 							href='https://wa.me/821023297807'
-							className='text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition inline-block'
+							className='inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition ml-2'
 							target='__blank'
 							rel='noopener noreferrer'
 						>
 							<img
-								src='https://cdn-icons-png.flaticon.com/512/733/733585.png' // WhatsApp
+								src='https://cdn-icons-png.flaticon.com/512/733/733585.png'
 								alt='WhatsApp'
-								className='h-6 w-6'
+								className='h-5 w-5 mr-1'
 							/>
+							Написать в WhatsApp
 						</a>
-					</span>
+					</p>
 
-					<br />
-					<br />
+					{/* Блок с деталями расчёта */}
+					<div className='space-y-4'>
+						{/* Цена авто в Корее */}
+						<div>
+							<h3 className='font-bold text-lg text-gray-900 dark:text-white mb-2'>
+								Цена авто в Корее
+							</h3>
+							<p className='text-gray-700 dark:text-gray-300'>
+								Цена авто: {result.details.priceInKorea} ₽
+							</p>
+						</div>
 
-					<h2 className='font-bold text-gray-900 dark:text-gray-100'>
-						Детали Расчёта
-					</h2>
-					<p className='text-gray-700 dark:text-gray-300'>
-						Цена авто в Корее: {result.details.priceInKorea} ₽
-					</p>
-					<p className='text-gray-700 dark:text-gray-300'>
-						Пошлина: {result.details.duty} ₽
-					</p>
-					<p className='text-gray-700 dark:text-gray-300'>
-						Таможенный сбор: {result.details.customsFee} ₽
-					</p>
-					<p className='text-gray-700 dark:text-gray-300'>
-						Утилизационный сбор: {result.details.recyclingFee} ₽
-					</p>
-					<p className='text-gray-700 dark:text-gray-300'>
-						Расходы на доставку: {result.details.deliveryCost} ₽
-					</p>
-					<p className='text-gray-700 dark:text-gray-300'>
-						Расходы на оформление: {result.details.paperworkCost} ₽
-					</p>
-					<p className='text-gray-700 dark:text-gray-300'>
-						Комиссия компании: {result.details.companyFee} ₽
-					</p>
+						{/* Расходы по Корее */}
+						<div>
+							<h3 className='font-bold text-lg text-gray-900 dark:text-white mb-2'>
+								Расходы по Корее
+							</h3>
+							<p className='text-gray-700 dark:text-gray-300'>
+								Логистика: {result.details.logisticsKorea} ₽
+							</p>
+							<p className='text-gray-700 dark:text-gray-300'>
+								Комиссия компании: {result.details.companyFeeKorea} ₽
+							</p>
+						</div>
+
+						{/* Пошлины и сборы */}
+						<div>
+							<h3 className='font-bold text-lg text-gray-900 dark:text-white mb-2'>
+								Пошлины и сборы
+							</h3>
+							<p className='text-gray-700 dark:text-gray-300'>
+								Пошлина: {result.details.duty} ₽
+							</p>
+							<p className='text-gray-700 dark:text-gray-300'>
+								Таможенный сбор: {result.details.customsFee} ₽
+							</p>
+							<p className='text-gray-700 dark:text-gray-300'>
+								Утилизационный сбор: {result.details.recyclingFee} ₽
+							</p>
+						</div>
+
+						{/* Расходы по РФ */}
+						<div>
+							<h3 className='font-bold text-lg text-gray-900 dark:text-white mb-2'>
+								Расходы по РФ
+							</h3>
+							<p className='text-gray-700 dark:text-gray-300'>
+								Услуги брокера, СВХ, лаборатория, получение ЭСБГТС и ЭПТС: от{' '}
+								{result.details.russianExpensesMin} ₽ до{' '}
+								{result.details.russianExpensesMax} ₽
+							</p>
+						</div>
+
+						{/* Логистика по РФ */}
+						<div>
+							<h3 className='font-bold text-lg text-gray-900 dark:text-white mb-2'>
+								Логистика по РФ
+							</h3>
+							<p className='text-gray-700 dark:text-gray-300'>
+								Владивосток → Москва: от {result.details.deliveryCostMin} ₽ до{' '}
+								{result.details.deliveryCostMax} ₽
+							</p>
+						</div>
+					</div>
 				</div>
 			)}
 		</div>

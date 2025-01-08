@@ -30,10 +30,33 @@ const CarDetails = () => {
 			const manufacturerId = searchParams.get('manufacturerId')
 			const modelId = searchParams.get('modelId') || ''
 			const generationId = searchParams.get('generationId') || ''
+			const colorsId = searchParams.get('colorsId') || ''
+			const fuelId = searchParams.get('fuelId') || ''
+			const transmissionId = searchParams.get('transmissionId') || ''
+			const mountOneId = searchParams.get('mountOneId') || ''
+			const mountTwoId = searchParams.get('mountTwoId') || ''
+			const yearOneId = searchParams.get('yearOneId') || ''
+			const yearTwoId = searchParams.get('yearTwoId') || ''
+			const mileageOneId = searchParams.get('mileageOneId') || ''
+			const mileageTwoId = searchParams.get('mileageTwoId') || ''
+
 			dispatch(
 				fetchCarsAsync({
 					page: currentPage || 1,
-					filters: { manufacturerId, modelId, generationId },
+					filters: {
+						manufacturerId,
+						modelId,
+						generationId,
+						colorsId,
+						fuelId,
+						transmissionId,
+						mountOneId,
+						mountTwoId,
+						yearOneId,
+						yearTwoId,
+						mileageOneId,
+						mileageTwoId,
+					},
 				}),
 			)
 		}

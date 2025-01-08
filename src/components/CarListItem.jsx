@@ -47,23 +47,30 @@ const CarListItem = ({ car }) => {
 				</h2>
 				<ul className='text-sm text-gray-600 mb-6 space-y-1 dark:text-gray-300'>
 					<li>
-						<strong>Тип топлива:</strong> {fuelTypes[car.fuel_type] || 'N/A'}
-					</li>
-					<li>
 						<strong>Год выпуска:</strong> {car.year || 'N/A'} г.
-					</li>
-					<li>
-						<strong>Тип трансмиссии:</strong>{' '}
-						{transmissionTypes[car.transmission_type] || 'N/A'}
 					</li>
 					<li>
 						<strong>Пробег:</strong>{' '}
 						{car.lots?.odometer_km?.toLocaleString() || 'N/A'} км
 					</li>
+					<li>
+						<strong>Объём:</strong>{' '}
+						{car.lots?.engine_volume
+							? (car.lots.engine_volume / 1000).toFixed(1) + ' л'
+							: 'N/A'}
+					</li>
+					<li>
+						<strong>Тип топлива:</strong> {fuelTypes[car.fuel_type] || 'N/A'}
+					</li>
+					<li>
+						<strong>Тип трансмиссии:</strong>{' '}
+						{transmissionTypes[car.transmission_type] || 'N/A'}
+					</li>
 				</ul>
 				<div className='mt-auto text-center'>
+					<span className='text-sm'>Цена до ключ во Владивостоке</span>
 					<p className='text-lg font-bold text-red-600 dark:text-red-500'>
-						{car.lots?.original_price?.toLocaleString() || 'N/A'} ₩
+						{car.lots?.total_all_format?.toLocaleString() || 'N/A'} ₽
 					</p>
 					{/* Ссылка с передачей queryParams */}
 					<Link

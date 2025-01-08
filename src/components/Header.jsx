@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import Modal from './Modal'
 import ThemeToggle from './ThemeToggle'
 import LOGO_SRC from '../assets/logo.png'
@@ -7,6 +7,7 @@ import LOGO_SRC from '../assets/logo.png'
 const Header = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false) // Состояние для открытия/закрытия мобильного меню
 	const [isModalOpen, setIsModalOpen] = useState(false) // Состояние модального окна
+	const location = useLocation()
 
 	// Функция для переключения состояния меню
 	const toggleMenu = () => {
@@ -19,6 +20,10 @@ const Header = () => {
 		setIsMenuOpen(false)
 		document.body.style.overflow = 'auto' // Включение прокрутки
 	}
+
+	useEffect(() => {
+		closeMenu()
+	}, [location.pathname])
 
 	return (
 		<header className='bg-black dark:bg-gray-900 shadow-md py-4 fixed top-0 left-0 w-full z-50'>

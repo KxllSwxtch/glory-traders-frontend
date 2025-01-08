@@ -157,6 +157,10 @@ const CarList = () => {
 	const handlePageChange = (page) => {
 		dispatch(setCurrentPage(page))
 		applyFilters(filters, page)
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth',
+		})
 	}
 
 	// ✅ Сброс фильтров

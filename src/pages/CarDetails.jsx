@@ -1,3 +1,4 @@
+import { PhotoProvider, PhotoView } from 'react-photo-view'
 import { useEffect, useState, useRef } from 'react'
 import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
@@ -5,6 +6,7 @@ import { useParams, useLocation } from 'react-router-dom'
 import { fetchCarsAsync } from '../redux/slices/carsSlice'
 import colors from '../data/colors'
 import { Loader } from '../components'
+import 'react-photo-view/dist/react-photo-view.css'
 
 const CarDetails = () => {
 	const { id } = useParams()
@@ -125,13 +127,15 @@ const CarDetails = () => {
 							}}
 						>
 							{car.images?.images_original_big.map((img, index) => (
-								<img
-									key={index}
-									src={img}
-									alt={`Car preview ${index + 1}`}
-									className='w-full h-auto rounded-lg'
-									style={{ flexShrink: 0 }}
-								/>
+								<PhotoProvider key={index}>
+									<PhotoView src={img}>
+										<img
+											src={img}
+											alt={`Car preview ${index + 1}`}
+											className='w-full h-auto rounded-lg'
+										/>
+									</PhotoView>
+								</PhotoProvider>
 							))}
 						</div>
 						<button

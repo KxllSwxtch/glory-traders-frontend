@@ -1,3 +1,7 @@
+import { PhotoProvider, PhotoView } from 'react-photo-view'
+import 'react-photo-view/dist/react-photo-view.css'
+import businessCertificateImage from '../assets/business-certificate.jpeg'
+
 const Contacts = () => {
 	return (
 		<section className='px-6 py-12 max-w-6xl mx-auto'>
@@ -135,6 +139,27 @@ const Contacts = () => {
 					loading='lazy'
 					referrerPolicy='no-referrer-when-downgrade'
 				></iframe>
+			</div>
+
+			{/* Сертификат бизнеса */}
+			{/* Сертификат бизнеса */}
+			<div className='mt-12'>
+				<h2 className='text-2xl font-semibold mb-4 text-center'>
+					Сертификат бизнеса
+				</h2>
+				<div className='flex justify-center'>
+					<PhotoProvider>
+						<div className='flex justify-center'>
+							<PhotoView src={businessCertificateImage}>
+								<img
+									src={businessCertificateImage}
+									alt='Сертификат бизнеса'
+									className='w-5/12 max-w-3xl rounded-lg shadow-lg'
+								/>
+							</PhotoView>
+						</div>
+					</PhotoProvider>
+				</div>
 			</div>
 		</section>
 	)

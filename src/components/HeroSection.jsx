@@ -85,7 +85,7 @@ const HeroSection = () => {
 
 			{/* Контент поверх видео */}
 			<div className='relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4'>
-				<h1 className='text-4xl font-bold mb-4'>Автомобили и техника</h1>
+				<h1 className='text-4xl font-bold mb-4 mt-10'>Автомобили и техника</h1>
 				<p className='text-lg mb-6'>
 					в наличии и под заказ с дилерских стоянок и аукционов Южной Кореи
 				</p>

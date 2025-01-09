@@ -91,10 +91,10 @@ const HeroSection = () => {
 				</p>
 
 				{/* Форма поиска */}
-				<div className='bg-white p-4 rounded-lg shadow-lg mb-6 w-full sm:max-w-lg md:max-w-xl lg:max-w-2xl'>
+				<div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg mb-6 w-full sm:max-w-lg md:max-w-xl lg:max-w-2xl'>
 					<div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
 						<select
-							className='p-2 border rounded text-black'
+							className='p-2 border rounded text-black dark:text-white dark:bg-gray-700'
 							value={selectedBrand}
 							onChange={handleBrandChange}
 						>
@@ -111,7 +111,7 @@ const HeroSection = () => {
 						</select>
 
 						<select
-							className='p-2 border rounded text-black'
+							className='p-2 border rounded text-black dark:text-white dark:bg-gray-700'
 							value={selectedModel}
 							onChange={handleModelChange}
 							disabled={!selectedBrand}
@@ -129,7 +129,7 @@ const HeroSection = () => {
 						</select>
 
 						<select
-							className='p-2 border rounded text-black'
+							className='p-2 border rounded text-black dark:text-white dark:bg-gray-700'
 							value={selectedGeneration}
 							onChange={(e) => setSelectedGeneration(e.target.value)}
 							disabled={!selectedModel}
@@ -146,9 +146,8 @@ const HeroSection = () => {
 					</div>
 
 					<button
-						className='bg-orange-500 text-white p-2 rounded mt-4 w-full hover:bg-orange-600 transition cursor-pointer'
+						className='bg-orange-500 text-white dark:bg-orange-600 dark:hover:bg-orange-700 p-2 rounded mt-4 w-full hover:bg-orange-600 transition cursor-pointer'
 						onClick={handleSearch}
-						// disabled={!selectedBrand}
 					>
 						Поиск
 					</button>

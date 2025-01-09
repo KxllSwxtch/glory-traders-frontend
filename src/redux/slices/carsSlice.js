@@ -7,8 +7,6 @@ export const fetchCarsAsync = createAsyncThunk(
 	async ({ page, filters }, { rejectWithValue }) => {
 		try {
 			const data = await fetchCars(page, filters)
-			console.log(page, filters)
-
 			return data
 		} catch (error) {
 			return rejectWithValue(error.message)

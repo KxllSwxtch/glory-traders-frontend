@@ -195,6 +195,22 @@ const CarList = () => {
 	const currentYear = new Date().getUTCFullYear()
 	const yearTwoPlaceholder = `до ${currentYear}`
 
+	const years = Array.from({ length: currentYear - 2018 }, (_, i) => 2019 + i)
+	const months = [
+		{ value: 1, label: 'Январь' },
+		{ value: 2, label: 'Февраль' },
+		{ value: 3, label: 'Март' },
+		{ value: 4, label: 'Апрель' },
+		{ value: 5, label: 'Май' },
+		{ value: 6, label: 'Июнь' },
+		{ value: 7, label: 'Июль' },
+		{ value: 8, label: 'Август' },
+		{ value: 9, label: 'Сентябрь' },
+		{ value: 10, label: 'Октябрь' },
+		{ value: 11, label: 'Ноябрь' },
+		{ value: 12, label: 'Декабрь' },
+	]
+
 	return (
 		<div className='container mx-auto flex flex-col lg:flex-row'>
 			{/* Кнопка для мобильных устройств */}
@@ -316,24 +332,83 @@ const CarList = () => {
 						</select>
 
 						{/* Год от */}
-						<input
-							type='number'
-							name='yearOneId'
-							placeholder='от 1950 и выше'
-							value={filters.yearOneId}
-							onChange={handleFilterChange}
-							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
-						/>
+						<div>
+							<select
+								name='yearOneId'
+								value={filters.yearOneId}
+								onChange={handleFilterChange}
+								className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full'
+							>
+								<option value=''>Год от</option>
+								{years.map((year) => (
+									<option key={year} value={year}>
+										{year}
+									</option>
+								))}
+							</select>
+						</div>
 
 						{/* Год до */}
-						<input
-							type='number'
-							name='yearTwoId'
-							placeholder={yearTwoPlaceholder}
-							value={filters.yearTwoId}
-							onChange={handleFilterChange}
-							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white'
-						/>
+						<div>
+							<select
+								name='yearTwoId'
+								value={filters.yearTwoId}
+								onChange={handleFilterChange}
+								className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full'
+								disabled={!filters.yearOneId}
+							>
+								<option value=''>Год до</option>
+								{years
+									.filter((year) => year >= filters.yearOneId)
+									.map((year) => (
+										<option key={year} value={year}>
+											{year}
+										</option>
+									))}
+							</select>
+						</div>
+
+						{/* Месяц от */}
+						<div>
+							<select
+								name='mountOneId'
+								value={filters.mountOneId}
+								onChange={handleFilterChange}
+								className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full'
+							>
+								<option value=''>Месяц от</option>
+								{months.map((month) => (
+									<option key={month.value} value={month.value}>
+										{month.label}
+									</option>
+								))}
+							</select>
+						</div>
+
+						{/* Месяц до */}
+						<div>
+							<select
+								name='mountTwoId'
+								value={filters.mountTwoId}
+								onChange={handleFilterChange}
+								className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full'
+								disabled={!filters.mountOneId}
+							>
+								<option value=''>Месяц до</option>
+								{months
+									.filter((month) => {
+										if (filters.yearOneId === filters.yearTwoId) {
+											return month.value >= filters.mountOneId
+										}
+										return true
+									})
+									.map((month) => (
+										<option key={month.value} value={month.value}>
+											{month.label}
+										</option>
+									))}
+							</select>
+						</div>
 
 						{/* Пробег от */}
 						<input

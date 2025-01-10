@@ -193,7 +193,6 @@ const CarList = () => {
 	}
 
 	const currentYear = new Date().getUTCFullYear()
-
 	const years = Array.from({ length: currentYear - 2018 }, (_, i) => 2019 + i)
 	const months = [
 		{ value: 1, label: 'Январь' },

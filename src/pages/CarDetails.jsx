@@ -13,6 +13,7 @@ const CarDetails = () => {
 	const location = useLocation()
 	const dispatch = useDispatch()
 	const thumbnailContainerRef = useRef(null)
+	const [showNotification, setShowNotification] = useState(false)
 
 	// Данные из стора
 	const { cars, loading, error, currentPage } = useSelector(
@@ -24,6 +25,34 @@ const CarDetails = () => {
 
 	// Текущее изображение для карусели
 	const [currentImageIndex, setCurrentImageIndex] = useState(0)
+
+	const handleShare = async () => {
+		const url = window.location.href
+
+		if (navigator.share) {
+			try {
+				await navigator.share({
+					title: car.title,
+					text: `Посмотрите это авто: ${car.title}`,
+					url: url,
+				})
+				setShowNotification(true)
+			} catch (error) {
+				console.error('Ошибка при отправке ссылки:', error)
+			}
+		} else {
+			try {
+				await navigator.clipboard.writeText(url)
+				setShowNotification(true)
+			} catch (error) {
+				console.error('Ошибка при копировании ссылки:', error)
+				alert('Не удалось скопировать ссылку.')
+			}
+		}
+
+		// Скрываем уведомление через 3 секунды
+		setTimeout(() => setShowNotification(false), 3000)
+	}
 
 	// Запрос данных при первом рендере, если автомобиля нет в сторе
 	useEffect(() => {
@@ -183,9 +212,9 @@ const CarDetails = () => {
 						{car.lots?.total_all_format?.toLocaleString()} ₽
 					</p>
 
-					<button className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-700 transition text-sm dark:bg-orange-600 dark:hover:bg-orange-700'>
+					{/* <button className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-700 transition text-sm dark:bg-orange-600 dark:hover:bg-orange-700'>
 						Показать детали расчёта
-					</button>
+					</button> */}
 
 					<p className='text-md font-normal text-gray-600 mb-6 dark:text-gray-300'>
 						Стоимость автомобиля в Южной Корее:{' '}
@@ -220,7 +249,10 @@ const CarDetails = () => {
 					<button className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'>
 						Получить предложение
 					</button>
-					<button className='w-full bg-orange-500 text-white py-2 rounded-md font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'>
+					<button
+						onClick={handleShare}
+						className='w-full bg-orange-500 text-white py-2 rounded-md font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'
+					>
 						Поделиться ссылкой
 					</button>
 				</div>
@@ -267,6 +299,11 @@ const CarDetails = () => {
 					</li>
 				</ul>
 			</div>
+			{showNotification && (
+				<div className='fixed bottom-4 right-4 bg-green-500 text-white p-2 rounded-md shadow-lg'>
+					Ссылка скопирована!
+				</div>
+			)}
 		</div>
 	)
 }

@@ -1,7 +1,11 @@
 import { Link, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 const CarListItem = ({ car }) => {
+	const [totalCarCost, setTotalCarCost] = useState(0)
+
 	const fuelTypes = {
 		gasoline: 'Бензин',
 		diesel: 'Дизель',
@@ -22,6 +26,28 @@ const CarListItem = ({ car }) => {
 
 	// Получаем текущий queryParams из URL
 	const location = useLocation()
+
+	// Делаем расчёт по авто
+	const carId = car.lots.lot_encar // ID автомобиля
+	const price = car.lots.original_price / 10000 // Цена автомобиля в формате X,XXX
+	const year = car.year
+	const month = car.month
+	const formattedDate = `01${month}${year.toString().substr(2, year.length)}`
+	const volume = car.lots.engine_volume
+
+	useEffect(() => {
+		const url = `https://plugin-back-versusm.amvera.io/car-ab-korea/${carId}?price=${price}&date=${formattedDate}&volume=${volume}`
+
+		const calculatePrice = async () => {
+			const response = await axios.get(url)
+			const data = response.data
+			const result = data.result
+			const grandTotal = result.price.grandTotal
+			setTotalCarCost(grandTotal.toLocaleString().split('.')[0])
+		}
+
+		calculatePrice()
+	}, [carId, price, year, month, formattedDate, volume])
 
 	return (
 		<div className='bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden flex flex-col justify-between w-full max-w-[400px] md:max-w-[400px] mx-auto dark:bg-gray-800 dark:border-gray-700'>
@@ -70,7 +96,8 @@ const CarListItem = ({ car }) => {
 				<div className='mt-auto text-center'>
 					<span className='text-sm'>Цена до ключ во Владивостоке</span>
 					<p className='text-lg font-bold text-red-600 dark:text-red-500'>
-						{car.lots?.total_all_format?.toLocaleString() || 'N/A'} ₽
+						{/* {car.lots?.total_all_format?.toLocaleString() || 'N/A'} ₽ */}
+						{totalCarCost} ₽
 					</p>
 					{/* Ссылка с передачей queryParams */}
 					<Link

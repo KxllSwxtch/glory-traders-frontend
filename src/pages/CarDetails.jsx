@@ -7,6 +7,7 @@ import { fetchCarsAsync } from '../redux/slices/carsSlice'
 import colors from '../data/colors'
 import { Loader, Modal } from '../components'
 import 'react-photo-view/dist/react-photo-view.css'
+import axios from 'axios'
 
 const CarDetails = () => {
 	const { id } = useParams()
@@ -15,6 +16,7 @@ const CarDetails = () => {
 	const thumbnailContainerRef = useRef(null)
 	const [showNotification, setShowNotification] = useState('')
 	const [isModalOpen, setIsModalOpen] = useState(false)
+	const [result, setResult] = useState({})
 
 	// Данные из стора
 	const { cars, loading, error, currentPage } = useSelector(
@@ -23,8 +25,6 @@ const CarDetails = () => {
 
 	// Поиск автомобиля в сторе
 	const car = cars.find((car) => car.id === Number(id))
-
-	console.log(car)
 
 	// Текущее изображение для карусели
 	const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -97,6 +97,27 @@ const CarDetails = () => {
 		}
 	}, [car, dispatch, location.search, currentPage, id])
 
+	// Делаем расчёт по авто
+	const carId = car?.lots.lot_encar // ID автомобиля
+	const price = car?.lots.original_price / 10000 // Цена автомобиля в формате X,XXX
+	const year = car?.year
+	const month = car?.month
+	const formattedDate = `01${month}${year?.toString().substr(2, year.length)}`
+	const volume = car?.lots.engine_volume
+
+	useEffect(() => {
+		const url = `https://plugin-back-versusm.amvera.io/car-ab-korea/${carId}?price=${price}&date=${formattedDate}&volume=${volume}`
+
+		const calculatePrice = async () => {
+			const response = await axios.get(url)
+			const data = response.data
+			const result = data.result
+			setResult(result)
+		}
+
+		calculatePrice()
+	}, [carId, price, year, month, formattedDate, volume])
+
 	// Устанавливаем первый индекс изображения при изменении автомобиля
 	useEffect(() => {
 		if (car && car.images?.images_original_big?.length > 1) {
@@ -144,6 +165,8 @@ const CarDetails = () => {
 
 	// Выводим цвет автомобиля в текст
 	const carColor = colors.filter((item) => item.id === car.color)[0].name
+
+	console.log(result)
 
 	// Отображение контента
 	return (
@@ -202,19 +225,124 @@ const CarDetails = () => {
 							/>
 						))}
 					</div>
+
+					{/* Описание */}
+					<div className='mt-6'>
+						<h2 className='text-xl font-bold text-red-500 mb-4 dark:text-red-400'>
+							Описание авто
+						</h2>
+						<ul className='text-gray-700 dark:text-gray-300'>
+							<li>
+								<strong>Комплектация:</strong> {car.configuration || 'N/A'}
+							</li>
+							<li>
+								<strong>Дата регистрации:</strong>{' '}
+								{car.lots?.first_registration || 'N/A'}
+							</li>
+							<li>
+								<strong>Пробег:</strong>{' '}
+								{car.lots?.odometer_km?.toLocaleString() || 'N/A'} км
+							</li>
+							<li>
+								<strong>Цвет:</strong> {carColor || 'N/A'}
+							</li>
+							<li>
+								<strong>Объём двигателя:</strong>{' '}
+								{car.lots?.engine_volume?.toLocaleString() || 'N/A'} cc
+							</li>
+							<li>
+								<strong>КПП:</strong>{' '}
+								{car.transmission_type === 'automatic'
+									? 'Автоматическая'
+									: 'Механическая'}
+							</li>
+							<li>
+								<strong>Тип кузова:</strong>{' '}
+								{car.body_type?.toUpperCase() || 'N/A'}
+							</li>
+							<li>
+								<strong>Год:</strong> {car.year || 'N/A'}
+							</li>
+							<li>
+								<strong>VIN:</strong> {car.vin || 'N/A'}
+							</li>
+						</ul>
+					</div>
 				</div>
 
 				{/* Правая часть - информация */}
 				<div className='w-full md:w-1/3 p-4'>
 					<h1 className='text-3xl font-bold mb-4 dark:text-orange-400'>
-						{car.title.toUpperCase()}
+						{car.manufacturer_name} {car.title.toUpperCase()}
 					</h1>
 					<p className='text-lg font-semibold text-gray-600 mb-2 dark:text-gray-300'>
 						Цена под ключ во Владивостоке
 					</p>
 					<p className='text-4xl font-bold text-red-600 mb-4 dark:text-red-400'>
-						{car.lots?.total_all_format?.toLocaleString()} ₽
+						{/* {car.lots?.total_all_format?.toLocaleString()} ₽ */}
+						{result?.price.grandTotal?.toLocaleString().split('.')[0] ||
+							'N/A'}{' '}
+						₽
 					</p>
+
+					{/* Детализация Расчёта */}
+					<div className='bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-800'>
+						<h3 className='text-lg font-bold mb-2 text-black dark:text-white'>
+							Детализация Расчёта
+						</h3>
+
+						{/* Логистика с Кореи до Владивостока */}
+						<p className='text-sm text-gray-700 dark:text-gray-300 mb-4'>
+							Логистика с Кореи до Владивостока:
+						</p>
+						<ul className='list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300'>
+							<li>1000 $ (может меняться)</li>
+							<li>Комиссия компании: 250 $</li>
+						</ul>
+
+						{/* Расходы по РФ */}
+						<p className='text-sm text-gray-700 dark:text-gray-300 mb-4'>
+							Расходы по РФ:
+						</p>
+						<ul className='list-disc pl-6 mb-2 text-gray-700 dark:text-gray-300'>
+							<li>Услуги брокера</li>
+							<li>Выгрузка</li>
+							<li>СВХ (в порту)</li>
+							<li>Лаборатория</li>
+							<li>Получение ЭСБГТС и ЭПТС</li>
+						</ul>
+						<p className='font-bold text-orange-500 dark:text-orange-400 mb-4'>
+							Итого: от 80 000 до 120 000 ₽
+						</p>
+
+						{/* Логистика с Владивостока до Москвы */}
+						<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
+							Логистика с Владивостока до Москвы:
+						</p>
+						<p className='font-bold text-orange-500 dark:text-orange-400'>
+							от 200 000 до 300 000 ₽
+						</p>
+
+						{/* Таможенная ставка и утильсбор */}
+						<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
+							Таможенная ставка
+						</p>
+						<p className='font-bold text-orange-500 dark:text-orange-400'>
+							{result?.price.russian.duty?.rub
+								?.toLocaleString()
+								.split('.')[0] || 'N/A'}{' '}
+							₽
+						</p>
+						<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
+							Утильсбор
+						</p>
+						<p className='font-bold text-orange-500 dark:text-orange-400'>
+							{result?.price.russian.recyclingFee?.rub
+								?.toLocaleString()
+								.split('.')[0] || 'N/A'}{' '}
+							₽
+						</p>
+					</div>
 
 					{/* <button className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-700 transition text-sm dark:bg-orange-600 dark:hover:bg-orange-700'>
 						Показать детали расчёта
@@ -272,47 +400,6 @@ const CarDetails = () => {
 				</div>
 			</div>
 
-			{/* Описание */}
-			<div className='mt-6'>
-				<h2 className='text-xl font-bold text-red-500 mb-4 dark:text-red-400'>
-					Описание авто
-				</h2>
-				<ul className='text-gray-700 dark:text-gray-300'>
-					<li>
-						<strong>Комплектация:</strong> {car.configuration || 'N/A'}
-					</li>
-					<li>
-						<strong>Дата регистрации:</strong>{' '}
-						{car.lots?.first_registration || 'N/A'}
-					</li>
-					<li>
-						<strong>Пробег:</strong>{' '}
-						{car.lots?.odometer_km?.toLocaleString() || 'N/A'} км
-					</li>
-					<li>
-						<strong>Цвет:</strong> {carColor || 'N/A'}
-					</li>
-					<li>
-						<strong>Объём двигателя:</strong>{' '}
-						{car.lots?.engine_volume?.toLocaleString() || 'N/A'} cc
-					</li>
-					<li>
-						<strong>КПП:</strong>{' '}
-						{car.transmission_type === 'automatic'
-							? 'Автоматическая'
-							: 'Механическая'}
-					</li>
-					<li>
-						<strong>Тип кузова:</strong> {car.body_type?.toUpperCase() || 'N/A'}
-					</li>
-					<li>
-						<strong>Год:</strong> {car.year || 'N/A'}
-					</li>
-					<li>
-						<strong>VIN:</strong> {car.vin || 'N/A'}
-					</li>
-				</ul>
-			</div>
 			{showNotification && (
 				<div
 					className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded shadow-md text-center dark:bg-green-600 transition-opacity duration-500 ${

@@ -71,24 +71,24 @@ const Modal = ({ isOpen, onClose }) => {
 			onClick={onClose}
 		>
 			<div
-				className={`bg-white rounded-lg p-6 shadow-lg w-full lg:max-w-[40rem] max-w-lg sm:max-w-md mx-4 sm:mx-auto transform transition-transform duration-300 ease-in-out ${
+				className={`bg-white dark:bg-gray-900 rounded-lg p-6 shadow-lg w-full lg:max-w-[40rem] max-w-lg sm:max-w-md mx-4 sm:mx-auto transform transition-transform duration-300 ease-in-out ${
 					isOpen ? 'scale-100' : 'scale-95'
 				}`}
 				onClick={(e) => e.stopPropagation()}
 			>
 				{/* Кнопка закрытия */}
 				<button
-					className='absolute top-4 right-4 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-orange-500'
+					className='absolute top-4 right-4 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-500'
 					onClick={onClose}
 				>
 					&times;
 				</button>
 
 				{/* Заголовок и описание */}
-				<h2 className='text-2xl font-bold mb-2 text-center'>
+				<h2 className='text-2xl font-bold mb-2 text-center text-gray-900 dark:text-white'>
 					Форма обратной связи
 				</h2>
-				<p className='text-sm text-gray-500 mb-4 text-center'>
+				<p className='text-sm text-gray-500 dark:text-gray-400 mb-4 text-center'>
 					Введите данные и наш менеджер свяжется с Вами
 				</p>
 
@@ -96,7 +96,10 @@ const Modal = ({ isOpen, onClose }) => {
 				<form onSubmit={handleSubmit} className='space-y-4'>
 					{/* Имя */}
 					<div>
-						<label className='block text-sm font-bold mb-1' htmlFor='name'>
+						<label
+							className='block text-sm font-bold mb-1 text-gray-800 dark:text-gray-200'
+							htmlFor='name'
+						>
 							Имя <span className='text-red-500'>*</span>
 						</label>
 						<input
@@ -104,7 +107,7 @@ const Modal = ({ isOpen, onClose }) => {
 							name='name'
 							type='text'
 							placeholder='Введите ваше имя'
-							className='w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-500'
+							className='w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white dark:border-gray-700'
 							value={formData.name}
 							onChange={handleChange}
 							required
@@ -113,7 +116,10 @@ const Modal = ({ isOpen, onClose }) => {
 
 					{/* Email */}
 					<div>
-						<label className='block text-sm font-bold mb-1' htmlFor='email'>
+						<label
+							className='block text-sm font-bold mb-1 text-gray-800 dark:text-gray-200'
+							htmlFor='email'
+						>
 							E-mail <span className='text-red-500'>*</span>
 						</label>
 						<input
@@ -121,7 +127,7 @@ const Modal = ({ isOpen, onClose }) => {
 							name='email'
 							type='email'
 							placeholder='Введите вашу электронную почту'
-							className='w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-500'
+							className='w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white dark:border-gray-700'
 							value={formData.email}
 							onChange={handleChange}
 							required
@@ -130,14 +136,17 @@ const Modal = ({ isOpen, onClose }) => {
 
 					{/* Телефон */}
 					<div>
-						<label className='block text-sm font-bold mb-1' htmlFor='phone'>
+						<label
+							className='block text-sm font-bold mb-1 text-gray-800 dark:text-gray-200'
+							htmlFor='phone'
+						>
 							Номер телефона <span className='text-red-500'>*</span>
 						</label>
 						<input
 							id='phone'
 							name='phone'
 							type='tel'
-							className='w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-500'
+							className='w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white dark:border-gray-700'
 							value={formData.phone}
 							onChange={handleChange}
 							placeholder='Введите ваш номер телефона'
@@ -145,15 +154,19 @@ const Modal = ({ isOpen, onClose }) => {
 						/>
 					</div>
 
+					{/* Сообщение */}
 					<div>
-						<label className='block text-sm font-bold mb-1' htmlFor='phone'>
+						<label
+							className='block text-sm font-bold mb-1 text-gray-800 dark:text-gray-200'
+							htmlFor='message'
+						>
 							Сообщение <span className='text-red-500'>*</span>
 						</label>
 						<input
 							id='message'
 							name='message'
 							type='text'
-							className='w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-500'
+							className='w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white dark:border-gray-700'
 							value={formData.message}
 							onChange={handleChange}
 							placeholder='Введите ваш запрос'
@@ -166,12 +179,15 @@ const Modal = ({ isOpen, onClose }) => {
 						<input
 							type='checkbox'
 							name='agreement'
-							className='mr-2'
+							className='mr-2 bg-white dark:bg-gray-800 dark:border-gray-700'
 							checked={formData.agreement}
 							onChange={handleChange}
 							required
 						/>
-						<label htmlFor='agreement' className='text-sm'>
+						<label
+							htmlFor='agreement'
+							className='text-sm text-gray-800 dark:text-gray-300'
+						>
 							Я даю согласие на обработку персональных данных и дальнейшую
 							коммуникацию
 						</label>
@@ -179,38 +195,38 @@ const Modal = ({ isOpen, onClose }) => {
 
 					{/* Способ связи */}
 					<div>
-						<label className='block text-sm font-bold mb-2'>
+						<label className='block text-sm font-bold mb-2 text-gray-800 dark:text-gray-300'>
 							Выберите способ связи <span className='text-red-500'>*</span>
 						</label>
 						<div className='space-y-2'>
-							<label className='flex items-center'>
+							<label className='flex items-center text-gray-800 dark:text-gray-300'>
 								<input
 									type='radio'
 									name='contactMethod'
 									value='Telegram'
-									className='mr-2'
+									className='mr-2 bg-white dark:bg-gray-800'
 									checked={formData.contactMethod === 'Telegram'}
 									onChange={handleChange}
 								/>
 								Telegram
 							</label>
-							<label className='flex items-center'>
+							<label className='flex items-center text-gray-800 dark:text-gray-300'>
 								<input
 									type='radio'
 									name='contactMethod'
 									value='Whatsapp'
-									className='mr-2'
+									className='mr-2 bg-white dark:bg-gray-800'
 									checked={formData.contactMethod === 'Whatsapp'}
 									onChange={handleChange}
 								/>
 								Whatsapp
 							</label>
-							<label className='flex items-center'>
+							<label className='flex items-center text-gray-800 dark:text-gray-300'>
 								<input
 									type='radio'
 									name='contactMethod'
 									value='Phone'
-									className='mr-2'
+									className='mr-2 bg-white dark:bg-gray-800'
 									checked={formData.contactMethod === 'Phone'}
 									onChange={handleChange}
 								/>
@@ -223,13 +239,13 @@ const Modal = ({ isOpen, onClose }) => {
 					<div className='flex justify-between mt-4'>
 						<button
 							type='submit'
-							className='bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500'
+							className='bg-orange-500 text-white py-2 px-4 rounded hover:bg-orange-600 dark:hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500'
 						>
 							Отправить
 						</button>
 						<button
 							type='button'
-							className='bg-gray-300 text-black py-2 px-4 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500'
+							className='bg-gray-300 dark:bg-gray-700 text-black dark:text-white py-2 px-4 rounded hover:bg-gray-400 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500'
 							onClick={onClose}
 						>
 							Закрыть

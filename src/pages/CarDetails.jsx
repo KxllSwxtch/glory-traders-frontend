@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams, useLocation, Link } from 'react-router-dom'
 import { fetchCarsAsync } from '../redux/slices/carsSlice'
 import colors from '../data/colors'
-import { Loader } from '../components'
+import { Loader, Modal } from '../components'
 import 'react-photo-view/dist/react-photo-view.css'
 
 const CarDetails = () => {
@@ -14,6 +14,7 @@ const CarDetails = () => {
 	const dispatch = useDispatch()
 	const thumbnailContainerRef = useRef(null)
 	const [showNotification, setShowNotification] = useState('')
+	const [isModalOpen, setIsModalOpen] = useState(false)
 
 	// Данные из стора
 	const { cars, loading, error, currentPage } = useSelector(
@@ -249,7 +250,10 @@ const CarDetails = () => {
 							<FaWhatsapp />
 						</a>
 					</div>
-					<button className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'>
+					<button
+						onClick={() => setIsModalOpen(true)}
+						className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'
+					>
 						Получить предложение
 					</button>
 					<button
@@ -318,6 +322,8 @@ const CarDetails = () => {
 					{showNotification}
 				</div>
 			)}
+
+			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 		</div>
 	)
 }

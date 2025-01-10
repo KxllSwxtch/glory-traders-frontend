@@ -265,9 +265,9 @@ const CarDetails = () => {
 					<Link
 						to={`http://fem.encar.com/cars/detail/${car.lot_encar}`}
 						target='_blank'
-						className='mt-4 w-full bg-orange-500 text-white py-2 rounded-md font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'
+						className='mt-4 w-full bg-red-500 text-white py-2 rounded-md font-medium hover:bg-red-600 transition flex items-center justify-center gap-2 dark:bg-red-600 dark:hover:bg-red-700'
 					>
-						Посмотреть авто на сайте encar.com
+						Посмотреть авто на сайте Encar
 					</Link>
 				</div>
 			</div>

@@ -2,7 +2,7 @@ import { PhotoProvider, PhotoView } from 'react-photo-view'
 import { useEffect, useState, useRef } from 'react'
 import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, useLocation } from 'react-router-dom'
+import { useParams, useLocation, Link } from 'react-router-dom'
 import { fetchCarsAsync } from '../redux/slices/carsSlice'
 import colors from '../data/colors'
 import { Loader } from '../components'
@@ -22,6 +22,8 @@ const CarDetails = () => {
 
 	// Поиск автомобиля в сторе
 	const car = cars.find((car) => car.id === Number(id))
+
+	console.log(car)
 
 	// Текущее изображение для карусели
 	const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -256,6 +258,13 @@ const CarDetails = () => {
 					>
 						Поделиться ссылкой
 					</button>
+					<Link
+						to={`http://fem.encar.com/cars/detail/${car.lot_encar}`}
+						target='_blank'
+						className='mt-4 w-full bg-orange-500 text-white py-2 rounded-md font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'
+					>
+						Посмотреть авто на сайте encar.com
+					</Link>
 				</div>
 			</div>
 

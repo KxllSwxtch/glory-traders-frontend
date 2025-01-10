@@ -102,7 +102,10 @@ const HeroSection = () => {
 	console.log(filters)
 
 	const currentYear = new Date().getUTCFullYear()
-	const years = Array.from({ length: currentYear - 2018 }, (_, i) => 2019 + i)
+	const years = Array.from(
+		{ length: currentYear - 1979 },
+		(_, i) => 1980 + i,
+	).sort((a, b) => (a > b ? -1 : 1))
 
 	return (
 		<section className='relative min-h-screen flex items-center justify-center pb-10 pt-10'>
@@ -220,91 +223,96 @@ const HeroSection = () => {
 						<option value='2'>Механическая</option>
 					</select>
 
-					{/* Год от и год до */}
-					<div>
-						<select
-							name='yearOneId'
-							value={filters.yearOneId}
-							onChange={handleFilterChange}
-							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full mb-4'
-						>
-							<option value=''>Год от</option>
-							{years.map((year) => (
+					{/* Год от */}
+					<select
+						name='yearOneId'
+						value={filters.yearOneId}
+						onChange={handleFilterChange}
+						className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full mb-4'
+					>
+						<option value=''>Год от</option>
+						{years
+							.filter((year) => !filters.yearTwoId || year <= filters.yearTwoId)
+							.map((year) => (
 								<option key={year} value={year}>
 									{year}
 								</option>
 							))}
-						</select>
-					</div>
+					</select>
 
 					{/* Год до */}
-					<div>
-						<select
-							name='yearTwoId'
-							value={filters.yearTwoId}
-							onChange={handleFilterChange}
-							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full'
-							disabled={!filters.yearOneId}
-						>
-							<option value=''>Год до</option>
-							{years
-								.filter((year) => year >= filters.yearOneId)
-								.map((year) => (
-									<option key={year} value={year}>
-										{year}
-									</option>
-								))}
-						</select>
-					</div>
+					<select
+						name='yearTwoId'
+						value={filters.yearTwoId}
+						onChange={handleFilterChange}
+						className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full mb-4'
+					>
+						<option value=''>Год до</option>
+						{years
+							.filter((year) => !filters.yearOneId || year >= filters.yearOneId)
+							.map((year) => (
+								<option key={year} value={year}>
+									{year}
+								</option>
+							))}
+					</select>
 
 					{/* Месяц от */}
-					<div>
-						<select
-							name='mountOneId'
-							value={filters.mountOneId}
-							onChange={handleFilterChange}
-							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full mt-4 mb-4'
-						>
-							<option value=''>Месяц от</option>
-							{months.map((month) => (
+					<select
+						name='mountOneId'
+						value={filters.mountOneId}
+						onChange={handleFilterChange}
+						className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full mb-4'
+					>
+						<option value=''>Месяц от</option>
+						{months
+							.filter((month) => {
+								// Если год совпадает, фильтруем месяцы
+								if (filters.yearOneId === filters.yearTwoId) {
+									return (
+										!filters.mountTwoId || month.value <= filters.mountTwoId
+									)
+								}
+								return true
+							})
+							.map((month) => (
 								<option key={month.value} value={month.value}>
 									{month.label}
 								</option>
 							))}
-						</select>
-					</div>
+					</select>
 
 					{/* Месяц до */}
-					<div>
-						<select
-							name='mountTwoId'
-							value={filters.mountTwoId}
-							onChange={handleFilterChange}
-							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full'
-							disabled={!filters.mountOneId}
-						>
-							<option value=''>Месяц до</option>
-							{months
-								.filter((month) => {
-									if (filters.yearOneId === filters.yearTwoId) {
-										return month.value >= filters.mountOneId
-									}
-									return true
-								})
-								.map((month) => (
-									<option key={month.value} value={month.value}>
-										{month.label}
-									</option>
-								))}
-						</select>
-					</div>
+					<select
+						name='mountTwoId'
+						value={filters.mountTwoId}
+						onChange={handleFilterChange}
+						className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full'
+					>
+						<option value=''>Месяц до</option>
+						{months
+							.filter((month) => {
+								// Если год совпадает, фильтруем месяцы
+								if (filters.yearOneId === filters.yearTwoId) {
+									return (
+										!filters.mountOneId || month.value >= filters.mountOneId
+									)
+								}
+								return true
+							})
+							.map((month) => (
+								<option key={month.value} value={month.value}>
+									{month.label}
+								</option>
+							))}
+					</select>
 
 					{/* Пробег от и до */}
 					<div className='grid grid-cols-2 gap-4 mt-4'>
 						<input
 							type='number'
 							name='mileageOneId'
-							placeholder='Пробег от'
+							placeholder='Пробег от (км)'
 							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full'
 							onChange={handleFilterChange}
 						/>
@@ -312,7 +320,7 @@ const HeroSection = () => {
 							onChange={handleFilterChange}
 							type='number'
 							name='mileageTwoId'
-							placeholder='Пробег до'
+							placeholder='Пробег до (км)'
 							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full'
 						/>
 					</div>

@@ -403,7 +403,7 @@ const CalculatorPage = () => {
 						<option value='Россия'>Россия</option>
 						<option value='Казахстан'>Казахстан</option>
 						<option value='Кыргызстан'>Кыргызстан</option>
-						<option value='Узбекистан'>Узбекистан</option>
+						{/* <option value='Узбекистан'>Узбекистан</option> */}
 					</select>
 				</div>
 				{/* Цена авто */}
@@ -769,7 +769,7 @@ const CalculatorPage = () => {
 						</div>
 					)}
 
-					{country === 'Узбекистан' && (
+					{/* {country === 'Узбекистан' && (
 						<div>
 							<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
 								Расчёт для Узбекистана
@@ -797,7 +797,7 @@ const CalculatorPage = () => {
 								</li>
 							</ul>
 						</div>
-					)}
+					)} */}
 
 					{/* Примечание */}
 					<p className='text-sm text-gray-500 dark:text-gray-400 mt-6'>

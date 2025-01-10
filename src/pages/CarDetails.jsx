@@ -13,7 +13,7 @@ const CarDetails = () => {
 	const location = useLocation()
 	const dispatch = useDispatch()
 	const thumbnailContainerRef = useRef(null)
-	const [showNotification, setShowNotification] = useState(false)
+	const [showNotification, setShowNotification] = useState('')
 
 	// Данные из стора
 	const { cars, loading, error, currentPage } = useSelector(
@@ -29,29 +29,30 @@ const CarDetails = () => {
 	const handleShare = async () => {
 		const url = window.location.href
 
-		if (navigator.share) {
-			try {
-				await navigator.share({
-					title: car.title,
-					text: `Посмотрите это авто: ${car.title}`,
-					url: url,
-				})
-				setShowNotification(true)
-			} catch (error) {
-				console.error('Ошибка при отправке ссылки:', error)
-			}
-		} else {
+		if (navigator.clipboard) {
 			try {
 				await navigator.clipboard.writeText(url)
-				setShowNotification(true)
+				setShowNotification('Ссылка скопирована в буфер обмена!')
 			} catch (error) {
-				console.error('Ошибка при копировании ссылки:', error)
-				alert('Не удалось скопировать ссылку.')
+				setShowNotification('Ошибка при копировании ссылки.')
 			}
+		} else {
+			// Фолбэк для старых браузеров
+			const textArea = document.createElement('textarea')
+			textArea.value = url
+			document.body.appendChild(textArea)
+			textArea.select()
+			try {
+				document.execCommand('copy')
+				setShowNotification('Ссылка скопирована в буфер обмена!')
+			} catch (error) {
+				setShowNotification('Ошибка при копировании ссылки.')
+			}
+			document.body.removeChild(textArea)
 		}
 
-		// Скрываем уведомление через 3 секунды
-		setTimeout(() => setShowNotification(false), 3000)
+		// Убираем уведомление через 3 секунды
+		setTimeout(() => setShowNotification(''), 3000)
 	}
 
 	// Запрос данных при первом рендере, если автомобиля нет в сторе
@@ -300,8 +301,12 @@ const CarDetails = () => {
 				</ul>
 			</div>
 			{showNotification && (
-				<div className='fixed bottom-4 right-4 bg-green-500 text-white p-2 rounded-md shadow-lg'>
-					Ссылка скопирована!
+				<div
+					className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded shadow-md text-center dark:bg-green-600 transition-opacity duration-500 ${
+						showNotification ? 'opacity-100' : 'opacity-0'
+					}`}
+				>
+					{showNotification}
 				</div>
 			)}
 		</div>

@@ -127,7 +127,7 @@ const HeroSection = () => {
 									</option>
 								))}
 						</select>
-
+						{/* 
 						<select
 							className='p-2 border rounded text-black dark:text-white dark:bg-gray-700'
 							value={selectedGeneration}
@@ -142,7 +142,7 @@ const HeroSection = () => {
 									{gen.name}
 								</option>
 							))}
-						</select>
+						</select> */}
 					</div>
 
 					<button

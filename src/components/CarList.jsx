@@ -193,7 +193,6 @@ const CarList = () => {
 	}
 
 	const currentYear = new Date().getUTCFullYear()
-	const yearTwoPlaceholder = `до ${currentYear}`
 
 	const years = Array.from({ length: currentYear - 2018 }, (_, i) => 2019 + i)
 	const months = [
@@ -226,7 +225,7 @@ const CarList = () => {
 
 			{/* Фильтры */}
 			<div
-				className={`transition-all duration-300 lg:w-1/4 lg:block ${
+				className={`mb-10 transition-all duration-300 lg:w-1/4 lg:block ${
 					isFiltersOpen ? 'max-h-screen' : 'max-h-0 overflow-hidden'
 				} lg:max-h-none lg:border-r lg:pr-4 dark:lg:border-gray-700`}
 			>

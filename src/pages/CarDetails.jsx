@@ -21,6 +21,15 @@ const CarDetails = () => {
 	const [isDetailsVisible, setIsDetailsVisible] = useState(false)
 	const [USDKRWRate, setUSDKRWRate] = useState(0)
 	const [USDRUBRate, setUSDRUBRate] = useState(0)
+	const [KRWRUBRate, setKRWRUBRate] = useState(0)
+	const [EURRUBRate, setEURRUBRate] = useState(0)
+	const [carCostDetails, setCarCostDetails] = useState({
+		powerHP: 0,
+		customsFee: 0,
+		customsDuty: 0,
+		recyclingFee: 0,
+		totalCost: 0,
+	})
 
 	// Анимация для появления/исчезновения блока
 	const animationProps = useSpring({
@@ -112,25 +121,25 @@ const CarDetails = () => {
 	}, [car, dispatch, location.search, currentPage, id])
 
 	// Делаем расчёт по авто
-	const carId = car?.lots.lot_encar // ID автомобиля
-	const price = car?.lots.original_price / 10000 // Цена автомобиля в формате X,XXX
-	const year = car?.year
-	const month = car?.month
-	const formattedDate = `01${month}${year?.toString().substr(2, year.length)}`
-	const volume = car?.lots.engine_volume
+	// const carId = car?.lots.lot_encar // ID автомобиля
+	// const price = car?.lots.original_price / 10000 // Цена автомобиля в формате X,XXX
+	// const year = car?.year
+	// const month = car?.month
+	// const formattedDate = `01${month}${year?.toString().substr(2, year.length)}`
+	// const volume = car?.lots.engine_volume
 
-	useEffect(() => {
-		const url = `https://plugin-back-versusm.amvera.io/car-ab-korea/${carId}?price=${price}&date=${formattedDate}&volume=${volume}`
+	// useEffect(() => {
+	// 	const url = `https://plugin-back-versusm.amvera.io/car-ab-korea/${carId}?price=${price}&date=${formattedDate}&volume=${volume}`
 
-		const calculatePrice = async () => {
-			const response = await axios.get(url)
-			const data = response.data
-			const result = data.result
-			setResult(result)
-		}
+	// 	const calculatePrice = async () => {
+	// 		const response = await axios.get(url)
+	// 		const data = response.data
+	// 		const result = data.result
+	// 		setResult(result)
+	// 	}
 
-		calculatePrice()
-	}, [carId, price, year, month, formattedDate, volume])
+	// 	calculatePrice()
+	// }, [carId, price, year, month, formattedDate, volume])
 
 	// Устанавливаем первый индекс изображения при изменении автомобиля
 	useEffect(() => {
@@ -140,23 +149,42 @@ const CarDetails = () => {
 	}, [car])
 
 	// Получаем курс воны к рублю
-	// useEffect(() => {
-	// 	const getRates = async () => {
-	// 		try {
-	// 			const response = await axios.get(
-	// 				'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/krw.json',
-	// 			)
-	// 			const data = response.data
-	// 			const krw = data.krw
+	useEffect(() => {
+		const getRates = async () => {
+			try {
+				const response = await axios.get(
+					'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/krw.json',
+				)
+				const data = response.data
+				const krw = data.krw
 
-	// 			setKRWRUBRate(krw.rub)
-	// 		} catch (error) {
-	// 			console.error(error)
-	// 		}
-	// 	}
+				setKRWRUBRate(krw.rub)
+			} catch (error) {
+				console.error(error)
+			}
+		}
 
-	// 	getRates()
-	// }, [])
+		getRates()
+	}, [])
+
+	// Получаем курс евро к рублю
+	useEffect(() => {
+		const getRates = async () => {
+			try {
+				const response = await axios.get(
+					'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json',
+				)
+				const data = response.data
+				const eur = data.eur
+
+				setEURRUBRate(eur.rub)
+			} catch (error) {
+				console.error(error)
+			}
+		}
+
+		getRates()
+	}, [])
 
 	// Получаем курс доллара к воне
 	// Плюс курс доллара к рублю
@@ -193,6 +221,69 @@ const CarDetails = () => {
 		}
 	}, [currentImageIndex])
 
+	// Формула для расчета лошадиных сил
+	const calculateHorsePower = (engineVolume) => {
+		const kW = engineVolume / 7.6
+		return Math.round(kW * 1.36) // Перевод в л.с.
+	}
+
+	// Расчет таможенного сбора
+	const calculateCustomsFee = (carPriceRUB) => {
+		if (carPriceRUB <= 200000) return 1067
+		if (carPriceRUB <= 450000) return 2134
+		if (carPriceRUB <= 1200000) return 4269
+		if (carPriceRUB <= 2700000) return 11746
+		if (carPriceRUB <= 4200000) return 16524
+		if (carPriceRUB <= 5500000) return 21344
+		if (carPriceRUB <= 7000000) return 27540
+		return 30000
+	}
+
+	// Расчет утилизационного сбора
+	const calculateRecyclingFee = (engineVolume) => {
+		return 20000 * 0.26 // Базовая ставка и коэффициент для физлиц
+	}
+
+	// Рассчитываем все сборы
+	useEffect(() => {
+		// Расчет таможенной пошлины
+		const calculateCustomsDuty = (engineVolume) => {
+			if (engineVolume <= 1000) return engineVolume * 1.5 * EURRUBRate // В евро
+			if (engineVolume <= 1500) return engineVolume * 1.7 * EURRUBRate
+			if (engineVolume <= 1800) return engineVolume * 2.5 * EURRUBRate
+			if (engineVolume <= 2300) return engineVolume * 2.7 * EURRUBRate
+			if (engineVolume <= 3000) return engineVolume * 3 * EURRUBRate
+			return engineVolume * 3.6 * EURRUBRate
+		}
+
+		if (car) {
+			const powerHP = calculateHorsePower(car.lots.engine_volume)
+			const customsFee = calculateCustomsFee(
+				car.lots.original_price * KRWRUBRate,
+			)
+			const recyclingFee = calculateRecyclingFee(car.lots.engine_volume)
+			const customsDuty = calculateCustomsDuty(car.lots.engine_volume)
+
+			const totalCost =
+				car.lots.original_price * KRWRUBRate +
+				customsFee +
+				recyclingFee +
+				customsDuty +
+				110000 + // Логистика до Владивостока
+				120000 + // Брокерские услуги
+				440000 * KRWRUBRate +
+				92279
+
+			setCarCostDetails({
+				powerHP,
+				customsFee,
+				customsDuty,
+				recyclingFee,
+				totalCost,
+			})
+		}
+	}, [car, KRWRUBRate, EURRUBRate])
+
 	// Обработка ошибок и загрузки
 	if (error)
 		return <p className='text-red-500'>Ошибка загрузки данных: {error}</p>
@@ -218,25 +309,6 @@ const CarDetails = () => {
 
 	// Выводим цвет автомобиля в текст
 	const carColor = colors.filter((item) => item.id === car.color)[0].name
-
-	// Форматирование цены под ключ
-	// 1. Конвертация из цены в Корее в доллары
-	// 2. Конвертация в рубли
-	// 3. Прибавляем 110,000 рублей - доставка до Владивостока
-	// 4. Прибавляем 120,000 рублей - брокер
-	// 5. Прибавляем таможня + утильсбор с объекта result
-	const formattedPrice = Math.round(
-		(car.lots?.original_price / USDKRWRate) * (USDRUBRate + 0.02) +
-			110000 +
-			120000 +
-			(result?.price?.russian?.duty?.rub -
-				result?.price?.russian?.svhAndExpertise?.rub -
-				result?.price?.russian?.sbkts?.rub -
-				result?.price?.russian?.registration?.rub) +
-			result?.price?.russian?.recyclingFee?.rub,
-	)
-		.toLocaleString()
-		.split('.')[0]
 
 	return (
 		<div className='container mx-auto p-4 dark:bg-gray-900 dark:text-white'>
@@ -362,7 +434,7 @@ const CarDetails = () => {
 					</p>
 					<p className='text-4xl font-bold text-red-600 mb-4 dark:text-red-400'>
 						{/* {car.lots?.total_all_format?.toLocaleString()} ₽ */}
-						{formattedPrice} ₽
+						{carCostDetails.totalCost.toLocaleString().split('.')[0]} ₽
 					</p>
 
 					<button
@@ -422,8 +494,8 @@ const CarDetails = () => {
 									Таможенная ставка
 								</p>
 								<p className='font-bold text-orange-500 dark:text-orange-400'>
-									{result?.price.russian.duty?.rub
-										?.toLocaleString()
+									{(carCostDetails.customsDuty + carCostDetails.customsFee)
+										.toLocaleString()
 										.split('.')[0] || 'N/A'}{' '}
 									₽
 								</p>
@@ -431,10 +503,7 @@ const CarDetails = () => {
 									Утильсбор
 								</p>
 								<p className='font-bold text-orange-500 dark:text-orange-400'>
-									{result?.price.russian.recyclingFee?.rub
-										?.toLocaleString()
-										.split('.')[0] || 'N/A'}{' '}
-									₽
+									{carCostDetails.recyclingFee.toLocaleString().split('.')[0]} ₽
 								</p>
 							</div>
 						</animated.div>

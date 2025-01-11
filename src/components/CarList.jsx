@@ -401,7 +401,6 @@ const CarList = () => {
 							value={filters.mountTwoId}
 							onChange={handleFilterChange}
 							className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full'
-							disabled={!filters.mountOneId}
 						>
 							<option value=''>Месяц до</option>
 							{months

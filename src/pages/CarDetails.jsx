@@ -347,6 +347,19 @@ const CarDetails = () => {
 					<p className='text-lg font-semibold text-gray-600 mb-2 dark:text-gray-300'>
 						Цена под ключ во Владивостоке
 					</p>
+					<p className='text-sm text-gray-500 mb-4 dark:text-gray-400'>
+						Цена может варьироваться в зависимости от курса. Для уточнения
+						пишите на
+						<a
+							href='https://wa.me/821023297807'
+							target='_blank'
+							rel='noopener noreferrer'
+							className='text-green-600 font-bold hover:underline flex items-center gap-1'
+						>
+							<FaWhatsapp className='text-lg' />
+							WhatsApp
+						</a>
+					</p>
 					<p className='text-4xl font-bold text-red-600 mb-4 dark:text-red-400'>
 						{/* {car.lots?.total_all_format?.toLocaleString()} ₽ */}
 						{formattedPrice} ₽

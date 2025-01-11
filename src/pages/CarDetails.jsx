@@ -1,3 +1,4 @@
+import { animated, useSpring } from '@react-spring/web'
 import { PhotoProvider, PhotoView } from 'react-photo-view'
 import { useEffect, useState, useRef } from 'react'
 import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa'
@@ -17,6 +18,19 @@ const CarDetails = () => {
 	const [showNotification, setShowNotification] = useState('')
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [result, setResult] = useState({})
+	const [isDetailsVisible, setIsDetailsVisible] = useState(false)
+	const [USDKRWRate, setUSDKRWRate] = useState(0)
+	const [USDRUBRate, setUSDRUBRate] = useState(0)
+
+	// Анимация для появления/исчезновения блока
+	const animationProps = useSpring({
+		from: { height: 0, opacity: 0 },
+		to: {
+			height: isDetailsVisible ? 'auto' : 0,
+			opacity: isDetailsVisible ? 1 : 0,
+		},
+		config: { tension: 400, friction: 40 },
+	})
 
 	// Данные из стора
 	const { cars, loading, error, currentPage } = useSelector(
@@ -125,6 +139,45 @@ const CarDetails = () => {
 		}
 	}, [car])
 
+	// Получаем курс воны к рублю
+	// useEffect(() => {
+	// 	const getRates = async () => {
+	// 		try {
+	// 			const response = await axios.get(
+	// 				'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/krw.json',
+	// 			)
+	// 			const data = response.data
+	// 			const krw = data.krw
+
+	// 			setKRWRUBRate(krw.rub)
+	// 		} catch (error) {
+	// 			console.error(error)
+	// 		}
+	// 	}
+
+	// 	getRates()
+	// }, [])
+
+	// Получаем курс доллара к воне
+	// Плюс курс доллара к рублю
+	useEffect(() => {
+		const getRates = async () => {
+			try {
+				const response = await axios.get(
+					'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',
+				)
+				const data = response.data
+				const usd = data.usd
+				setUSDKRWRate(usd.krw)
+				setUSDRUBRate(usd.rub)
+			} catch (error) {
+				console.error(error)
+			}
+		}
+
+		getRates()
+	}, [])
+
 	// Авто-прокрутка миниатюр при смене изображения
 	useEffect(() => {
 		if (thumbnailContainerRef.current) {
@@ -166,9 +219,25 @@ const CarDetails = () => {
 	// Выводим цвет автомобиля в текст
 	const carColor = colors.filter((item) => item.id === car.color)[0].name
 
-	console.log(result)
+	// Форматирование цены под ключ
+	// 1. Конвертация из цены в Корее в доллары
+	// 2. Конвертация в рубли
+	// 3. Прибавляем 110,000 рублей - доставка до Владивостока
+	// 4. Прибавляем 120,000 рублей - брокер
+	// 5. Прибавляем таможня + утильсбор с объекта result
+	const formattedPrice = Math.round(
+		(car.lots?.original_price / USDKRWRate) * (USDRUBRate + 0.02) +
+			110000 +
+			120000 +
+			(result?.price?.russian?.duty?.rub -
+				result?.price?.russian?.svhAndExpertise?.rub -
+				result?.price?.russian?.sbkts?.rub -
+				result?.price?.russian?.registration?.rub) +
+			result?.price?.russian?.recyclingFee?.rub,
+	)
+		.toLocaleString()
+		.split('.')[0]
 
-	// Отображение контента
 	return (
 		<div className='container mx-auto p-4 dark:bg-gray-900 dark:text-white'>
 			<div className='flex flex-wrap'>
@@ -280,73 +349,83 @@ const CarDetails = () => {
 					</p>
 					<p className='text-4xl font-bold text-red-600 mb-4 dark:text-red-400'>
 						{/* {car.lots?.total_all_format?.toLocaleString()} ₽ */}
-						{result?.price.grandTotal?.toLocaleString().split('.')[0] ||
-							'N/A'}{' '}
-						₽
+						{formattedPrice} ₽
 					</p>
 
-					{/* Детализация Расчёта */}
-					<div className='bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-800'>
-						<h3 className='text-lg font-bold mb-2 text-black dark:text-white'>
-							Детализация Расчёта
-						</h3>
+					<button
+						onClick={() => setIsDetailsVisible((prev) => !prev)}
+						className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-700 transition text-sm dark:bg-orange-600 dark:hover:bg-orange-700'
+					>
+						{isDetailsVisible
+							? 'Скрыть детали расчёта'
+							: 'Показать детали расчёта'}
+					</button>
 
-						{/* Логистика с Кореи до Владивостока */}
-						<p className='text-sm text-gray-700 dark:text-gray-300 mb-4'>
-							Логистика с Кореи до Владивостока:
-						</p>
-						<ul className='list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300'>
-							<li>1000 $ (может меняться)</li>
-							<li>Комиссия компании: 250 $</li>
-						</ul>
+					{/* Детализация расчёта */}
+					{isDetailsVisible && (
+						<animated.div
+							style={{ ...animationProps, overflow: 'hidden' }}
+							className={'overflow-hidden will-change-transform'}
+						>
+							<div className='bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-800'>
+								<h3 className='text-lg font-bold mb-2 text-black dark:text-white'>
+									Детализация Расчёта
+								</h3>
 
-						{/* Расходы по РФ */}
-						<p className='text-sm text-gray-700 dark:text-gray-300 mb-4'>
-							Расходы по РФ:
-						</p>
-						<ul className='list-disc pl-6 mb-2 text-gray-700 dark:text-gray-300'>
-							<li>Услуги брокера</li>
-							<li>Выгрузка</li>
-							<li>СВХ (в порту)</li>
-							<li>Лаборатория</li>
-							<li>Получение ЭСБГТС и ЭПТС</li>
-						</ul>
-						<p className='font-bold text-orange-500 dark:text-orange-400 mb-4'>
-							Итого: от 80 000 до 120 000 ₽
-						</p>
+								{/* Логистика с Кореи до Владивостока */}
+								<p className='text-sm text-gray-700 dark:text-gray-300 mb-4'>
+									Логистика с Кореи до Владивостока:
+								</p>
+								<ul className='list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300'>
+									<li>1000 $ (может меняться)</li>
+									<li>Комиссия компании: 250 $</li>
+								</ul>
 
-						{/* Логистика с Владивостока до Москвы */}
-						<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
-							Логистика с Владивостока до Москвы:
-						</p>
-						<p className='font-bold text-orange-500 dark:text-orange-400'>
-							от 200 000 до 300 000 ₽
-						</p>
+								{/* Расходы по РФ */}
+								<p className='text-sm text-gray-700 dark:text-gray-300 mb-4'>
+									Расходы по РФ:
+								</p>
+								<ul className='list-disc pl-6 mb-2 text-gray-700 dark:text-gray-300'>
+									<li>Услуги брокера</li>
+									<li>Выгрузка</li>
+									<li>СВХ (в порту)</li>
+									<li>Лаборатория</li>
+									<li>Получение ЭСБГТС и ЭПТС</li>
+								</ul>
+								<p className='font-bold text-orange-500 dark:text-orange-400 mb-4'>
+									Итого: от 80 000 до 120 000 ₽
+								</p>
 
-						{/* Таможенная ставка и утильсбор */}
-						<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
-							Таможенная ставка
-						</p>
-						<p className='font-bold text-orange-500 dark:text-orange-400'>
-							{result?.price.russian.duty?.rub
-								?.toLocaleString()
-								.split('.')[0] || 'N/A'}{' '}
-							₽
-						</p>
-						<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
-							Утильсбор
-						</p>
-						<p className='font-bold text-orange-500 dark:text-orange-400'>
-							{result?.price.russian.recyclingFee?.rub
-								?.toLocaleString()
-								.split('.')[0] || 'N/A'}{' '}
-							₽
-						</p>
-					</div>
+								{/* Логистика с Владивостока до Москвы */}
+								<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
+									Логистика с Владивостока до Москвы:
+								</p>
+								<p className='font-bold text-orange-500 dark:text-orange-400'>
+									от 200 000 до 300 000 ₽
+								</p>
 
-					{/* <button className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-700 transition text-sm dark:bg-orange-600 dark:hover:bg-orange-700'>
-						Показать детали расчёта
-					</button> */}
+								{/* Таможенная ставка и утильсбор */}
+								<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
+									Таможенная ставка
+								</p>
+								<p className='font-bold text-orange-500 dark:text-orange-400'>
+									{result?.price.russian.duty?.rub
+										?.toLocaleString()
+										.split('.')[0] || 'N/A'}{' '}
+									₽
+								</p>
+								<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
+									Утильсбор
+								</p>
+								<p className='font-bold text-orange-500 dark:text-orange-400'>
+									{result?.price.russian.recyclingFee?.rub
+										?.toLocaleString()
+										.split('.')[0] || 'N/A'}{' '}
+									₽
+								</p>
+							</div>
+						</animated.div>
+					)}
 
 					<p className='text-md font-normal text-gray-600 mb-6 dark:text-gray-300'>
 						Стоимость автомобиля в Южной Корее:{' '}

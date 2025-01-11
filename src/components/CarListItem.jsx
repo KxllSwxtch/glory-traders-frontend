@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 const CarListItem = ({ car }) => {
-	const [totalCarCost, setTotalCarCost] = useState(0)
+	const [result, setResult] = useState({})
+	const [USDKRWRate, setUSDKRWRate] = useState(0)
+	const [USDRUBRate, setUSDRUBRate] = useState(0)
 
 	const fuelTypes = {
 		gasoline: 'Бензин',
@@ -42,12 +44,44 @@ const CarListItem = ({ car }) => {
 			const response = await axios.get(url)
 			const data = response.data
 			const result = data.result
-			const grandTotal = result.price.grandTotal
-			setTotalCarCost(grandTotal.toLocaleString().split('.')[0])
+			setResult(result)
 		}
 
 		calculatePrice()
 	}, [carId, price, year, month, formattedDate, volume])
+
+	// Получаем курс доллара к воне
+	// Плюс курс доллара к рублю
+	useEffect(() => {
+		const getRates = async () => {
+			try {
+				const response = await axios.get(
+					'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',
+				)
+				const data = response.data
+				const usd = data.usd
+				setUSDKRWRate(usd.krw)
+				setUSDRUBRate(usd.rub)
+			} catch (error) {
+				console.error(error)
+			}
+		}
+
+		getRates()
+	}, [])
+
+	const formattedPrice = Math.round(
+		(car.lots?.original_price / USDKRWRate) * (USDRUBRate + 0.02) +
+			110000 +
+			120000 +
+			(result?.price?.russian?.duty?.rub -
+				result?.price?.russian?.svhAndExpertise?.rub -
+				result?.price?.russian?.sbkts?.rub -
+				result?.price?.russian?.registration?.rub) +
+			result?.price?.russian?.recyclingFee?.rub,
+	)
+		.toLocaleString()
+		.split('.')[0]
 
 	return (
 		<div className='bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden flex flex-col justify-between w-full max-w-[400px] md:max-w-[400px] mx-auto dark:bg-gray-800 dark:border-gray-700'>
@@ -97,7 +131,7 @@ const CarListItem = ({ car }) => {
 					<span className='text-sm'>Цена до ключ во Владивостоке</span>
 					<p className='text-lg font-bold text-red-600 dark:text-red-500'>
 						{/* {car.lots?.total_all_format?.toLocaleString() || 'N/A'} ₽ */}
-						{totalCarCost} ₽
+						{formattedPrice} ₽
 					</p>
 					{/* Ссылка с передачей queryParams */}
 					<Link

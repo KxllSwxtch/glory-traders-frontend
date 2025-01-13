@@ -100,7 +100,7 @@ const CalculatorPage = () => {
 
 			// Пошлина и утилизационный сбор
 			switch (age) {
-				case 'Младше 3 лет':
+				case 'до 3 лет':
 					duty = localPrice * 0.48 // Пошлина — 48% от стоимости
 					recyclingFee = 20000 * 1.34
 					break
@@ -434,14 +434,14 @@ const CalculatorPage = () => {
 						<div className='flex flex-col gap-2'>
 							<button
 								className={`p-3 rounded-lg ${
-									age === 'Младше 3 лет'
+									age === 'до 3 лет'
 										? 'bg-orange-500 text-white'
 										: 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
 								}`}
-								onClick={() => setAge('Младше 3 лет')}
+								onClick={() => setAge('до 3 лет')}
 								disabled={!isPriceEntered}
 							>
-								Младше 3 лет
+								До 3 лет
 							</button>
 							<button
 								className={`p-3 rounded-lg ${

@@ -307,8 +307,36 @@ const CarDetails = () => {
 		)
 	}
 
+	const formatRegistrationDate = (dateString) => {
+		if (!dateString) return 'N/A'
+
+		// Разбиваем строку даты на день, месяц и год
+		const [day, month, year] = dateString.split('.')
+
+		// Массив месяцев
+		const months = [
+			'Января',
+			'Февраля',
+			'Марта',
+			'Апреля',
+			'Мая',
+			'Июня',
+			'Июля',
+			'Августа',
+			'Сентября',
+			'Октября',
+			'Ноября',
+			'Декабря',
+		]
+
+		// Форматируем дату
+		return `${parseInt(day)} ${months[parseInt(month) - 1]}, ${year} года`
+	}
+
 	// Выводим цвет автомобиля в текст
 	const carColor = colors.filter((item) => item.id === car.color)[0].name
+
+	console.log(car)
 
 	return (
 		<div className='container mx-auto p-4 dark:bg-gray-900 dark:text-white'>
@@ -368,46 +396,52 @@ const CarDetails = () => {
 					</div>
 
 					{/* Описание */}
-					<div className='mt-6'>
-						<h2 className='text-xl font-bold text-red-500 mb-4 dark:text-red-400'>
+					<div className='mt-6 bg-gray-100 p-6 rounded-lg shadow-md dark:bg-gray-800 w-full'>
+						<h2 className='text-2xl font-bold text-orange-500 mb-4 dark:text-orange-400'>
 							Описание авто
 						</h2>
-						<ul className='text-gray-700 dark:text-gray-300'>
-							<li>
-								<strong>Комплектация:</strong> {car.configuration || 'N/A'}
-							</li>
-							<li>
+						<div className='grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-300'>
+							<div>
+								<strong>Бренд:</strong> {car.manufacturer_name || 'N/A'}
+							</div>
+							<div>
+								<strong>Модель:</strong> {car.title.toUpperCase() || 'N/A'}
+							</div>
+							<div>
+								<strong>Комплектация:</strong> {car.generation_name || 'N/A'}
+							</div>
+							<div>
 								<strong>Дата регистрации:</strong>{' '}
-								{car.lots?.first_registration || 'N/A'}
-							</li>
-							<li>
+								{formatRegistrationDate(car.lots?.first_registration) || 'N/A'}
+							</div>
+							<div>
 								<strong>Пробег:</strong>{' '}
 								{car.lots?.odometer_km?.toLocaleString() || 'N/A'} км
-							</li>
-							<li>
+							</div>
+							<div>
 								<strong>Цвет:</strong> {carColor || 'N/A'}
-							</li>
-							<li>
+							</div>
+							<div>
 								<strong>Объём двигателя:</strong>{' '}
 								{car.lots?.engine_volume?.toLocaleString() || 'N/A'} cc
-							</li>
-							<li>
+							</div>
+							<div>
 								<strong>КПП:</strong>{' '}
 								{car.transmission_type === 'automatic'
 									? 'Автоматическая'
 									: 'Механическая'}
-							</li>
-							<li>
+							</div>
+							<div>
 								<strong>Тип кузова:</strong>{' '}
 								{car.body_type?.toUpperCase() || 'N/A'}
-							</li>
-							<li>
+							</div>
+							<div>
 								<strong>Год:</strong> {car.year || 'N/A'}
-							</li>
-							<li>
+							</div>
+							<div>
 								<strong>VIN:</strong> {car.vin || 'N/A'}
-							</li>
-						</ul>
+							</div>
+						</div>
 					</div>
 				</div>
 

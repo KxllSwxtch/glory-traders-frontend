@@ -2107,9 +2107,14 @@ const models = {
 		{ id: 883, name: 'Chaser' },
 		{ id: 2687, name: 'Classic' },
 		{ id: 2997, name: 'COMS' },
-		{ id: 1413, name: 'Crown' },
+		{ id: 881, name: 'Crown' },
 		{ id: 2855, name: 'Crown Majesta' },
 		{ id: 876, name: 'Corolla' },
+		{ id: 902, name: 'Prius' },
+		{ id: 910, name: 'Sienna' },
+		{ id: 919, name: 'Yaris' },
+		{ id: 913, name: 'Supra' },
+		{ id: 906, name: 'RAV 4' },
 	],
 
 	// Volkswagen

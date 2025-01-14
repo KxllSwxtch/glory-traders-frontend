@@ -7,6 +7,7 @@ import {
 	CarDetails,
 	PrivacyPolicy,
 	Calculator,
+	FAQ,
 } from './pages'
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
 							<Route path='/cars/:id' element={<CarDetails />} />
 							<Route path='/privacy-policy' element={<PrivacyPolicy />} />
 							<Route path='/calculator' element={<Calculator />} />
+							<Route path='/faq' element={<FAQ />} />
 						</Routes>
 					</div>
 				</main>

@@ -61,6 +61,12 @@ const Header = () => {
 					>
 						Калькулятор
 					</Link>
+					<Link
+						to='/faq'
+						className='text-white hover:text-gray-400 font-medium transition'
+					>
+						FAQ
+					</Link>
 					{/* Кнопка "Оставить заявку" */}
 					<button
 						onClick={() => setIsModalOpen(true)}

@@ -18,23 +18,55 @@ const CalculatorPage = () => {
 	const [result, setResult] = useState(null)
 	const [country, setCountry] = useState('Россия')
 
+	// Расчет утилизационного сбора
+	const calculateRecyclingFee = (engineVolume, age) => {
+		const baseRate = 20000 // Базовая ставка
+
+		if (age === 'до 3 лет') {
+			if (engineVolume <= 1000) return baseRate * 0.17
+			if (engineVolume <= 2000) return baseRate * 0.17
+			if (engineVolume <= 3000) return baseRate * 0.17
+			if (engineVolume <= 3500) return baseRate * 89.73
+			return baseRate * 114.26
+		} else {
+			// Старше 3 лет
+			if (engineVolume <= 1000) return baseRate * 0.26
+			if (engineVolume <= 2000) return baseRate * 0.26
+			if (engineVolume <= 3000) return baseRate * 0.26
+			if (engineVolume <= 3500) return baseRate * 137.36
+			return baseRate * 150.2
+		}
+	}
+
 	// Функция для расчёта таможенного сбора
 	const calculateCustomsFee = (engineVolume, euroRate, year) => {
-		let fee = 0
-
 		if (country === 'Россия') {
-			if (engineVolume <= 1000) {
-				fee = 1.5 * engineVolume
-			} else if (engineVolume <= 1500) {
-				fee = 1.7 * engineVolume
-			} else if (engineVolume <= 1800) {
-				fee = 2.5 * engineVolume
-			} else if (engineVolume <= 3000) {
-				fee = 3.2 * engineVolume
-			} else {
-				fee = 5.7 * engineVolume
+			if (age === 'до 3 лет') {
+				if (engineVolume <= 1000) return engineVolume * 1.5 * euroRate
+				if (engineVolume <= 1500) return engineVolume * 1.7 * euroRate
+				if (engineVolume <= 1800) return engineVolume * 2.5 * euroRate
+				if (engineVolume <= 2300) return engineVolume * 2.7 * euroRate
+				if (engineVolume <= 3000) return engineVolume * 3 * euroRate
+				return engineVolume * 3.6 * euroRate
 			}
-			return fee * euroRate // Конвертируем в рубли
+
+			if (age === 'от 3 до 5 лет') {
+				if (engineVolume <= 1000) return engineVolume * 3 * euroRate
+				if (engineVolume <= 1500) return engineVolume * 3.2 * euroRate
+				if (engineVolume <= 1800) return engineVolume * 3.5 * euroRate
+				if (engineVolume <= 2300) return engineVolume * 4.8 * euroRate
+				if (engineVolume <= 3000) return engineVolume * 5 * euroRate
+				return engineVolume * 5.7 * euroRate
+			}
+
+			if (age === 'старше 5 лет') {
+				if (engineVolume <= 1000) return engineVolume * 3 * euroRate
+				if (engineVolume <= 1500) return engineVolume * 3.2 * euroRate
+				if (engineVolume <= 1800) return engineVolume * 3.5 * euroRate
+				if (engineVolume <= 2300) return engineVolume * 4.8 * euroRate
+				if (engineVolume <= 3000) return engineVolume * 5 * euroRate
+				return engineVolume * 5.7 * euroRate
+			}
 		}
 
 		if (country === 'Кыргызстан') {
@@ -62,6 +94,21 @@ const CalculatorPage = () => {
 		}
 	}
 
+	const calculateExciseTax = (powerHP) => {
+		if (powerHP <= 90) return 0
+		if (powerHP <= 150) return powerHP * 61
+		if (powerHP <= 200) return powerHP * 583
+		if (powerHP <= 300) return powerHP * 955
+		if (powerHP <= 400) return powerHP * 1628
+		if (powerHP <= 500) return powerHP * 1685
+		return powerHP * 1740
+	}
+
+	const calculateHorsePower = (engineVolume) => {
+		const kW = engineVolume / 7.6
+		return Math.round(kW * 1.36) // Перевод в л.с.
+	}
+
 	// Расчёт стоимости
 	const calculatePrice = () => {
 		const basePrice = Number(price.replace(/,/g, ''))
@@ -83,6 +130,7 @@ const CalculatorPage = () => {
 		let localExpensesMax = 0
 		let deliveryCostMin = 0
 		let deliveryCostMax = 0
+		let exciseFee = 0
 
 		// Проверяем выбранную страну
 		if (country === 'Россия') {
@@ -99,26 +147,11 @@ const CalculatorPage = () => {
 			deliveryCostMax = 300000
 
 			// Пошлина и утилизационный сбор
-			switch (age) {
-				case 'до 3 лет':
-					duty = localPrice * 0.48 // Пошлина — 48% от стоимости
-					recyclingFee = 20000 * 1.34
-					break
+			customsFee = calculateCustomsFee(engineVolume, EURRUBRate)
+			recyclingFee = calculateRecyclingFee(engineVolume, age)
 
-				case 'От 3 до 5 лет':
-					duty = calculateCustomsFee(engineVolume, EURRUBRate) // Курс евро в рублях
-					recyclingFee = 20000 * 2.66
-					break
-
-				case 'Старше 5 лет':
-					duty = calculateCustomsFee(engineVolume, EURRUBRate) // Курс евро в рублях
-					recyclingFee = 20000 * 3.5
-					break
-
-				default:
-					alert('Выберите возраст авто!')
-					return
-			}
+			const horsePower = calculateHorsePower(engineVolume)
+			exciseFee = calculateExciseTax(horsePower)
 
 			// Общая стоимость (минимальная и максимальная)
 			const totalMin =
@@ -129,7 +162,8 @@ const CalculatorPage = () => {
 				logisticsKorea +
 				companyFeeKorea +
 				localExpensesMin +
-				deliveryCostMin
+				deliveryCostMin +
+				exciseFee
 
 			const totalMax =
 				localPrice +
@@ -139,7 +173,8 @@ const CalculatorPage = () => {
 				logisticsKorea +
 				companyFeeKorea +
 				localExpensesMax +
-				deliveryCostMax
+				deliveryCostMax +
+				exciseFee
 
 			// Устанавливаем результат
 			setResult({

@@ -120,27 +120,6 @@ const CarDetails = () => {
 		}
 	}, [car, dispatch, location.search, currentPage, id])
 
-	// Делаем расчёт по авто
-	// const carId = car?.lots.lot_encar // ID автомобиля
-	// const price = car?.lots.original_price / 10000 // Цена автомобиля в формате X,XXX
-	// const year = car?.year
-	// const month = car?.month
-	// const formattedDate = `01${month}${year?.toString().substr(2, year.length)}`
-	// const volume = car?.lots.engine_volume
-
-	// useEffect(() => {
-	// 	const url = `https://plugin-back-versusm.amvera.io/car-ab-korea/${carId}?price=${price}&date=${formattedDate}&volume=${volume}`
-
-	// 	const calculatePrice = async () => {
-	// 		const response = await axios.get(url)
-	// 		const data = response.data
-	// 		const result = data.result
-	// 		setResult(result)
-	// 	}
-
-	// 	calculatePrice()
-	// }, [carId, price, year, month, formattedDate, volume])
-
 	// Устанавливаем первый индекс изображения при изменении автомобиля
 	useEffect(() => {
 		if (car && car.images?.images_original_big?.length > 1) {
@@ -240,35 +219,111 @@ const CarDetails = () => {
 	}
 
 	// Расчет утилизационного сбора
-	const calculateRecyclingFee = (engineVolume) => {
-		return 20000 * 0.26 // Базовая ставка и коэффициент для физлиц
+	const calculateRecyclingFee = (engineVolume, age) => {
+		const baseRate = 20000 // Базовая ставка
+
+		if (age === 'до 3 лет') {
+			if (engineVolume <= 1000) return baseRate * 0.17
+			if (engineVolume <= 2000) return baseRate * 0.17
+			if (engineVolume <= 3000) return baseRate * 0.17
+			if (engineVolume <= 3500) return baseRate * 89.73
+			return baseRate * 114.26
+		} else {
+			// Старше 3 лет
+			if (engineVolume <= 1000) return baseRate * 0.26
+			if (engineVolume <= 2000) return baseRate * 0.26
+			if (engineVolume <= 3000) return baseRate * 0.26
+			if (engineVolume <= 3500) return baseRate * 137.36
+			return baseRate * 150.2
+		}
 	}
 
 	// Рассчитываем все сборы
 	useEffect(() => {
 		// Расчет таможенной пошлины
-		const calculateCustomsDuty = (engineVolume) => {
-			if (engineVolume <= 1000) return engineVolume * 1.5 * EURRUBRate // В евро
-			if (engineVolume <= 1500) return engineVolume * 1.7 * EURRUBRate
-			if (engineVolume <= 1800) return engineVolume * 2.5 * EURRUBRate
-			if (engineVolume <= 2300) return engineVolume * 2.7 * EURRUBRate
-			if (engineVolume <= 3000) return engineVolume * 3 * EURRUBRate
-			return engineVolume * 3.6 * EURRUBRate
+		const calculateCustomsDuty = (engineVolume, age) => {
+			if (age === 'до 3 лет') {
+				if (engineVolume <= 1000) return engineVolume * 1.5 * EURRUBRate
+				if (engineVolume <= 1500) return engineVolume * 1.7 * EURRUBRate
+				if (engineVolume <= 1800) return engineVolume * 2.5 * EURRUBRate
+				if (engineVolume <= 2300) return engineVolume * 2.7 * EURRUBRate
+				if (engineVolume <= 3000) return engineVolume * 3 * EURRUBRate
+				return engineVolume * 3.6 * EURRUBRate
+			}
+
+			if (age === 'от 3 до 5 лет') {
+				if (engineVolume <= 1000) return engineVolume * 3 * EURRUBRate
+				if (engineVolume <= 1500) return engineVolume * 3.2 * EURRUBRate
+				if (engineVolume <= 1800) return engineVolume * 3.5 * EURRUBRate
+				if (engineVolume <= 2300) return engineVolume * 4.8 * EURRUBRate
+				if (engineVolume <= 3000) return engineVolume * 5 * EURRUBRate
+				return engineVolume * 5.7 * EURRUBRate
+			}
+
+			if (age === 'старше 5 лет') {
+				if (engineVolume <= 1000) return engineVolume * 3 * EURRUBRate
+				if (engineVolume <= 1500) return engineVolume * 3.2 * EURRUBRate
+				if (engineVolume <= 1800) return engineVolume * 3.5 * EURRUBRate
+				if (engineVolume <= 2300) return engineVolume * 4.8 * EURRUBRate
+				if (engineVolume <= 3000) return engineVolume * 5 * EURRUBRate
+				return engineVolume * 5.7 * EURRUBRate
+			}
+		}
+
+		const calculateExciseTax = (powerHP) => {
+			if (powerHP <= 90) return 0
+			if (powerHP <= 150) return powerHP * 61
+			if (powerHP <= 200) return powerHP * 583
+			if (powerHP <= 300) return powerHP * 955
+			if (powerHP <= 400) return powerHP * 1628
+			if (powerHP <= 500) return powerHP * 1685
+			return powerHP * 1740
+		}
+
+		const getCarAgeCategory = (registrationDate) => {
+			if (!registrationDate) return null
+
+			const today = new Date()
+			const registration = new Date(registrationDate)
+
+			let age = today.getFullYear() - registration.getFullYear()
+
+			// Если текущий месяц и день еще не достигли даты регистрации, уменьшаем возраст на 1 год
+			if (
+				today.getMonth() < registration.getMonth() ||
+				(today.getMonth() === registration.getMonth() &&
+					today.getDate() < registration.getDate())
+			) {
+				age--
+			}
+
+			// Возвращаем категорию возраста
+			if (age < 3) {
+				return 'до 3 лет'
+			} else if (age >= 3 && age <= 5) {
+				return 'от 3 до 5 лет'
+			} else {
+				return 'старше 5 лет'
+			}
 		}
 
 		if (car) {
+			const carAge = getCarAgeCategory(car.lots.first_registration)
+
 			const powerHP = calculateHorsePower(car.lots.engine_volume)
 			const customsFee = calculateCustomsFee(
 				car.lots.original_price * KRWRUBRate,
 			)
-			const recyclingFee = calculateRecyclingFee(car.lots.engine_volume)
-			const customsDuty = calculateCustomsDuty(car.lots.engine_volume)
+			const recyclingFee = calculateRecyclingFee(car.lots.engine_volume, carAge)
+			const customsDuty = calculateCustomsDuty(car.lots.engine_volume, carAge)
+			const exciseFee = calculateExciseTax(powerHP)
 
 			const totalCost =
 				car.lots.original_price * KRWRUBRate +
 				customsFee +
 				recyclingFee +
 				customsDuty +
+				exciseFee +
 				110000 + // Логистика до Владивостока
 				120000 + // Брокерские услуги
 				440000 * KRWRUBRate +
@@ -335,8 +390,6 @@ const CarDetails = () => {
 
 	// Выводим цвет автомобиля в текст
 	const carColor = colors.filter((item) => item.id === car.color)[0].name
-
-	console.log(car)
 
 	return (
 		<div className='container mx-auto p-4 dark:bg-gray-900 dark:text-white'>

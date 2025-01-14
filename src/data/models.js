@@ -764,7 +764,7 @@ const models = {
 		{ id: 2356, name: 'Spectron' },
 		{ id: 1902, name: 'Telstar' },
 		{ id: 2265, name: 'Escort (North America)' },
-		{ id: 2432, name: 'Focus (North America)' },
+		// { id: 2432, name: 'Focus (North America)' },
 		{ id: 1151, name: 'Model T' },
 		{ id: 2241, name: 'Ranger' },
 		{ id: 2198, name: 'Tourneo Courier' },

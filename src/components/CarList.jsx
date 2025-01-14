@@ -8,7 +8,7 @@ import {
 } from '../redux/slices/carsSlice'
 import CarListItem from './CarListItem'
 import Pagination from './Pagination'
-// import Loader from './Loader'
+import Loader from './Loader'
 
 // filters
 import manufacturers from '../data/manufacturers'
@@ -114,6 +114,8 @@ const CarList = () => {
 
 	// ✅ Обновление фильтров и страницы
 	const applyFilters = (updatedFilters = filters, page = currentPage) => {
+		window.scrollTo({ top: 0, behavior: 'smooth' })
+
 		updateURLParams(updatedFilters, page)
 
 		dispatch(
@@ -150,7 +152,6 @@ const CarList = () => {
 		}
 
 		setFiltersState(updatedFilters)
-		applyFilters(updatedFilters, 1)
 	}
 
 	// ✅ Обработчик изменения страницы
@@ -165,6 +166,8 @@ const CarList = () => {
 
 	// ✅ Сброс фильтров
 	const resetFilters = () => {
+		window.scrollTo({ top: 0, behavior: 'smooth' })
+
 		const initialFilters = {
 			manufacturerId: '',
 			modelId: '',
@@ -474,7 +477,7 @@ const CarList = () => {
 						<CarListItem key={index} car={car} />
 					))}
 				</div>
-				{loading && <p className='text-black dark:text-white'>Загрузка...</p>}
+				{loading && <Loader />}
 				{!loading && cars.length === 0 && (
 					<p className='text-center text-gray-500 dark:text-gray-300'>
 						Нет подходящих автомобилей.

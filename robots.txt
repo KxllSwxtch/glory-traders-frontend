@@ -1,6 +1,15 @@
 User-agent: *
 Disallow: /admin/
 Disallow: /login/
+Disallow: /api/
 Allow: /
 
+# Увеличение скорости сканирования
+Crawl-delay: 10
+
+# Разрешаем доступ к статическим файлам
+Allow: /assets/
+Allow: /static/
+
+# Указываем поисковым системам карту сайта
 Sitemap: https://glory-traders.org/sitemap.xml

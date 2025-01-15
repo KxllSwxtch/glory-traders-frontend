@@ -11,6 +11,22 @@
   <loc>https://glory-traders.org/</loc>
   <lastmod>2025-01-15T05:16:40+00:00</lastmod>
 </url>
+<url>
+    <loc>https://glory-traders.org/catalog</loc>
+    <lastmod>2025-01-15</lastmod>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://glory-traders.org/faq</loc>
+    <lastmod>2025-01-15</lastmod>
+    <priority>0.60</priority>
+  </url>
+  <url>
+    <loc>https://glory-traders.org/calculator</loc>
+    <lastmod>2025-01-15</lastmod>
+    <priority>0.60</priority>
+  </url>
+  
 
 
 </urlset>

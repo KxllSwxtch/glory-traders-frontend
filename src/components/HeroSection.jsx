@@ -189,6 +189,7 @@ const HeroSection = () => {
 					{/* Цвет */}
 					<select
 						name='colorsId'
+						onChange={handleFilterChange}
 						className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full mt-4'
 					>
 						<option value=''>Выберите цвет</option>
@@ -202,6 +203,7 @@ const HeroSection = () => {
 					{/* Тип топлива */}
 					<select
 						name='fuelId'
+						onChange={handleFilterChange}
 						className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full mt-4'
 					>
 						<option value=''>Тип топлива</option>
@@ -216,6 +218,7 @@ const HeroSection = () => {
 					{/* Тип трансмиссии */}
 					<select
 						name='transmissionId'
+						onChange={handleFilterChange}
 						className='p-2 border rounded bg-white text-black dark:bg-gray-700 dark:border-gray-600 dark:text-white w-full mt-4 mb-4'
 					>
 						<option value=''>Тип трансмиссии</option>

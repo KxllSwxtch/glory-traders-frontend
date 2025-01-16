@@ -14,9 +14,21 @@ const CalculatorPage = () => {
 	const [engineType, setEngineType] = useState('')
 	const [engineVolume, setEngineVolume] = useState('')
 	const [horsePower, setHorsePower] = useState('')
-	const [forPersonalUse, setForPersonalUse] = useState(true)
+	// const [forPersonalUse, setForPersonalUse] = useState(true)
 	const [result, setResult] = useState(null)
 	const [country, setCountry] = useState('Россия')
+
+	// Сбор за таможенное оформление
+	const calculateCustomsProcessingFee = (localPrice) => {
+		if (localPrice <= 200000) return 1067
+		if (localPrice <= 450000) return 2134
+		if (localPrice <= 1200000) return 4269
+		if (localPrice <= 2700000) return 11746
+		if (localPrice <= 4200000) return 16524
+		if (localPrice <= 5500000) return 21344
+		if (localPrice <= 7000000) return 27540
+		return 30000 // Свыше 7 000 000 рублей
+	}
 
 	// Расчет утилизационного сбора
 	const calculateRecyclingFee = (engineVolume, age) => {
@@ -38,34 +50,39 @@ const CalculatorPage = () => {
 		}
 	}
 
-	// Функция для расчёта таможенного сбора
-	const calculateCustomsFee = (engineVolume, euroRate, year) => {
+	// Таможенная пошлина
+	const calculateCustomsFee = (carPriceEuro, engineVolume, euroRate, age) => {
 		if (country === 'Россия') {
 			if (age === 'до 3 лет') {
-				if (engineVolume <= 1000) return engineVolume * 1.5 * euroRate
-				if (engineVolume <= 1500) return engineVolume * 1.7 * euroRate
-				if (engineVolume <= 1800) return engineVolume * 2.5 * euroRate
-				if (engineVolume <= 2300) return engineVolume * 2.7 * euroRate
-				if (engineVolume <= 3000) return engineVolume * 3 * euroRate
-				return engineVolume * 3.6 * euroRate
+				if (carPriceEuro <= 8500) {
+					return Math.max(carPriceEuro * 0.54, engineVolume * 2.5) * euroRate
+				} else if (carPriceEuro <= 16700) {
+					return Math.max(carPriceEuro * 0.48, engineVolume * 3.5) * euroRate
+				} else if (carPriceEuro <= 42300) {
+					return Math.max(carPriceEuro * 0.48, engineVolume * 5.5) * euroRate
+				} else if (carPriceEuro <= 84500) {
+					return Math.max(carPriceEuro * 0.48, engineVolume * 7.5) * euroRate
+				} else if (carPriceEuro <= 169000) {
+					return Math.max(carPriceEuro * 0.48, engineVolume * 15) * euroRate
+				} else {
+					return Math.max(carPriceEuro * 0.48, engineVolume * 20) * euroRate
+				}
 			}
 
-			if (age === 'от 3 до 5 лет') {
-				if (engineVolume <= 1000) return engineVolume * 3 * euroRate
-				if (engineVolume <= 1500) return engineVolume * 3.2 * euroRate
-				if (engineVolume <= 1800) return engineVolume * 3.5 * euroRate
-				if (engineVolume <= 2300) return engineVolume * 4.8 * euroRate
-				if (engineVolume <= 3000) return engineVolume * 5 * euroRate
-				return engineVolume * 5.7 * euroRate
-			}
-
-			if (age === 'старше 5 лет') {
-				if (engineVolume <= 1000) return engineVolume * 3 * euroRate
-				if (engineVolume <= 1500) return engineVolume * 3.2 * euroRate
-				if (engineVolume <= 1800) return engineVolume * 3.5 * euroRate
-				if (engineVolume <= 2300) return engineVolume * 4.8 * euroRate
-				if (engineVolume <= 3000) return engineVolume * 5 * euroRate
-				return engineVolume * 5.7 * euroRate
+			if (age === 'от 3 до 5 лет' || age === 'старше 5 лет') {
+				if (engineVolume <= 1000) {
+					return engineVolume * 3 * euroRate // €3/см³
+				} else if (engineVolume <= 1500) {
+					return engineVolume * 3.2 * euroRate // €3.2/см³
+				} else if (engineVolume <= 1800) {
+					return engineVolume * 3.5 * euroRate // €3.5/см³
+				} else if (engineVolume <= 2300) {
+					return engineVolume * 4.8 * euroRate // €4.8/см³
+				} else if (engineVolume <= 3000) {
+					return engineVolume * 5 * euroRate // €5/см³
+				} else {
+					return engineVolume * 5.7 * euroRate // €5.7/см³
+				}
 			}
 		}
 
@@ -94,19 +111,25 @@ const CalculatorPage = () => {
 		}
 	}
 
-	const calculateExciseTax = (powerHP) => {
-		if (powerHP <= 90) return 0
-		if (powerHP <= 150) return powerHP * 61
-		if (powerHP <= 200) return powerHP * 583
-		if (powerHP <= 300) return powerHP * 955
-		if (powerHP <= 400) return powerHP * 1628
-		if (powerHP <= 500) return powerHP * 1685
-		return powerHP * 1740
-	}
+	// Акциз
+	const calculateExciseFee = (engineVolume) => {
+		const engineVolumeLiters = engineVolume / 1000 // Переводим в литры
 
-	const calculateHorsePower = (engineVolume) => {
-		const kW = engineVolume / 7.6
-		return Math.round(kW * 1.36) // Перевод в л.с.
+		if (engineVolumeLiters <= 1.0) {
+			return 0
+		} else if (engineVolumeLiters > 1.0 && engineVolumeLiters <= 1.5) {
+			return 61 * engineVolumeLiters * 100 // Примерное количество л.с.
+		} else if (engineVolumeLiters > 1.5 && engineVolumeLiters <= 2.0) {
+			return 583 * engineVolumeLiters * 100
+		} else if (engineVolumeLiters > 2.0 && engineVolumeLiters <= 3.0) {
+			return 955 * engineVolumeLiters * 100
+		} else if (engineVolumeLiters > 3.0 && engineVolumeLiters <= 4.0) {
+			return 1628 * engineVolumeLiters * 100
+		} else if (engineVolumeLiters > 4.0 && engineVolumeLiters <= 5.0) {
+			return 1685 * engineVolumeLiters * 100
+		} else {
+			return 1740 * engineVolumeLiters * 100
+		}
 	}
 
 	// Расчёт стоимости
@@ -131,6 +154,7 @@ const CalculatorPage = () => {
 		let deliveryCostMin = 0
 		let deliveryCostMax = 0
 		let exciseFee = 0
+		let customsProcessingFee = 0
 
 		// Проверяем выбранную страну
 		if (country === 'Россия') {
@@ -147,11 +171,21 @@ const CalculatorPage = () => {
 			deliveryCostMax = 300000
 
 			// Пошлина и утилизационный сбор
-			customsFee = calculateCustomsFee(engineVolume, EURRUBRate)
 			recyclingFee = calculateRecyclingFee(engineVolume, age)
 
-			const horsePower = calculateHorsePower(engineVolume)
-			exciseFee = calculateExciseTax(horsePower)
+			// Сбор за таможенное оформление
+			customsProcessingFee = calculateCustomsProcessingFee(localPrice)
+
+			const carPriceEuro = localPrice / (EURRUBRate + 1.96)
+
+			customsFee = calculateCustomsFee(
+				carPriceEuro,
+				parseInt(engineVolume),
+				EURRUBRate,
+				age,
+			)
+
+			exciseFee = calculateExciseFee(engineVolume)
 
 			// Общая стоимость (минимальная и максимальная)
 			const totalMin =
@@ -163,7 +197,8 @@ const CalculatorPage = () => {
 				companyFeeKorea +
 				localExpensesMin +
 				deliveryCostMin +
-				exciseFee
+				exciseFee +
+				customsProcessingFee
 
 			const totalMax =
 				localPrice +
@@ -174,7 +209,8 @@ const CalculatorPage = () => {
 				companyFeeKorea +
 				localExpensesMax +
 				deliveryCostMax +
-				exciseFee
+				exciseFee +
+				customsProcessingFee
 
 			// Устанавливаем результат
 			setResult({
@@ -184,6 +220,7 @@ const CalculatorPage = () => {
 					priceInKorea: localPrice.toLocaleString(),
 					duty: duty.toLocaleString(),
 					customsFee: customsFee.toLocaleString(),
+					customsProcessingFee: customsProcessingFee.toLocaleString(),
 					recyclingFee: recyclingFee.toLocaleString(),
 					logisticsKorea: logisticsKorea.toLocaleString(),
 					companyFeeKorea: companyFeeKorea.toLocaleString(),
@@ -504,21 +541,6 @@ const CalculatorPage = () => {
 					</div>
 				)}
 
-				{engineType === 'Электро' && (
-					<div>
-						<label className='block text-lg font-medium mb-2 text-gray-800 dark:text-gray-300'>
-							Мощность (л.с.)
-						</label>
-						<input
-							type='number'
-							value={horsePower}
-							onChange={(e) => setHorsePower(e.target.value)}
-							placeholder='Введите мощность'
-							className='w-full p-3 border rounded-lg text-gray-900 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500'
-						/>
-					</div>
-				)}
-
 				{/* Поля для Кыргызстана */}
 				{country === 'Кыргызстан' && (
 					<>
@@ -604,6 +626,21 @@ const CalculatorPage = () => {
 					</div>
 				)}
 
+				{engineType === 'Электро' && (
+					<div>
+						<label className='block text-lg font-medium mb-2 text-gray-800 dark:text-gray-300'>
+							Мощность (л.с.)
+						</label>
+						<input
+							type='number'
+							value={horsePower}
+							onChange={(e) => setHorsePower(e.target.value)}
+							placeholder='Введите мощность'
+							className='w-full p-3 border rounded-lg text-gray-900 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500'
+						/>
+					</div>
+				)}
+
 				{/* Кнопка расчета */}
 				{country === 'Кыргызстан' ? (
 					<button
@@ -633,7 +670,7 @@ const CalculatorPage = () => {
 							Примерная цена с доставкой из Кореи
 						</h2>
 						<p className='text-3xl font-bold text-orange-600 mt-2 text-center'>
-							{result.totalMin ? result.totalMin.split('.')[0] : '—'}{' '}
+							{result.totalMax ? result.totalMin.split('.')[0] : '—'}{' '}
 							{getCurrencySymbol(currency)}
 						</p>
 					</div>
@@ -647,16 +684,16 @@ const CalculatorPage = () => {
 							<ul className='mt-4 space-y-2'>
 								{/* Пошлина и сборы */}
 								<li className='flex justify-between'>
-									<span>Пошлина</span>
+									<span>Таможенный сбор</span>
 									<span>
-										{result.details.duty
-											? result.details.duty.split('.')[0]
+										{result.details.customsProcessingFee
+											? result.details.customsProcessingFee.split('.')[0]
 											: '—'}{' '}
 										{getCurrencySymbol(currency)}
 									</span>
 								</li>
 								<li className='flex justify-between'>
-									<span>Таможенный сбор</span>
+									<span>Таможенный пошлина</span>
 									<span>
 										{result.details.customsFee
 											? result.details.customsFee.split('.')[0]
@@ -676,7 +713,7 @@ const CalculatorPage = () => {
 
 								{/* Логистика по Корее */}
 								<li className='flex justify-between'>
-									<span>Логистика по Корее</span>
+									<span>Логистика до Владивостока</span>
 									<span>
 										{result.details.logisticsKorea
 											? result.details.logisticsKorea.split('.')[0]

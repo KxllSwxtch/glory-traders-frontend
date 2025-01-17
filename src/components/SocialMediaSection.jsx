@@ -43,7 +43,7 @@ const SocialMediaSection = () => {
 			<div className='container mx-auto text-center'>
 				{/* Заголовок */}
 				<h2 className='text-2xl font-bold text-orange-600 dark:text-orange-400 mb-8'>
-					Мы в социальных сетях:
+					Следите за Glory Traders в социальных сетях
 				</h2>
 
 				{/* Иконки */}

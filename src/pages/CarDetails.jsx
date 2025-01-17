@@ -1,3 +1,4 @@
+import { Helmet } from 'react-helmet'
 import { animated, useSpring } from '@react-spring/web'
 import { PhotoProvider, PhotoView } from 'react-photo-view'
 import { useEffect, useState, useRef } from 'react'
@@ -392,274 +393,300 @@ const CarDetails = () => {
 	const carColor = colors.filter((item) => item.id === car.color)[0].name
 
 	return (
-		<div className='container mx-auto p-4 dark:bg-gray-900 dark:text-white'>
-			<div className='flex flex-wrap'>
-				{/* Левая часть - карусель изображений */}
-				<div className='w-full md:w-2/3 p-4'>
-					<div className='relative overflow-hidden'>
+		<>
+			<Helmet>
+				<title>
+					Купить {car.manufacturer_name} {car.title} - Автомобили из Кореи
+				</title>
+				<meta
+					name='keywords'
+					content={`Купить ${car.manufacturer_name} ${car.title}, Автомобили из Кореи, Доставка авто в СНГ`}
+				/>
+				<meta
+					name='description'
+					content={`Купить ${car.manufacturer_name} ${
+						car.title
+					} с объёмом двигателя ${
+						car.lots?.engine_volume
+					} см³. Цена: ${carCostDetails.totalCost.toLocaleString()} ₽. Доставка из Кореи.`}
+				/>
+			</Helmet>
+			<div className='container mx-auto p-4 dark:bg-gray-900 dark:text-white'>
+				<div className='flex flex-wrap'>
+					{/* Левая часть - карусель изображений */}
+					<div className='w-full md:w-2/3 p-4'>
+						<div className='relative overflow-hidden'>
+							<div
+								className='transition-transform duration-500'
+								style={{
+									transform: `translateX(-${currentImageIndex * 100}%)`,
+									display: 'flex',
+								}}
+							>
+								{car.images?.images_original_big.map((img, index) => (
+									<PhotoProvider key={index}>
+										<PhotoView src={img}>
+											<img
+												src={img}
+												alt={`Автомобиль ${car.manufacturer_name} ${
+													car.title
+												}, фото ${index + 1}`}
+												className='w-full h-auto rounded-lg'
+												loading='lazy'
+											/>
+										</PhotoView>
+									</PhotoProvider>
+								))}
+							</div>
+							<button
+								onClick={handlePrevImage}
+								className='absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 dark:bg-gray-800 dark:hover:bg-gray-700'
+							>
+								&#8592;
+							</button>
+							<button
+								onClick={handleNextImage}
+								className='absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 dark:bg-gray-800 dark:hover:bg-gray-700'
+							>
+								&#8594;
+							</button>
+						</div>
 						<div
-							className='transition-transform duration-500'
-							style={{
-								transform: `translateX(-${currentImageIndex * 100}%)`,
-								display: 'flex',
-							}}
+							className='flex gap-2 overflow-x-auto mt-4'
+							ref={thumbnailContainerRef}
 						>
 							{car.images?.images_original_big.map((img, index) => (
-								<PhotoProvider key={index}>
-									<PhotoView src={img}>
-										<img
-											src={img}
-											alt={`Car preview ${index + 1}`}
-											className='w-full h-auto rounded-lg'
-										/>
-									</PhotoView>
-								</PhotoProvider>
+								<img
+									key={index}
+									src={img}
+									alt={`Car thumbnail ${index + 1}`}
+									className={`w-24 h-24 object-cover rounded cursor-pointer border ${
+										currentImageIndex === index
+											? 'border-red-500 dark:border-red-400'
+											: 'border-gray-300 dark:border-gray-600'
+									}`}
+									onClick={() => setCurrentImageIndex(index)}
+								/>
 							))}
 						</div>
-						<button
-							onClick={handlePrevImage}
-							className='absolute top-1/2 left-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 dark:bg-gray-800 dark:hover:bg-gray-700'
-						>
-							&#8592;
-						</button>
-						<button
-							onClick={handleNextImage}
-							className='absolute top-1/2 right-4 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 dark:bg-gray-800 dark:hover:bg-gray-700'
-						>
-							&#8594;
-						</button>
-					</div>
-					<div
-						className='flex gap-2 overflow-x-auto mt-4'
-						ref={thumbnailContainerRef}
-					>
-						{car.images?.images_original_big.map((img, index) => (
-							<img
-								key={index}
-								src={img}
-								alt={`Car thumbnail ${index + 1}`}
-								className={`w-24 h-24 object-cover rounded cursor-pointer border ${
-									currentImageIndex === index
-										? 'border-red-500 dark:border-red-400'
-										: 'border-gray-300 dark:border-gray-600'
-								}`}
-								onClick={() => setCurrentImageIndex(index)}
-							/>
-						))}
-					</div>
 
-					{/* Описание */}
-					<div className='mt-6 bg-gray-100 p-6 rounded-lg shadow-md dark:bg-gray-800 w-full'>
-						<h2 className='text-2xl font-bold text-orange-500 mb-4 dark:text-orange-400'>
-							Описание авто
-						</h2>
-						<div className='grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-300'>
-							<div>
-								<strong>Бренд:</strong> {car.manufacturer_name || 'N/A'}
-							</div>
-							<div>
-								<strong>Модель:</strong> {car.title.toUpperCase() || 'N/A'}
-							</div>
-							<div>
-								<strong>Комплектация:</strong> {car.generation_name || 'N/A'}
-							</div>
-							<div>
-								<strong>Дата регистрации:</strong>{' '}
-								{formatRegistrationDate(car.lots?.first_registration) || 'N/A'}
-							</div>
-							<div>
-								<strong>Пробег:</strong>{' '}
-								{car.lots?.odometer_km?.toLocaleString() || 'N/A'} км
-							</div>
-							<div>
-								<strong>Цвет:</strong> {carColor || 'N/A'}
-							</div>
-							<div>
-								<strong>Объём двигателя:</strong>{' '}
-								{car.lots?.engine_volume?.toLocaleString() || 'N/A'} cc
-							</div>
-							<div>
-								<strong>КПП:</strong>{' '}
-								{car.transmission_type === 'automatic'
-									? 'Автоматическая'
-									: 'Механическая'}
-							</div>
-							<div>
-								<strong>Тип кузова:</strong>{' '}
-								{car.body_type?.toUpperCase() || 'N/A'}
-							</div>
-							<div>
-								<strong>Год:</strong> {car.year || 'N/A'}
-							</div>
-							<div>
-								<strong>VIN:</strong> {car.vin || 'N/A'}
+						{/* Описание */}
+						<div className='mt-6 bg-gray-100 p-6 rounded-lg shadow-md dark:bg-gray-800 w-full'>
+							<h2 className='text-2xl font-bold text-orange-500 mb-4 dark:text-orange-400'>
+								Описание авто
+							</h2>
+							<div className='grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-300'>
+								<div>
+									<strong>Бренд:</strong> {car.manufacturer_name || 'N/A'}
+								</div>
+								<div>
+									<strong>Модель:</strong> {car.title.toUpperCase() || 'N/A'}
+								</div>
+								<div>
+									<strong>Комплектация:</strong> {car.generation_name || 'N/A'}
+								</div>
+								<div>
+									<strong>Дата регистрации:</strong>{' '}
+									{formatRegistrationDate(car.lots?.first_registration) ||
+										'N/A'}
+								</div>
+								<div>
+									<strong>Пробег:</strong>{' '}
+									{car.lots?.odometer_km?.toLocaleString() || 'N/A'} км
+								</div>
+								<div>
+									<strong>Цвет:</strong> {carColor || 'N/A'}
+								</div>
+								<div>
+									<strong>Объём двигателя:</strong>{' '}
+									{car.lots?.engine_volume?.toLocaleString() || 'N/A'} cc
+								</div>
+								<div>
+									<strong>КПП:</strong>{' '}
+									{car.transmission_type === 'automatic'
+										? 'Автоматическая'
+										: 'Механическая'}
+								</div>
+								<div>
+									<strong>Тип кузова:</strong>{' '}
+									{car.body_type?.toUpperCase() || 'N/A'}
+								</div>
+								<div>
+									<strong>Год:</strong> {car.year || 'N/A'}
+								</div>
+								<div>
+									<strong>VIN:</strong> {car.vin || 'N/A'}
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 
-				{/* Правая часть - информация */}
-				<div className='w-full md:w-1/3 p-4'>
-					<h1 className='text-3xl font-bold mb-4 dark:text-orange-400'>
-						{car.manufacturer_name} {car.title.toUpperCase()}
-					</h1>
-					<p className='text-lg font-semibold text-gray-600 mb-2 dark:text-gray-300'>
-						Цена под ключ во Владивостоке
-					</p>
-					<p className='text-sm text-gray-500 mb-4 dark:text-gray-400'>
-						Цена может варьироваться в зависимости от курса. Для уточнения
-						пишите на
-						<a
-							href='https://wa.me/821023297807'
+					{/* Правая часть - информация */}
+					<div className='w-full md:w-1/3 p-4'>
+						<h1 className='text-3xl font-bold mb-4 dark:text-orange-400'>
+							{car.manufacturer_name} {car.title.toUpperCase()}
+						</h1>
+						<p className='text-lg font-semibold text-gray-600 mb-2 dark:text-gray-300'>
+							Цена под ключ во Владивостоке
+						</p>
+						<p className='text-sm text-gray-500 mb-4 dark:text-gray-400'>
+							Цена может варьироваться в зависимости от курса. Для уточнения
+							пишите на
+							<a
+								href='https://wa.me/821023297807'
+								target='_blank'
+								rel='noopener noreferrer'
+								className='text-green-600 font-bold hover:underline flex items-center gap-1'
+							>
+								<FaWhatsapp className='text-lg' />
+								WhatsApp
+							</a>
+						</p>
+						<p className='text-4xl font-bold text-red-600 mb-4 dark:text-red-400'>
+							{/* {car.lots?.total_all_format?.toLocaleString()} ₽ */}
+							{carCostDetails.totalCost.toLocaleString().split('.')[0]} ₽
+						</p>
+
+						<button
+							onClick={() => setIsDetailsVisible((prev) => !prev)}
+							className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-700 transition text-sm dark:bg-orange-600 dark:hover:bg-orange-700'
+						>
+							{isDetailsVisible
+								? 'Скрыть детали расчёта'
+								: 'Показать детали расчёта'}
+						</button>
+
+						{/* Детализация расчёта */}
+						{isDetailsVisible && (
+							<animated.div
+								style={{ ...animationProps, overflow: 'hidden' }}
+								className={'overflow-hidden will-change-transform'}
+							>
+								<div className='bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-800'>
+									<h2 className='text-2xl font-bold text-orange-500 mb-4 dark:text-orange-400'>
+										Детализация расчёта
+									</h2>
+
+									{/* Логистика с Кореи до Владивостока */}
+									<p className='text-sm text-gray-700 dark:text-gray-300 mb-4'>
+										Логистика с Кореи до Владивостока:
+									</p>
+									<ul className='list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300'>
+										<li>1000 $ (может меняться)</li>
+										<li>Комиссия компании: 250 $</li>
+									</ul>
+
+									{/* Расходы по РФ */}
+									<p className='text-sm text-gray-700 dark:text-gray-300 mb-4'>
+										Расходы по РФ:
+									</p>
+									<ul className='list-disc pl-6 mb-2 text-gray-700 dark:text-gray-300'>
+										<li>Услуги брокера</li>
+										<li>Выгрузка</li>
+										<li>СВХ (в порту)</li>
+										<li>Лаборатория</li>
+										<li>Получение ЭСБГТС и ЭПТС</li>
+									</ul>
+									<p className='font-bold text-orange-500 dark:text-orange-400 mb-4'>
+										Итого: от 80 000 до 120 000 ₽
+									</p>
+
+									{/* Логистика с Владивостока до Москвы */}
+									<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
+										Логистика с Владивостока до Москвы:
+									</p>
+									<p className='font-bold text-orange-500 dark:text-orange-400'>
+										от 200 000 до 300 000 ₽
+									</p>
+
+									{/* Таможенная ставка и утильсбор */}
+									<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
+										Таможенная ставка
+									</p>
+									<p className='font-bold text-orange-500 dark:text-orange-400'>
+										{(carCostDetails.customsDuty + carCostDetails.customsFee)
+											.toLocaleString()
+											.split('.')[0] || 'N/A'}{' '}
+										₽
+									</p>
+									<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
+										Утильсбор
+									</p>
+									<p className='font-bold text-orange-500 dark:text-orange-400'>
+										{carCostDetails.recyclingFee.toLocaleString().split('.')[0]}{' '}
+										₽
+									</p>
+								</div>
+							</animated.div>
+						)}
+
+						<p className='text-md font-normal text-gray-600 mb-6 dark:text-gray-300'>
+							Стоимость автомобиля в Южной Корее:{' '}
+							<span className='font-bold text-orange-600'>
+								{car.lots?.original_price?.toLocaleString()} ₩
+							</span>
+						</p>
+
+						<p className='text-lg font-semibold text-gray-600 mb-2 dark:text-gray-300'>
+							Задать вопрос менеджеру:
+						</p>
+						<div className='flex gap-4 mb-6'>
+							<a
+								href='https://t.me/GLORY_TRADERS'
+								className='text-blue-500 text-2xl hover:text-blue-600 transition dark:text-blue-400 dark:hover:text-blue-500'
+								aria-label='Telegram'
+								target='_blank'
+								rel='noopener noreferrer'
+							>
+								<FaTelegramPlane />
+							</a>
+							<a
+								href='https://wa.me/821023297807'
+								className='text-green-500 text-2xl hover:text-green-600 transition dark:text-green-400 dark:hover:text-green-500'
+								aria-label='WhatsApp'
+								target='_blank'
+								rel='noopener noreferrer'
+							>
+								<FaWhatsapp />
+							</a>
+						</div>
+						<button
+							onClick={() => setIsModalOpen(true)}
+							className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'
+						>
+							Получить предложение
+						</button>
+						<button
+							onClick={handleShare}
+							className='w-full bg-orange-500 text-white py-2 rounded-md font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'
+						>
+							Поделиться ссылкой
+						</button>
+						<Link
+							to={`http://fem.encar.com/cars/detail/${car.lot_encar}`}
 							target='_blank'
 							rel='noopener noreferrer'
-							className='text-green-600 font-bold hover:underline flex items-center gap-1'
+							title={`Посмотреть автомобиль ${car.manufacturer_name} ${car.title} на Encar`}
+							className='mt-4 w-full bg-red-500 text-white py-2 rounded-md font-medium hover:bg-red-600 transition flex items-center justify-center gap-2 dark:bg-red-600 dark:hover:bg-red-700'
 						>
-							<FaWhatsapp className='text-lg' />
-							WhatsApp
-						</a>
-					</p>
-					<p className='text-4xl font-bold text-red-600 mb-4 dark:text-red-400'>
-						{/* {car.lots?.total_all_format?.toLocaleString()} ₽ */}
-						{carCostDetails.totalCost.toLocaleString().split('.')[0]} ₽
-					</p>
-
-					<button
-						onClick={() => setIsDetailsVisible((prev) => !prev)}
-						className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-700 transition text-sm dark:bg-orange-600 dark:hover:bg-orange-700'
-					>
-						{isDetailsVisible
-							? 'Скрыть детали расчёта'
-							: 'Показать детали расчёта'}
-					</button>
-
-					{/* Детализация расчёта */}
-					{isDetailsVisible && (
-						<animated.div
-							style={{ ...animationProps, overflow: 'hidden' }}
-							className={'overflow-hidden will-change-transform'}
-						>
-							<div className='bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-800'>
-								<h3 className='text-lg font-bold mb-2 text-black dark:text-white'>
-									Детализация Расчёта
-								</h3>
-
-								{/* Логистика с Кореи до Владивостока */}
-								<p className='text-sm text-gray-700 dark:text-gray-300 mb-4'>
-									Логистика с Кореи до Владивостока:
-								</p>
-								<ul className='list-disc pl-6 mb-4 text-gray-700 dark:text-gray-300'>
-									<li>1000 $ (может меняться)</li>
-									<li>Комиссия компании: 250 $</li>
-								</ul>
-
-								{/* Расходы по РФ */}
-								<p className='text-sm text-gray-700 dark:text-gray-300 mb-4'>
-									Расходы по РФ:
-								</p>
-								<ul className='list-disc pl-6 mb-2 text-gray-700 dark:text-gray-300'>
-									<li>Услуги брокера</li>
-									<li>Выгрузка</li>
-									<li>СВХ (в порту)</li>
-									<li>Лаборатория</li>
-									<li>Получение ЭСБГТС и ЭПТС</li>
-								</ul>
-								<p className='font-bold text-orange-500 dark:text-orange-400 mb-4'>
-									Итого: от 80 000 до 120 000 ₽
-								</p>
-
-								{/* Логистика с Владивостока до Москвы */}
-								<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
-									Логистика с Владивостока до Москвы:
-								</p>
-								<p className='font-bold text-orange-500 dark:text-orange-400'>
-									от 200 000 до 300 000 ₽
-								</p>
-
-								{/* Таможенная ставка и утильсбор */}
-								<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
-									Таможенная ставка
-								</p>
-								<p className='font-bold text-orange-500 dark:text-orange-400'>
-									{(carCostDetails.customsDuty + carCostDetails.customsFee)
-										.toLocaleString()
-										.split('.')[0] || 'N/A'}{' '}
-									₽
-								</p>
-								<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
-									Утильсбор
-								</p>
-								<p className='font-bold text-orange-500 dark:text-orange-400'>
-									{carCostDetails.recyclingFee.toLocaleString().split('.')[0]} ₽
-								</p>
-							</div>
-						</animated.div>
-					)}
-
-					<p className='text-md font-normal text-gray-600 mb-6 dark:text-gray-300'>
-						Стоимость автомобиля в Южной Корее:{' '}
-						<span className='font-bold text-orange-600'>
-							{car.lots?.original_price?.toLocaleString()} ₩
-						</span>
-					</p>
-
-					<p className='text-lg font-semibold text-gray-600 mb-2 dark:text-gray-300'>
-						Задать вопрос менеджеру:
-					</p>
-					<div className='flex gap-4 mb-6'>
-						<a
-							href='https://t.me/GLORY_TRADERS'
-							className='text-blue-500 text-2xl hover:text-blue-600 transition dark:text-blue-400 dark:hover:text-blue-500'
-							aria-label='Telegram'
-							target='_blank'
-							rel='noopener noreferrer'
-						>
-							<FaTelegramPlane />
-						</a>
-						<a
-							href='https://wa.me/821023297807'
-							className='text-green-500 text-2xl hover:text-green-600 transition dark:text-green-400 dark:hover:text-green-500'
-							aria-label='WhatsApp'
-							target='_blank'
-							rel='noopener noreferrer'
-						>
-							<FaWhatsapp />
-						</a>
+							Посмотреть авто на сайте Encar
+						</Link>
 					</div>
-					<button
-						onClick={() => setIsModalOpen(true)}
-						className='w-full bg-orange-500 text-white py-2 rounded-md mb-4 font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'
-					>
-						Получить предложение
-					</button>
-					<button
-						onClick={handleShare}
-						className='w-full bg-orange-500 text-white py-2 rounded-md font-medium hover:bg-orange-600 transition flex items-center justify-center gap-2 dark:bg-orange-600 dark:hover:bg-orange-700'
-					>
-						Поделиться ссылкой
-					</button>
-					<Link
-						to={`http://fem.encar.com/cars/detail/${car.lot_encar}`}
-						target='_blank'
-						className='mt-4 w-full bg-red-500 text-white py-2 rounded-md font-medium hover:bg-red-600 transition flex items-center justify-center gap-2 dark:bg-red-600 dark:hover:bg-red-700'
-					>
-						Посмотреть авто на сайте Encar
-					</Link>
 				</div>
+
+				{showNotification && (
+					<div
+						className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded shadow-md text-center dark:bg-green-600 transition-opacity duration-500 ${
+							showNotification ? 'opacity-100' : 'opacity-0'
+						}`}
+					>
+						{showNotification}
+					</div>
+				)}
+
+				<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 			</div>
-
-			{showNotification && (
-				<div
-					className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white py-2 px-4 rounded shadow-md text-center dark:bg-green-600 transition-opacity duration-500 ${
-						showNotification ? 'opacity-100' : 'opacity-0'
-					}`}
-				>
-					{showNotification}
-				</div>
-			)}
-
-			<Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-		</div>
+		</>
 	)
 }
 

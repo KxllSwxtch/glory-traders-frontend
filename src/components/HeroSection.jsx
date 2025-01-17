@@ -122,11 +122,13 @@ const HeroSection = () => {
 			<div className='absolute inset-0 bg-black bg-opacity-50'></div>
 			{/* Контент поверх видео */}
 			<div className='relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4'>
-				<h1 className='text-4xl font-bold mb-4 mt-10'>Автомобили и техника</h1>
+				<h1 className='text-4xl font-bold mb-4 mt-10'>
+					Автомобили из Южной Кореи под заказ
+				</h1>
 				<p className='text-lg mb-6'>
-					в наличии и под заказ с дилерских стоянок и аукционов Южной Кореи
+					Выгодная доставка автомобилей и техники с дилерских стоянок и
+					аукционов Южной Кореи.
 				</p>
-
 				{/* Форма поиска */}
 				<div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg mb-6 w-full sm:max-w-lg md:max-w-xl lg:max-w-2xl'>
 					{/* Марка, модель, поколение */}

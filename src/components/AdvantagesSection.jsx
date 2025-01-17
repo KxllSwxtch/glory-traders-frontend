@@ -10,7 +10,8 @@ const AdvantagesSection = () => {
 						<div className='flex items-center space-x-4 mb-4'>
 							<FaCarAlt className='text-orange-600 dark:text-orange-400 text-3xl' />
 							<h2 className='text-lg font-bold text-orange-600 dark:text-orange-400'>
-								При покупке с дилерской стоянки
+								Преимущества покупки автомобилей с дилерской стоянки Glory
+								Traders
 							</h2>
 						</div>
 						<ul className='space-y-4'>

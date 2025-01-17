@@ -218,8 +218,9 @@ const CarListItem = ({ car }) => {
 				{imageSrc ? (
 					<img
 						src={imageSrc}
-						alt={car.title}
+						alt={`Автомобиль ${car.title}, ${car.year}, объем двигателя ${car?.lots.engine_volume} см³`}
 						className='object-cover h-full w-full'
+						loading='lazy'
 					/>
 				) : (
 					<div className='bg-gray-200 flex items-center justify-center text-gray-500 italic h-full dark:bg-gray-700 dark:text-gray-400'>
@@ -267,6 +268,7 @@ const CarListItem = ({ car }) => {
 							pathname: `/cars/${car.id}`,
 							search: location.search, // Передаём queryParams
 						}}
+						rel='canonical'
 						target='_blank'
 						className='mt-4 block bg-orange-500 text-white py-2 rounded-md font-medium hover:bg-orange-600 transition dark:bg-orange-600 dark:hover:bg-orange-700'
 					>

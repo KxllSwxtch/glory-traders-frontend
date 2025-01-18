@@ -307,7 +307,12 @@ const CarDetails = () => {
 				return null
 			}
 
-			const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}` // YYYY-MM-DD
+			// Убедимся, что день и месяц имеют ведущие нули
+			const day = parts[0].padStart(2, '0')
+			const month = parts[1].padStart(2, '0')
+			const year = parts[2]
+
+			const formattedDate = `${year}-${month}-${day}` // YYYY-MM-DD
 			const registration = new Date(formattedDate)
 
 			if (isNaN(registration)) {

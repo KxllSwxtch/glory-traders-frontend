@@ -355,18 +355,16 @@ const CarDetails = () => {
 				EURRUBRate + 1.8,
 			)
 
-			const exciseFee = calculateExciseTax(powerHP)
+			// const exciseFee = calculateExciseTax(powerHP)
 
 			const totalCost =
-				car.lots.original_price * KRWRUBRate +
-				customsFee +
-				recyclingFee +
+				1000 * USDRUBRate +
+				250 * USDRUBRate +
+				120000 +
 				customsDuty +
-				exciseFee +
-				110000 + // Логистика до Владивостока
-				120000 + // Брокерские услуги
-				440000 * KRWRUBRate +
-				92279
+				recyclingFee +
+				carPriceRub +
+				440000 * KRWRUBRate
 
 			setCarCostDetails({
 				powerHP,
@@ -376,7 +374,7 @@ const CarDetails = () => {
 				totalCost,
 			})
 		}
-	}, [car, KRWRUBRate, EURRUBRate])
+	}, [car, KRWRUBRate, EURRUBRate, USDRUBRate])
 
 	// Обработка ошибок и загрузки
 	if (error)
@@ -630,12 +628,12 @@ const CarDetails = () => {
 									</p>
 
 									{/* Логистика с Владивостока до Москвы */}
-									<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
+									{/* <p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>
 										Логистика с Владивостока до Москвы:
 									</p>
 									<p className='font-bold text-orange-500 dark:text-orange-400'>
 										от 200 000 до 300 000 ₽
-									</p>
+									</p> */}
 
 									{/* Таможенная ставка и утильсбор */}
 									<p className='text-sm text-gray-700 dark:text-gray-300 mb-2 mt-6'>

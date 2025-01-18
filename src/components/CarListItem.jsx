@@ -6,6 +6,7 @@ import axios from 'axios'
 const CarListItem = ({ car }) => {
 	const [KRWRUBRate, setKRWRUBRate] = useState(0)
 	const [EURRUBRate, setEURRUBRate] = useState(0)
+	const [USDRUBRate, setUSDRUBRate] = useState(0)
 	const [carCostDetails, setCarCostDetails] = useState({
 		powerHP: 0,
 		customsFee: 0,
@@ -65,6 +66,24 @@ const CarListItem = ({ car }) => {
 				const eur = data.eur
 
 				setEURRUBRate(eur.rub)
+			} catch (error) {
+				console.error(error)
+			}
+		}
+
+		getRates()
+	}, [])
+
+	// Получаем курс доллара к рублю
+	useEffect(() => {
+		const getRates = async () => {
+			try {
+				const response = await axios.get(
+					'https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json',
+				)
+				const data = response.data
+				const usd = data.usd
+				setUSDRUBRate(usd.rub)
 			} catch (error) {
 				console.error(error)
 			}
@@ -156,15 +175,15 @@ const CarListItem = ({ car }) => {
 			}
 		}
 
-		const calculateExciseTax = (powerHP) => {
-			if (powerHP <= 90) return 0
-			if (powerHP <= 150) return powerHP * 61
-			if (powerHP <= 200) return powerHP * 583
-			if (powerHP <= 300) return powerHP * 955
-			if (powerHP <= 400) return powerHP * 1628
-			if (powerHP <= 500) return powerHP * 1685
-			return powerHP * 1740
-		}
+		// const calculateExciseTax = (powerHP) => {
+		// 	if (powerHP <= 90) return 0
+		// 	if (powerHP <= 150) return powerHP * 61
+		// 	if (powerHP <= 200) return powerHP * 583
+		// 	if (powerHP <= 300) return powerHP * 955
+		// 	if (powerHP <= 400) return powerHP * 1628
+		// 	if (powerHP <= 500) return powerHP * 1685
+		// 	return powerHP * 1740
+		// }
 
 		const getCarAgeCategory = (registrationDate) => {
 			if (!registrationDate) {
@@ -226,18 +245,16 @@ const CarListItem = ({ car }) => {
 				EURRUBRate + 1.8,
 			)
 
-			const exciseFee = calculateExciseTax(powerHP)
+			// const exciseFee = calculateExciseTax(powerHP)
 
 			const totalCost =
-				car.lots.original_price * KRWRUBRate +
-				customsFee +
-				recyclingFee +
+				1000 * USDRUBRate +
+				250 * USDRUBRate +
+				120000 +
 				customsDuty +
-				exciseFee +
-				110000 + // Логистика до Владивостока
-				120000 + // Брокерские услуги
-				440000 * KRWRUBRate +
-				92279
+				recyclingFee +
+				carPriceRub +
+				440000 * KRWRUBRate
 
 			setCarCostDetails({
 				powerHP,
@@ -247,7 +264,7 @@ const CarListItem = ({ car }) => {
 				totalCost,
 			})
 		}
-	}, [car, KRWRUBRate, EURRUBRate])
+	}, [car, KRWRUBRate, EURRUBRate, USDRUBRate])
 
 	return (
 		<div className='bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden flex flex-col justify-between w-full max-w-[400px] md:max-w-[400px] mx-auto dark:bg-gray-800 dark:border-gray-700'>

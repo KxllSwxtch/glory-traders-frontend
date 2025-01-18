@@ -242,23 +242,36 @@ const CarDetails = () => {
 	// Рассчитываем все сборы
 	useEffect(() => {
 		// Расчет таможенной пошлины
-		const calculateCustomsDuty = (engineVolume, age) => {
+		const calculateCustomsDuty = (
+			engineVolume,
+			carPriceEuro,
+			age,
+			EURRUBRate,
+		) => {
 			if (age === 'до 3 лет') {
+				// Учитываем стоимость автомобиля в евро
+				if (carPriceEuro <= 8500) {
+					return Math.max(carPriceEuro * 0.54, engineVolume * 2.5) * EURRUBRate
+				} else if (carPriceEuro <= 16700) {
+					return Math.max(carPriceEuro * 0.48, engineVolume * 3.5) * EURRUBRate
+				} else if (carPriceEuro <= 42300) {
+					return Math.max(carPriceEuro * 0.48, engineVolume * 5.5) * EURRUBRate
+				} else if (carPriceEuro <= 84500) {
+					return Math.max(carPriceEuro * 0.48, engineVolume * 7.5) * EURRUBRate
+				} else if (carPriceEuro <= 169000) {
+					return Math.max(carPriceEuro * 0.48, engineVolume * 15) * EURRUBRate
+				} else {
+					return Math.max(carPriceEuro * 0.48, engineVolume * 20) * EURRUBRate
+				}
+			}
+
+			if (age === 'от 3 до 5 лет') {
 				if (engineVolume <= 1000) return engineVolume * 1.5 * EURRUBRate
 				if (engineVolume <= 1500) return engineVolume * 1.7 * EURRUBRate
 				if (engineVolume <= 1800) return engineVolume * 2.5 * EURRUBRate
 				if (engineVolume <= 2300) return engineVolume * 2.7 * EURRUBRate
 				if (engineVolume <= 3000) return engineVolume * 3 * EURRUBRate
 				return engineVolume * 3.6 * EURRUBRate
-			}
-
-			if (age === 'от 3 до 5 лет') {
-				if (engineVolume <= 1000) return engineVolume * 3 * EURRUBRate
-				if (engineVolume <= 1500) return engineVolume * 3.2 * EURRUBRate
-				if (engineVolume <= 1800) return engineVolume * 3.5 * EURRUBRate
-				if (engineVolume <= 2300) return engineVolume * 4.8 * EURRUBRate
-				if (engineVolume <= 3000) return engineVolume * 5 * EURRUBRate
-				return engineVolume * 5.7 * EURRUBRate
 			}
 
 			if (age === 'старше 5 лет') {
@@ -282,11 +295,27 @@ const CarDetails = () => {
 		}
 
 		const getCarAgeCategory = (registrationDate) => {
-			if (!registrationDate) return null
+			if (!registrationDate) {
+				console.error('Registration date is missing!')
+				return null
+			}
+
+			// Преобразуем дату из формата DD.MM.YYYY в YYYY-MM-DD
+			const parts = registrationDate.split('.')
+			if (parts.length !== 3) {
+				console.error(`Invalid date format: ${registrationDate}`)
+				return null
+			}
+
+			const formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}` // YYYY-MM-DD
+			const registration = new Date(formattedDate)
+
+			if (isNaN(registration)) {
+				console.error(`Invalid date after formatting: ${formattedDate}`)
+				return null
+			}
 
 			const today = new Date()
-			const registration = new Date(registrationDate)
-
 			let age = today.getFullYear() - registration.getFullYear()
 
 			// Если текущий месяц и день еще не достигли даты регистрации, уменьшаем возраст на 1 год
@@ -316,7 +345,16 @@ const CarDetails = () => {
 				car.lots.original_price * KRWRUBRate,
 			)
 			const recyclingFee = calculateRecyclingFee(car.lots.engine_volume, carAge)
-			const customsDuty = calculateCustomsDuty(car.lots.engine_volume, carAge)
+
+			const carPriceRub = car.lots.original_price * KRWRUBRate
+			const carPriceEuro = carPriceRub / EURRUBRate
+			const customsDuty = calculateCustomsDuty(
+				car.lots.engine_volume,
+				carPriceEuro,
+				carAge,
+				EURRUBRate + 1.8,
+			)
+
 			const exciseFee = calculateExciseTax(powerHP)
 
 			const totalCost =

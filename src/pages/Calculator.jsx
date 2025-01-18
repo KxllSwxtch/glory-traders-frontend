@@ -51,38 +51,41 @@ const CalculatorPage = () => {
 	}
 
 	// Таможенная пошлина
-	const calculateCustomsFee = (carPriceEuro, engineVolume, euroRate, age) => {
+	const calculateCustomsFee = (carPriceEuro, engineVolume, EURRUBRate, age) => {
 		if (country === 'Россия') {
 			if (age === 'до 3 лет') {
+				// Учитываем стоимость автомобиля в евро
 				if (carPriceEuro <= 8500) {
-					return Math.max(carPriceEuro * 0.54, engineVolume * 2.5) * euroRate
+					return Math.max(carPriceEuro * 0.54, engineVolume * 2.5) * EURRUBRate
 				} else if (carPriceEuro <= 16700) {
-					return Math.max(carPriceEuro * 0.48, engineVolume * 3.5) * euroRate
+					return Math.max(carPriceEuro * 0.48, engineVolume * 3.5) * EURRUBRate
 				} else if (carPriceEuro <= 42300) {
-					return Math.max(carPriceEuro * 0.48, engineVolume * 5.5) * euroRate
+					return Math.max(carPriceEuro * 0.48, engineVolume * 5.5) * EURRUBRate
 				} else if (carPriceEuro <= 84500) {
-					return Math.max(carPriceEuro * 0.48, engineVolume * 7.5) * euroRate
+					return Math.max(carPriceEuro * 0.48, engineVolume * 7.5) * EURRUBRate
 				} else if (carPriceEuro <= 169000) {
-					return Math.max(carPriceEuro * 0.48, engineVolume * 15) * euroRate
+					return Math.max(carPriceEuro * 0.48, engineVolume * 15) * EURRUBRate
 				} else {
-					return Math.max(carPriceEuro * 0.48, engineVolume * 20) * euroRate
+					return Math.max(carPriceEuro * 0.48, engineVolume * 20) * EURRUBRate
 				}
 			}
 
-			if (age === 'от 3 до 5 лет' || age === 'старше 5 лет') {
-				if (engineVolume <= 1000) {
-					return engineVolume * 3 * euroRate // €3/см³
-				} else if (engineVolume <= 1500) {
-					return engineVolume * 3.2 * euroRate // €3.2/см³
-				} else if (engineVolume <= 1800) {
-					return engineVolume * 3.5 * euroRate // €3.5/см³
-				} else if (engineVolume <= 2300) {
-					return engineVolume * 4.8 * euroRate // €4.8/см³
-				} else if (engineVolume <= 3000) {
-					return engineVolume * 5 * euroRate // €5/см³
-				} else {
-					return engineVolume * 5.7 * euroRate // €5.7/см³
-				}
+			if (age === 'от 3 до 5 лет') {
+				if (engineVolume <= 1000) return engineVolume * 1.5 * EURRUBRate
+				if (engineVolume <= 1500) return engineVolume * 1.7 * EURRUBRate
+				if (engineVolume <= 1800) return engineVolume * 2.5 * EURRUBRate
+				if (engineVolume <= 2300) return engineVolume * 2.7 * EURRUBRate
+				if (engineVolume <= 3000) return engineVolume * 3 * EURRUBRate
+				return engineVolume * 3.6 * EURRUBRate
+			}
+
+			if (age === 'старше 5 лет') {
+				if (engineVolume <= 1000) return engineVolume * 3 * EURRUBRate
+				if (engineVolume <= 1500) return engineVolume * 3.2 * EURRUBRate
+				if (engineVolume <= 1800) return engineVolume * 3.5 * EURRUBRate
+				if (engineVolume <= 2300) return engineVolume * 4.8 * EURRUBRate
+				if (engineVolume <= 3000) return engineVolume * 5 * EURRUBRate
+				return engineVolume * 5.7 * EURRUBRate
 			}
 		}
 
@@ -181,7 +184,7 @@ const CalculatorPage = () => {
 			customsFee = calculateCustomsFee(
 				carPriceEuro,
 				parseInt(engineVolume),
-				EURRUBRate,
+				EURRUBRate + 1.99,
 				age,
 			)
 

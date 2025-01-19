@@ -16,6 +16,8 @@ const CarDetails = () => {
 	const location = useLocation()
 	const dispatch = useDispatch()
 	const thumbnailContainerRef = useRef(null)
+
+	// State
 	const [showNotification, setShowNotification] = useState('')
 	const [isModalOpen, setIsModalOpen] = useState(false)
 	const [result, setResult] = useState({})
@@ -24,6 +26,7 @@ const CarDetails = () => {
 	const [USDRUBRate, setUSDRUBRate] = useState(0)
 	const [KRWRUBRate, setKRWRUBRate] = useState(0)
 	const [EURRUBRate, setEURRUBRate] = useState(0)
+	const [activeTab, setActiveTab] = useState('description')
 	const [carCostDetails, setCarCostDetails] = useState({
 		powerHP: 0,
 		customsFee: 0,
@@ -49,6 +52,8 @@ const CarDetails = () => {
 
 	// Поиск автомобиля в сторе
 	const car = cars.find((car) => car.id === Number(id))
+
+	console.log(car)
 
 	// Текущее изображение для карусели
 	const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -511,54 +516,132 @@ const CarDetails = () => {
 							))}
 						</div>
 
-						{/* Описание */}
-						<div className='mt-6 bg-gray-100 p-6 rounded-lg shadow-md dark:bg-gray-800 w-full'>
-							<h2 className='text-2xl font-bold text-orange-500 mb-4 dark:text-orange-400'>
+						{/* Вкладки */}
+						<div className='flex justify-start border-b border-gray-300 dark:border-gray-700 mt-5'>
+							<button
+								className={`px-4 py-2 text-lg font-bold ${
+									activeTab === 'description'
+										? 'border-b-4 border-orange-500 text-orange-500'
+										: 'text-gray-500 dark:text-gray-400'
+								}`}
+								onClick={() => setActiveTab('description')}
+							>
 								Описание авто
-							</h2>
-							<div className='grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-300'>
+							</button>
+							<button
+								className={`px-4 py-2 text-lg font-bold ${
+									activeTab === 'accident'
+										? 'border-b-4 border-orange-500 text-orange-500'
+										: 'text-gray-500 dark:text-gray-400'
+								}`}
+								onClick={() => setActiveTab('accident')}
+							>
+								История ДТП
+							</button>
+						</div>
+
+						{/* Контент вкладок */}
+						<div className='mt-4'>
+							{activeTab === 'description' && (
 								<div>
-									<strong>Бренд:</strong> {car.manufacturer_name || 'N/A'}
+									{/* Описание авто */}
+									<h2 className='text-2xl font-bold text-orange-500 mb-4 dark:text-orange-400'>
+										Описание авто
+									</h2>
+									<div className='grid grid-cols-2 gap-4 text-gray-700 dark:text-gray-300'>
+										<div>
+											<strong>Бренд:</strong> {car.manufacturer_name || 'N/A'}
+										</div>
+										<div>
+											<strong>Модель:</strong>{' '}
+											{car.title.toUpperCase() || 'N/A'}
+										</div>
+										<div>
+											<strong>Комплектация:</strong>{' '}
+											{car.generation_name || 'N/A'}
+										</div>
+										<div>
+											<strong>Дата регистрации:</strong>{' '}
+											{formatRegistrationDate(car.lots?.first_registration) ||
+												'N/A'}
+										</div>
+										<div>
+											<strong>Пробег:</strong>{' '}
+											{car.lots?.odometer_km?.toLocaleString() || 'N/A'} км
+										</div>
+										<div>
+											<strong>Цвет:</strong>{' '}
+											{colors.filter((item) => item.id === car.color)[0].name ||
+												'N/A'}
+										</div>
+										<div>
+											<strong>Объём двигателя:</strong>{' '}
+											{car.lots?.engine_volume?.toLocaleString() || 'N/A'} cc
+										</div>
+										<div>
+											<strong>КПП:</strong>{' '}
+											{car.transmission_type === 'automatic'
+												? 'Автоматическая'
+												: 'Механическая'}
+										</div>
+										<div>
+											<strong>Тип кузова:</strong>{' '}
+											{car.body_type?.toUpperCase() || 'N/A'}
+										</div>
+										<div>
+											<strong>Год:</strong> {car.year || 'N/A'}
+										</div>
+										<div>
+											<strong>VIN:</strong> {car.vin || 'N/A'}
+										</div>
+									</div>
 								</div>
+							)}
+
+							{activeTab === 'accident' && (
 								<div>
-									<strong>Модель:</strong> {car.title.toUpperCase() || 'N/A'}
+									<h2 className='text-2xl font-bold text-red-500 mb-4 dark:text-red-400'>
+										История ДТП
+									</h2>
+									<p className='text-gray-700 dark:text-gray-300'>
+										<strong>Было ли авто в ДТП:</strong>{' '}
+										{car.lots?.accident_history ||
+										car.lots?.other_damage ||
+										car.lots?.own_damage ? (
+											<>
+												Да, требуется дополнительная проверка. <br />
+												{car.lots?.other_damage && (
+													<span>
+														<strong>Повреждения от других:</strong>{' '}
+														{car.lots.other_damage}
+													</span>
+												)}
+												{car.lots?.own_damage && (
+													<span>
+														<br />
+														<strong>Собственные повреждения:</strong>{' '}
+														{car.lots.own_damage}
+													</span>
+												)}
+												<p className='text-gray-700 dark:text-gray-300'>
+													Для более подробной информации по страховым случаям
+													автомобиля{' '}
+													<a
+														className='text-orange-500 hover:text-orange-700 underline font-bold transition-colors duration-200'
+														target='_blank'
+														rel='noopener noreferrer'
+														href={`https://fem.encar.com/cars/report/accident/${car.lot_encar}`}
+													>
+														нажмите сюда
+													</a>
+												</p>
+											</>
+										) : (
+											'Нет, автомобиль без ДТП'
+										)}
+									</p>
 								</div>
-								<div>
-									<strong>Комплектация:</strong> {car.generation_name || 'N/A'}
-								</div>
-								<div>
-									<strong>Дата регистрации:</strong>{' '}
-									{formatRegistrationDate(car.lots?.first_registration) ||
-										'N/A'}
-								</div>
-								<div>
-									<strong>Пробег:</strong>{' '}
-									{car.lots?.odometer_km?.toLocaleString() || 'N/A'} км
-								</div>
-								<div>
-									<strong>Цвет:</strong> {carColor || 'N/A'}
-								</div>
-								<div>
-									<strong>Объём двигателя:</strong>{' '}
-									{car.lots?.engine_volume?.toLocaleString() || 'N/A'} cc
-								</div>
-								<div>
-									<strong>КПП:</strong>{' '}
-									{car.transmission_type === 'automatic'
-										? 'Автоматическая'
-										: 'Механическая'}
-								</div>
-								<div>
-									<strong>Тип кузова:</strong>{' '}
-									{car.body_type?.toUpperCase() || 'N/A'}
-								</div>
-								<div>
-									<strong>Год:</strong> {car.year || 'N/A'}
-								</div>
-								<div>
-									<strong>VIN:</strong> {car.vin || 'N/A'}
-								</div>
-							</div>
+							)}
 						</div>
 					</div>
 

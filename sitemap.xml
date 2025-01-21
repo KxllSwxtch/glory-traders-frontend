@@ -23,13 +23,4 @@
     <lastmod>2025-01-15T00:00:00+00:00</lastmod>
     <priority>0.60</priority>
   </url>
-  <url>
-    <loc>https://glory-traders.org/</loc>
-    <lastmod>2025-01-15T05:16:40+00:00</lastmod>
-    <priority>1.00</priority>
-    <video:video>
-      <video:content_loc>https://glory-traders.org/assets/herovideo-mGJl-C8m.mp4</video:content_loc>
-      <video:description>Видео для заднего плана для фильтра автомобилей</video:description>
-    </video:video>
-  </url>
 </urlset>

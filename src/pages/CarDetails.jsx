@@ -53,8 +53,6 @@ const CarDetails = () => {
 	// Поиск автомобиля в сторе
 	const car = cars.find((car) => car.id === Number(id))
 
-	console.log(car)
-
 	// Текущее изображение для карусели
 	const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
@@ -438,12 +436,15 @@ const CarDetails = () => {
 	// Выводим цвет автомобиля в текст
 	const carColor = colors.filter((item) => item.id === car.color)[0].name
 
+	const canonicalUrl = `https://www.glory-traders.org/cars/${car.lot_encar}`
+
 	return (
 		<>
 			<Helmet>
 				<title>
 					Купить {car.manufacturer_name} {car.title} - Автомобили из Кореи
 				</title>
+				<link rel='canonical' href={canonicalUrl} />
 				<meta
 					name='keywords'
 					content={`Купить ${car.manufacturer_name} ${car.title}, Автомобили из Кореи, Доставка авто в СНГ`}

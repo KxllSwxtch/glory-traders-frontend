@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Helmet } from 'react-helmet'
 import { useState, useEffect } from 'react'
 import kgsCustomsTable from '../data/kgsCustomsTable'
 
@@ -449,402 +450,413 @@ const CalculatorPage = () => {
 	}
 
 	return (
-		<div className='container mx-auto px-4 py-8 bg-white dark:bg-gray-900 shadow-md rounded-lg max-w-3xl'>
-			<h1 className='text-3xl font-bold text-center mb-8 mt-6 text-gray-900 dark:text-white'>
-				Расчет стоимости авто
-			</h1>
+		<>
+			<Helmet>
+				<title>Glory Traders | Калькулятор</title>
+				<link rel='canonical' href='https://www.glory-traders.org/calculator' />
+				<meta
+					name='description'
+					content='Рассчитайте стоимость доставки автомобиля из Кореи в СНГ с помощью калькулятора Glory Traders.'
+				/>
+			</Helmet>
+			<div className='container mx-auto px-4 py-8 bg-white dark:bg-gray-900 shadow-md rounded-lg max-w-3xl'>
+				<h1 className='text-3xl font-bold text-center mb-8 mt-6 text-gray-900 dark:text-white'>
+					Расчет стоимости авто
+				</h1>
 
-			{/* Форма */}
-			<div className='space-y-6'>
-				{/* Выбор страны */}
-				<div className='flex flex-col mb-6'>
-					<label className='font-semibold mb-2 text-gray-800 dark:text-gray-300'>
-						Выберите страну
-					</label>
-					<select
-						value={country}
-						onChange={(e) => {
-							setCountry(e.target.value)
-							setPrice('')
-							setAge('')
-							setEngineType('')
-							setEngineVolume('')
-							setCarYear(0)
-							setCarType('')
-							setResult(null)
-						}}
-						className='border p-2 rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600'
-					>
-						<option value='Россия'>Россия</option>
-						<option value='Казахстан'>Казахстан</option>
-						<option value='Кыргызстан'>Кыргызстан</option>
-						{/* <option value='Узбекистан'>Узбекистан</option> */}
-					</select>
-				</div>
-				{/* Цена авто */}
-				<div className='flex flex-col'>
-					<label className='font-semibold mb-2 text-gray-800 dark:text-gray-300'>
-						Цена авто
-					</label>
-					<p className='text-gray-600 dark:text-gray-400'>
-						Примерная цена: {convertPriceToCurrency(price, currency)}{' '}
-						{getCurrencySymbol(currency)}
-					</p>
-					<div className='flex'>
-						<input
-							type='text'
-							value={price}
-							onChange={handlePriceChange}
-							placeholder='Введите цену в корейских вонах (например: 25000000)'
-							className='border p-2 rounded-l w-full text-gray-900 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500'
-						/>
-					</div>
-				</div>
-				{/* Возраст авто */}
-				{country !== 'Кыргызстан' && (
-					<div>
-						<label className='block text-lg font-medium mb-2 text-gray-800 dark:text-gray-300'>
-							Возраст авто
+				{/* Форма */}
+				<div className='space-y-6'>
+					{/* Выбор страны */}
+					<div className='flex flex-col mb-6'>
+						<label className='font-semibold mb-2 text-gray-800 dark:text-gray-300'>
+							Выберите страну
 						</label>
-						<div className='flex flex-col gap-2'>
-							<button
-								className={`p-3 rounded-lg ${
-									age === 'до 3 лет'
-										? 'bg-orange-500 text-white'
-										: 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
-								}`}
-								onClick={() => setAge('до 3 лет')}
-								disabled={!isPriceEntered}
-							>
-								До 3 лет
-							</button>
-							<button
-								className={`p-3 rounded-lg ${
-									age === 'От 3 до 5 лет'
-										? 'bg-orange-500 text-white'
-										: 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
-								}`}
-								onClick={() => setAge('От 3 до 5 лет')}
-								disabled={!isPriceEntered}
-							>
-								От 3 до 5 лет
-							</button>
-							<button
-								className={`p-3 rounded-lg ${
-									age === 'Старше 5 лет'
-										? 'bg-orange-500 text-white'
-										: 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
-								}`}
-								onClick={() => setAge('Старше 5 лет')}
-								disabled={!isPriceEntered}
-							>
-								Старше 5 лет
-							</button>
+						<select
+							value={country}
+							onChange={(e) => {
+								setCountry(e.target.value)
+								setPrice('')
+								setAge('')
+								setEngineType('')
+								setEngineVolume('')
+								setCarYear(0)
+								setCarType('')
+								setResult(null)
+							}}
+							className='border p-2 rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600'
+						>
+							<option value='Россия'>Россия</option>
+							<option value='Казахстан'>Казахстан</option>
+							<option value='Кыргызстан'>Кыргызстан</option>
+							{/* <option value='Узбекистан'>Узбекистан</option> */}
+						</select>
+					</div>
+					{/* Цена авто */}
+					<div className='flex flex-col'>
+						<label className='font-semibold mb-2 text-gray-800 dark:text-gray-300'>
+							Цена авто
+						</label>
+						<p className='text-gray-600 dark:text-gray-400'>
+							Примерная цена: {convertPriceToCurrency(price, currency)}{' '}
+							{getCurrencySymbol(currency)}
+						</p>
+						<div className='flex'>
+							<input
+								type='text'
+								value={price}
+								onChange={handlePriceChange}
+								placeholder='Введите цену в корейских вонах (например: 25000000)'
+								className='border p-2 rounded-l w-full text-gray-900 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500'
+							/>
 						</div>
 					</div>
-				)}
+					{/* Возраст авто */}
+					{country !== 'Кыргызстан' && (
+						<div>
+							<label className='block text-lg font-medium mb-2 text-gray-800 dark:text-gray-300'>
+								Возраст авто
+							</label>
+							<div className='flex flex-col gap-2'>
+								<button
+									className={`p-3 rounded-lg ${
+										age === 'до 3 лет'
+											? 'bg-orange-500 text-white'
+											: 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+									}`}
+									onClick={() => setAge('до 3 лет')}
+									disabled={!isPriceEntered}
+								>
+									До 3 лет
+								</button>
+								<button
+									className={`p-3 rounded-lg ${
+										age === 'От 3 до 5 лет'
+											? 'bg-orange-500 text-white'
+											: 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+									}`}
+									onClick={() => setAge('От 3 до 5 лет')}
+									disabled={!isPriceEntered}
+								>
+									От 3 до 5 лет
+								</button>
+								<button
+									className={`p-3 rounded-lg ${
+										age === 'Старше 5 лет'
+											? 'bg-orange-500 text-white'
+											: 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+									}`}
+									onClick={() => setAge('Старше 5 лет')}
+									disabled={!isPriceEntered}
+								>
+									Старше 5 лет
+								</button>
+							</div>
+						</div>
+					)}
 
-				{/* Поля для Кыргызстана */}
-				{country === 'Кыргызстан' && (
-					<>
-						{/* Год автомобиля */}
-						<div className='flex flex-col'>
-							<label className='font-semibold mb-2 text-gray-800 dark:text-gray-300'>
-								Год автомобиля
+					{/* Поля для Кыргызстана */}
+					{country === 'Кыргызстан' && (
+						<>
+							{/* Год автомобиля */}
+							<div className='flex flex-col'>
+								<label className='font-semibold mb-2 text-gray-800 dark:text-gray-300'>
+									Год автомобиля
+								</label>
+								<input
+									type='number'
+									value={carYear}
+									onChange={(e) => setCarYear(e.target.value)}
+									placeholder='Введите год выпуска авто (например: 2020)'
+									className='border p-2 rounded w-full text-gray-900 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500'
+								/>
+							</div>
+
+							{/* Тип кузова */}
+							<div className='flex flex-col'>
+								<label className='font-semibold mb-2 text-gray-800 dark:text-gray-300'>
+									Тип кузова
+								</label>
+								<select
+									value={carType}
+									onChange={(e) => setCarType(e.target.value)}
+									className='border p-2 rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600'
+								>
+									<option value=''>Выберите тип кузова</option>
+									<option value='Седан'>Седан</option>
+									<option value='Кроссовер'>Кроссовер</option>
+									<option value='Габаритный авто'>Габаритный авто</option>
+								</select>
+							</div>
+						</>
+					)}
+
+					{/* Тип двигателя */}
+					{country !== 'Кыргызстан' && (
+						<div>
+							<label className='block text-lg font-medium mb-2 text-gray-800 dark:text-gray-300'>
+								Тип двигателя
+							</label>
+							<div className='flex flex-col gap-2'>
+								<button
+									className={`p-3 rounded-lg ${
+										engineType === 'Бензин или дизель'
+											? 'bg-orange-500 text-white'
+											: 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+									}`}
+									onClick={() => setEngineType('Бензин или дизель')}
+									disabled={!isPriceEntered || !age}
+								>
+									Бензин или дизель
+								</button>
+								<button
+									className={`p-3 rounded-lg ${
+										engineType === 'Электро'
+											? 'bg-orange-500 text-white'
+											: 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
+									}`}
+									onClick={() => setEngineType('Электро')}
+									disabled={!isPriceEntered || !age}
+								>
+									Электро
+								</button>
+							</div>
+						</div>
+					)}
+
+					{/* Объем двигателя или Лошадиные силы */}
+					{(engineType === 'Бензин или дизель' || country === 'Кыргызстан') && (
+						<div>
+							<label className='block text-lg font-medium mb-2 text-gray-800 dark:text-gray-300'>
+								Объем двигателя (см³)
 							</label>
 							<input
 								type='number'
-								value={carYear}
-								onChange={(e) => setCarYear(e.target.value)}
-								placeholder='Введите год выпуска авто (например: 2020)'
-								className='border p-2 rounded w-full text-gray-900 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500'
+								value={engineVolume}
+								onChange={(e) => setEngineVolume(e.target.value)}
+								placeholder='Введите объем'
+								className='w-full p-3 border rounded-lg text-gray-900 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500'
 							/>
 						</div>
+					)}
 
-						{/* Тип кузова */}
-						<div className='flex flex-col'>
-							<label className='font-semibold mb-2 text-gray-800 dark:text-gray-300'>
-								Тип кузова
+					{engineType === 'Электро' && (
+						<div>
+							<label className='block text-lg font-medium mb-2 text-gray-800 dark:text-gray-300'>
+								Мощность (л.с.)
 							</label>
-							<select
-								value={carType}
-								onChange={(e) => setCarType(e.target.value)}
-								className='border p-2 rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600'
-							>
-								<option value=''>Выберите тип кузова</option>
-								<option value='Седан'>Седан</option>
-								<option value='Кроссовер'>Кроссовер</option>
-								<option value='Габаритный авто'>Габаритный авто</option>
-							</select>
-						</div>
-					</>
-				)}
-
-				{/* Тип двигателя */}
-				{country !== 'Кыргызстан' && (
-					<div>
-						<label className='block text-lg font-medium mb-2 text-gray-800 dark:text-gray-300'>
-							Тип двигателя
-						</label>
-						<div className='flex flex-col gap-2'>
-							<button
-								className={`p-3 rounded-lg ${
-									engineType === 'Бензин или дизель'
-										? 'bg-orange-500 text-white'
-										: 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
-								}`}
-								onClick={() => setEngineType('Бензин или дизель')}
-								disabled={!isPriceEntered || !age}
-							>
-								Бензин или дизель
-							</button>
-							<button
-								className={`p-3 rounded-lg ${
-									engineType === 'Электро'
-										? 'bg-orange-500 text-white'
-										: 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-300'
-								}`}
-								onClick={() => setEngineType('Электро')}
-								disabled={!isPriceEntered || !age}
-							>
-								Электро
-							</button>
-						</div>
-					</div>
-				)}
-
-				{/* Объем двигателя или Лошадиные силы */}
-				{(engineType === 'Бензин или дизель' || country === 'Кыргызстан') && (
-					<div>
-						<label className='block text-lg font-medium mb-2 text-gray-800 dark:text-gray-300'>
-							Объем двигателя (см³)
-						</label>
-						<input
-							type='number'
-							value={engineVolume}
-							onChange={(e) => setEngineVolume(e.target.value)}
-							placeholder='Введите объем'
-							className='w-full p-3 border rounded-lg text-gray-900 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500'
-						/>
-					</div>
-				)}
-
-				{engineType === 'Электро' && (
-					<div>
-						<label className='block text-lg font-medium mb-2 text-gray-800 dark:text-gray-300'>
-							Мощность (л.с.)
-						</label>
-						<input
-							type='number'
-							value={horsePower}
-							onChange={(e) => setHorsePower(e.target.value)}
-							placeholder='Введите мощность'
-							className='w-full p-3 border rounded-lg text-gray-900 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500'
-						/>
-					</div>
-				)}
-
-				{/* Кнопка расчета */}
-				{country === 'Кыргызстан' ? (
-					<button
-						onClick={calculatePrice}
-						className='w-full bg-orange-500 text-white py-3 rounded-lg text-lg font-medium hover:bg-orange-600 transition dark:bg-orange-600 dark:hover:bg-orange-700'
-						disabled={!isPriceEntered || !carYear || !carType || !engineVolume}
-					>
-						Рассчитать стоимость
-					</button>
-				) : (
-					<button
-						onClick={calculatePrice}
-						className='w-full bg-orange-500 text-white py-3 rounded-lg text-lg font-medium hover:bg-orange-600 transition dark:bg-orange-600 dark:hover:bg-orange-700'
-						disabled={!isPriceEntered || !age || !engineType}
-					>
-						Рассчитать стоимость
-					</button>
-				)}
-			</div>
-
-			{/* Результаты расчёта */}
-			{result && (
-				<div className='bg-gray-50 dark:bg-gray-800 p-6 rounded-lg mt-8 shadow-md space-y-6'>
-					{/* Итоговая цена */}
-					<div className='bg-yellow-100 dark:bg-yellow-400 p-4 rounded-md'>
-						<h2 className='text-xl font-bold text-gray-900 dark:text-black text-center'>
-							Примерная цена с доставкой из Кореи
-						</h2>
-						<p className='text-3xl font-bold text-orange-600 mt-2 text-center'>
-							{result.totalMax ? result.totalMin.split('.')[0] : '—'}{' '}
-							{getCurrencySymbol(currency)}
-						</p>
-					</div>
-
-					{/* Детали расчёта для выбранной страны */}
-					{country === 'Россия' && (
-						<div>
-							<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
-								Расчёт для России
-							</h3>
-							<ul className='mt-4 space-y-2'>
-								{/* Пошлина и сборы */}
-								<li className='flex justify-between'>
-									<span>Таможенный сбор</span>
-									<span>
-										{result.details.customsProcessingFee
-											? result.details.customsProcessingFee.split('.')[0]
-											: '—'}{' '}
-										{getCurrencySymbol(currency)}
-									</span>
-								</li>
-								<li className='flex justify-between'>
-									<span>Таможенный пошлина</span>
-									<span>
-										{result.details.customsFee
-											? result.details.customsFee.split('.')[0]
-											: '—'}{' '}
-										{getCurrencySymbol(currency)}
-									</span>
-								</li>
-								<li className='flex justify-between'>
-									<span>Утилизационный сбор</span>
-									<span>
-										{result.details.recyclingFee
-											? result.details.recyclingFee.split('.')[0]
-											: '—'}{' '}
-										{getCurrencySymbol(currency)}
-									</span>
-								</li>
-
-								{/* Логистика по Корее */}
-								<li className='flex justify-between'>
-									<span>Логистика до Владивостока</span>
-									<span>
-										{result.details.logisticsKorea
-											? result.details.logisticsKorea.split('.')[0]
-											: '—'}{' '}
-										{getCurrencySymbol(currency)}
-									</span>
-								</li>
-								<li className='flex justify-between'>
-									<span>Комиссия компании в Корее</span>
-									<span>
-										{result.details.companyFeeKorea
-											? result.details.companyFeeKorea.split('.')[0]
-											: '—'}{' '}
-										{getCurrencySymbol(currency)}
-									</span>
-								</li>
-
-								{/* Расходы по оформлению в РФ */}
-								<li className='flex justify-between'>
-									<span>
-										Услуги брокера, СВХ, лаборатория, получение ЭСБГТС и ЭПТС
-									</span>
-									<span>
-										{result.details.localExpensesMin} –{' '}
-										{result.details.localExpensesMax}{' '}
-										{getCurrencySymbol(currency)}
-									</span>
-								</li>
-
-								{/* Логистика по РФ */}
-								<li className='flex justify-between'>
-									<span>Логистика по РФ (Владивосток → Москва)</span>
-									<span>
-										{result.details.deliveryCostMin} –{' '}
-										{result.details.deliveryCostMax}{' '}
-										{getCurrencySymbol(currency)}
-									</span>
-								</li>
-							</ul>
+							<input
+								type='number'
+								value={horsePower}
+								onChange={(e) => setHorsePower(e.target.value)}
+								placeholder='Введите мощность'
+								className='w-full p-3 border rounded-lg text-gray-900 bg-white dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500'
+							/>
 						</div>
 					)}
 
-					{/* Детали расчёта для Казахстана */}
-					{country === 'Казахстан' && (
-						<div>
-							<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
-								Расчёт для Казахстана
-							</h3>
-							<ul className='mt-4 space-y-2'>
-								<li className='flex justify-between'>
-									<span>НДС</span>
-									<span>
-										{result.details.vat
-											? result.details.vat.split('.')[0]
-											: '—'}{' '}
-										{getCurrencySymbol(currency)}
-									</span>
-								</li>
-								<li className='flex justify-between'>
-									<span>Акцизный сбор</span>
-									<span>
-										{result.details.exciseFee
-											? result.details.exciseFee.split('.')[0]
-											: '—'}{' '}
-										{getCurrencySymbol(currency)}
-									</span>
-								</li>
-								<li className='flex justify-between'>
-									<span>Брокерские услуги</span>
-									<span>
-										{result.details.brokerFee
-											? result.details.brokerFee.split('.')[0]
-											: '—'}{' '}
-										{getCurrencySymbol(currency)}
-									</span>
-								</li>
-								<li className='flex justify-between'>
-									<span>Доставка и фрахт</span>
-									<span>
-										{result.details.deliveryFee
-											? result.details.deliveryFee.split('.')[0]
-											: '—'}{' '}
-										{getCurrencySymbol(currency)}
-									</span>
-								</li>
-								<li className='flex justify-between'>
-									<span>Сертификация (СБКТС)</span>
-									<span>
-										{result.details.sbktsFee
-											? result.details.sbktsFee.split('.')[0]
-											: '—'}{' '}
-										{getCurrencySymbol(currency)}
-									</span>
-								</li>
-							</ul>
-						</div>
+					{/* Кнопка расчета */}
+					{country === 'Кыргызстан' ? (
+						<button
+							onClick={calculatePrice}
+							className='w-full bg-orange-500 text-white py-3 rounded-lg text-lg font-medium hover:bg-orange-600 transition dark:bg-orange-600 dark:hover:bg-orange-700'
+							disabled={
+								!isPriceEntered || !carYear || !carType || !engineVolume
+							}
+						>
+							Рассчитать стоимость
+						</button>
+					) : (
+						<button
+							onClick={calculatePrice}
+							className='w-full bg-orange-500 text-white py-3 rounded-lg text-lg font-medium hover:bg-orange-600 transition dark:bg-orange-600 dark:hover:bg-orange-700'
+							disabled={!isPriceEntered || !age || !engineType}
+						>
+							Рассчитать стоимость
+						</button>
 					)}
+				</div>
 
-					{/* Детали расчёта для Кыргызстана */}
-					{country === 'Кыргызстан' && (
-						<div>
-							<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
-								Расчёт для Кыргызстана
-							</h3>
-							<ul className='mt-4 space-y-2'>
-								<li className='flex justify-between'>
-									<span>Таможенный сбор</span>
-									<span>
-										{result.details.customsFee} {getCurrencySymbol(currency)}
-									</span>
-								</li>
-								<li className='flex justify-between'>
-									<span>Сертификация</span>
-									<span>
-										{result.details.sbktsFee} {getCurrencySymbol(currency)}
-									</span>
-								</li>
-								<li className='flex justify-between'>
-									<span>Доставка</span>
-									<span>
-										{result.details.deliveryFee} {getCurrencySymbol(currency)}
-									</span>
-								</li>
-							</ul>
+				{/* Результаты расчёта */}
+				{result && (
+					<div className='bg-gray-50 dark:bg-gray-800 p-6 rounded-lg mt-8 shadow-md space-y-6'>
+						{/* Итоговая цена */}
+						<div className='bg-yellow-100 dark:bg-yellow-400 p-4 rounded-md'>
+							<h2 className='text-xl font-bold text-gray-900 dark:text-black text-center'>
+								Примерная цена с доставкой из Кореи
+							</h2>
+							<p className='text-3xl font-bold text-orange-600 mt-2 text-center'>
+								{result.totalMax ? result.totalMin.split('.')[0] : '—'}{' '}
+								{getCurrencySymbol(currency)}
+							</p>
 						</div>
-					)}
 
-					{/* {country === 'Узбекистан' && (
+						{/* Детали расчёта для выбранной страны */}
+						{country === 'Россия' && (
+							<div>
+								<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
+									Расчёт для России
+								</h3>
+								<ul className='mt-4 space-y-2'>
+									{/* Пошлина и сборы */}
+									<li className='flex justify-between'>
+										<span>Таможенный сбор</span>
+										<span>
+											{result.details.customsProcessingFee
+												? result.details.customsProcessingFee.split('.')[0]
+												: '—'}{' '}
+											{getCurrencySymbol(currency)}
+										</span>
+									</li>
+									<li className='flex justify-between'>
+										<span>Таможенный пошлина</span>
+										<span>
+											{result.details.customsFee
+												? result.details.customsFee.split('.')[0]
+												: '—'}{' '}
+											{getCurrencySymbol(currency)}
+										</span>
+									</li>
+									<li className='flex justify-between'>
+										<span>Утилизационный сбор</span>
+										<span>
+											{result.details.recyclingFee
+												? result.details.recyclingFee.split('.')[0]
+												: '—'}{' '}
+											{getCurrencySymbol(currency)}
+										</span>
+									</li>
+
+									{/* Логистика по Корее */}
+									<li className='flex justify-between'>
+										<span>Логистика до Владивостока</span>
+										<span>
+											{result.details.logisticsKorea
+												? result.details.logisticsKorea.split('.')[0]
+												: '—'}{' '}
+											{getCurrencySymbol(currency)}
+										</span>
+									</li>
+									<li className='flex justify-between'>
+										<span>Комиссия компании в Корее</span>
+										<span>
+											{result.details.companyFeeKorea
+												? result.details.companyFeeKorea.split('.')[0]
+												: '—'}{' '}
+											{getCurrencySymbol(currency)}
+										</span>
+									</li>
+
+									{/* Расходы по оформлению в РФ */}
+									<li className='flex justify-between'>
+										<span>
+											Услуги брокера, СВХ, лаборатория, получение ЭСБГТС и ЭПТС
+										</span>
+										<span>
+											{result.details.localExpensesMin} –{' '}
+											{result.details.localExpensesMax}{' '}
+											{getCurrencySymbol(currency)}
+										</span>
+									</li>
+
+									{/* Логистика по РФ */}
+									<li className='flex justify-between'>
+										<span>Логистика по РФ (Владивосток → Москва)</span>
+										<span>
+											{result.details.deliveryCostMin} –{' '}
+											{result.details.deliveryCostMax}{' '}
+											{getCurrencySymbol(currency)}
+										</span>
+									</li>
+								</ul>
+							</div>
+						)}
+
+						{/* Детали расчёта для Казахстана */}
+						{country === 'Казахстан' && (
+							<div>
+								<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
+									Расчёт для Казахстана
+								</h3>
+								<ul className='mt-4 space-y-2'>
+									<li className='flex justify-between'>
+										<span>НДС</span>
+										<span>
+											{result.details.vat
+												? result.details.vat.split('.')[0]
+												: '—'}{' '}
+											{getCurrencySymbol(currency)}
+										</span>
+									</li>
+									<li className='flex justify-between'>
+										<span>Акцизный сбор</span>
+										<span>
+											{result.details.exciseFee
+												? result.details.exciseFee.split('.')[0]
+												: '—'}{' '}
+											{getCurrencySymbol(currency)}
+										</span>
+									</li>
+									<li className='flex justify-between'>
+										<span>Брокерские услуги</span>
+										<span>
+											{result.details.brokerFee
+												? result.details.brokerFee.split('.')[0]
+												: '—'}{' '}
+											{getCurrencySymbol(currency)}
+										</span>
+									</li>
+									<li className='flex justify-between'>
+										<span>Доставка и фрахт</span>
+										<span>
+											{result.details.deliveryFee
+												? result.details.deliveryFee.split('.')[0]
+												: '—'}{' '}
+											{getCurrencySymbol(currency)}
+										</span>
+									</li>
+									<li className='flex justify-between'>
+										<span>Сертификация (СБКТС)</span>
+										<span>
+											{result.details.sbktsFee
+												? result.details.sbktsFee.split('.')[0]
+												: '—'}{' '}
+											{getCurrencySymbol(currency)}
+										</span>
+									</li>
+								</ul>
+							</div>
+						)}
+
+						{/* Детали расчёта для Кыргызстана */}
+						{country === 'Кыргызстан' && (
+							<div>
+								<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
+									Расчёт для Кыргызстана
+								</h3>
+								<ul className='mt-4 space-y-2'>
+									<li className='flex justify-between'>
+										<span>Таможенный сбор</span>
+										<span>
+											{result.details.customsFee} {getCurrencySymbol(currency)}
+										</span>
+									</li>
+									<li className='flex justify-between'>
+										<span>Сертификация</span>
+										<span>
+											{result.details.sbktsFee} {getCurrencySymbol(currency)}
+										</span>
+									</li>
+									<li className='flex justify-between'>
+										<span>Доставка</span>
+										<span>
+											{result.details.deliveryFee} {getCurrencySymbol(currency)}
+										</span>
+									</li>
+								</ul>
+							</div>
+						)}
+
+						{/* {country === 'Узбекистан' && (
 						<div>
 							<h3 className='text-lg font-bold text-gray-900 dark:text-white'>
 								Расчёт для Узбекистана
@@ -874,14 +886,15 @@ const CalculatorPage = () => {
 						</div>
 					)} */}
 
-					{/* Примечание */}
-					<p className='text-sm text-gray-500 dark:text-gray-400 mt-6'>
-						Цены варьируются в зависимости от курса валют и выбранной компании.
-						Итоговая цена может изменяться.
-					</p>
-				</div>
-			)}
-		</div>
+						{/* Примечание */}
+						<p className='text-sm text-gray-500 dark:text-gray-400 mt-6'>
+							Цены варьируются в зависимости от курса валют и выбранной
+							компании. Итоговая цена может изменяться.
+						</p>
+					</div>
+				)}
+			</div>
+		</>
 	)
 }
 

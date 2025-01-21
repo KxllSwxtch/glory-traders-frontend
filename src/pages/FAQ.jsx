@@ -1,3 +1,5 @@
+import { Helmet } from 'react-helmet'
+
 const FAQ = () => {
 	const faqData = [
 		{
@@ -33,17 +35,23 @@ const FAQ = () => {
 	]
 
 	return (
-		<div className='max-w-4xl mx-auto p-6'>
-			<h1 className='text-3xl font-bold text-center mb-8'>
-				Часто задаваемые вопросы (FAQ)
-			</h1>
-			{faqData.map((faq, index) => (
-				<div key={index} className='mb-6'>
-					<h2 className='text-xl font-semibold mb-2'>{faq.question}</h2>
-					<p className='text-gray-700 dark:text-gray-300'>{faq.answer}</p>
-				</div>
-			))}
-		</div>
+		<>
+			<Helmet>
+				<link rel='canonical' href='https://glory-traders.org/faq' />
+			</Helmet>
+
+			<div className='max-w-4xl mx-auto p-6'>
+				<h1 className='text-3xl font-bold text-center mb-8'>
+					Часто задаваемые вопросы (FAQ)
+				</h1>
+				{faqData.map((faq, index) => (
+					<div key={index} className='mb-6'>
+						<h2 className='text-xl font-semibold mb-2'>{faq.question}</h2>
+						<p className='text-gray-700 dark:text-gray-300'>{faq.answer}</p>
+					</div>
+				))}
+			</div>
+		</>
 	)
 }
 

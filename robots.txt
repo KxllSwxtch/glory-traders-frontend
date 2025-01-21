@@ -3,6 +3,8 @@ Disallow: /admin/
 Disallow: /login/
 Disallow: /api/
 Allow: /
+Allow: /catalog
+Allow: /faq
 
 # Увеличение скорости сканирования
 Crawl-delay: 10

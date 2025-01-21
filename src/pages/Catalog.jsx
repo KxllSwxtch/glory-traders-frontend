@@ -1,10 +1,17 @@
+import { Helmet } from 'react-helmet'
 import { CarList } from '../components'
 
 const Catalog = () => {
 	return (
-		<div className='container mx-auto px-4 py-8'>
-			<CarList />
-		</div>
+		<>
+			<Helmet>
+				<link rel='canonical' href='https://glory-traders.org/catalog' />
+			</Helmet>
+
+			<div className='container mx-auto px-4 py-8'>
+				<CarList />
+			</div>
+		</>
 	)
 }
 

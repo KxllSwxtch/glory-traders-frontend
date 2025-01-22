@@ -458,6 +458,7 @@ const CalculatorPage = () => {
 					name='description'
 					content='Рассчитайте стоимость доставки автомобиля из Кореи в СНГ с помощью калькулятора Glory Traders.'
 				/>
+				<meta name='robots' content='index, follow' />
 			</Helmet>
 			<div className='container mx-auto px-4 py-8 bg-white dark:bg-gray-900 shadow-md rounded-lg max-w-3xl'>
 				<h1 className='text-3xl font-bold text-center mb-8 mt-6 text-gray-900 dark:text-white'>

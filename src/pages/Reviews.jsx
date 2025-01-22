@@ -1,5 +1,4 @@
 import { Helmet } from 'react-helmet'
-import { Loader } from '../components'
 
 const reviewURLS = [
 	'https://res.cloudinary.com/pomegranitedesign/video/upload/v1737510897/GloryTraders/reviews/review_1.mp4',
@@ -16,6 +15,7 @@ const Reviews = () => {
 					name='description'
 					content='Наши кейсы и отзывы от клиентов по автомобилям из Кореи'
 				/>
+				<meta name='robots' content='index, follow' />
 			</Helmet>
 			<div className='container mx-auto p-4'>
 				{/* Заголовок */}

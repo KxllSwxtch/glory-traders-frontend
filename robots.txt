@@ -5,6 +5,7 @@ Disallow: /api/
 Allow: /
 Allow: /catalog
 Allow: /faq
+Allow: /calculator
 
 # Увеличение скорости сканирования
 Crawl-delay: 10

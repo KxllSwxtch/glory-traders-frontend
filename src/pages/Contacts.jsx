@@ -13,6 +13,7 @@ const Contacts = () => {
 					name='description'
 					content='Свяжитесь с Glory Traders для расчета доставки автомобилей из Кореи.'
 				/>
+				<meta name='robots' content='index, follow' />
 			</Helmet>
 			<section className='px-6 py-12 max-w-6xl mx-auto'>
 				<h1 className='text-4xl font-bold mb-8 text-center'>Контакты</h1>

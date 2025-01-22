@@ -38,6 +38,7 @@ const FAQ = () => {
 		<>
 			<Helmet>
 				<link rel='canonical' href='https://glory-traders.org/faq' />
+				<meta name='robots' content='index, follow' />
 			</Helmet>
 
 			<div className='max-w-4xl mx-auto p-6'>

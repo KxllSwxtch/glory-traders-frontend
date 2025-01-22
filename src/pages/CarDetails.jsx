@@ -457,6 +457,7 @@ const CarDetails = () => {
 						car.lots?.engine_volume
 					} см³. Цена: ${carCostDetails.totalCost.toLocaleString()} ₽. Доставка из Кореи.`}
 				/>
+				<meta name='robots' content='index, follow' />
 			</Helmet>
 			<div className='container mx-auto p-4 dark:bg-gray-900 dark:text-white'>
 				<div className='flex flex-wrap'>

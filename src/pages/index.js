@@ -5,4 +5,14 @@ import CarDetails from './CarDetails'
 import PrivacyPolicy from './PrivacyPolicy'
 import Calculator from './Calculator'
 import FAQ from './FAQ'
-export { Home, Contacts, Catalog, CarDetails, PrivacyPolicy, Calculator, FAQ }
+import Reviews from './Reviews'
+export {
+	Home,
+	Contacts,
+	Catalog,
+	CarDetails,
+	PrivacyPolicy,
+	Calculator,
+	FAQ,
+	Reviews,
+}

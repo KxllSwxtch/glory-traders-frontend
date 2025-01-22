@@ -67,6 +67,12 @@ const Header = () => {
 					>
 						FAQ
 					</Link>
+					<Link
+						to='/reviews'
+						className='text-white hover:text-gray-400 font-medium transition'
+					>
+						Отзывы
+					</Link>
 					{/* Кнопка "Оставить заявку" */}
 					<button
 						onClick={() => setIsModalOpen(true)}
@@ -238,6 +244,15 @@ const Header = () => {
 						className='text-xl font-semibold hover:text-gray-300'
 					>
 						Калькулятор
+					</Link>
+					<Link to='/faq' className='text-xl font-semibold hover:text-gray-300'>
+						FAQ
+					</Link>
+					<Link
+						to='/reviews'
+						className='text-xl font-semibold hover:text-gray-300'
+					>
+						Отзывы
 					</Link>
 					{/* Кнопка "Оставить заявку" */}
 					<button

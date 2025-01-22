@@ -1,10 +1,4 @@
-import { Helmet } from 'react-helmet'
-import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-	useLocation,
-} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Header, Footer, ScrollToTop } from './components'
 import {
 	Home,
@@ -14,6 +8,7 @@ import {
 	PrivacyPolicy,
 	Calculator,
 	FAQ,
+	Reviews,
 } from './pages'
 
 const App = () => {
@@ -33,6 +28,7 @@ const App = () => {
 							<Route path='/privacy-policy' element={<PrivacyPolicy />} />
 							<Route path='/calculator' element={<Calculator />} />
 							<Route path='/faq' element={<FAQ />} />
+							<Route path='/reviews' element={<Reviews />} />
 						</Routes>
 					</div>
 				</main>

@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa'
-import HEROVIDEO_SRC from '../assets/herovideo.mp4'
 import manufacturers from '../data/manufacturers'
 import models from '../data/models'
 import generations from '../data/generations'
@@ -134,7 +133,7 @@ const HeroSection = () => {
 				{/* Видео на заднем плане */}
 				<video
 					className='absolute inset-0 w-full h-full object-cover'
-					src={HEROVIDEO_SRC}
+					src='https://res.cloudinary.com/pomegranitedesign/video/upload/v1737511209/GloryTraders/herovideo.mp4'
 					loop
 					playsInline
 					autoPlay

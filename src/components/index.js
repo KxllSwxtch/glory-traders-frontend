@@ -9,6 +9,7 @@ import ScrollToTop from './ScrollToTop'
 import Loader from './Loader'
 import Modal from './Modal'
 import ThemeToggle from './ThemeToggle'
+import WhyUs from './WhyUs'
 export {
 	ThemeToggle,
 	CarList,
@@ -21,4 +22,5 @@ export {
 	AdvantagesSection,
 	ScrollToTop,
 	Loader,
+	WhyUs,
 }

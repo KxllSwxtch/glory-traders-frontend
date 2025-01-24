@@ -123,7 +123,7 @@ const HeroSection = () => {
 				<div className='absolute inset-0 bg-black bg-opacity-50'></div>
 				{/* Контент поверх видео */}
 				<div className='relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-4'>
-					<h1 className='text-4xl font-bold mb-4 mt-10'>
+					<h1 className='text-4xl font-bold mb-4 mt-10' id='herosection'>
 						Автомобили из Южной Кореи под заказ
 					</h1>
 					<p className='text-lg mb-6'>

@@ -3,6 +3,7 @@ import {
 	OrderProcessSection,
 	SocialMediaSection,
 	AdvantagesSection,
+	WhyUs,
 } from '../components'
 
 const HomePage = () => {
@@ -10,6 +11,7 @@ const HomePage = () => {
 		<div className='homepage'>
 			<HeroSection />
 			<OrderProcessSection />
+			<WhyUs />
 			<SocialMediaSection />
 			<AdvantagesSection />
 		</div>

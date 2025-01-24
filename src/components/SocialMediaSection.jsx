@@ -42,9 +42,9 @@ const SocialMediaSection = () => {
 		<section className='py-16 bg-gray-100 dark:bg-gray-800 transition-colors duration-300'>
 			<div className='container mx-auto text-center'>
 				{/* Заголовок */}
-				<h2 className='text-2xl font-bold text-orange-600 dark:text-orange-400 mb-8'>
+				<h1 className='text-2xl font-bold text-orange-600 dark:text-orange-400 mb-8'>
 					Следите за Glory Traders в социальных сетях
-				</h2>
+				</h1>
 
 				{/* Иконки */}
 				<div className='flex justify-center space-x-8'>

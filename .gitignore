@@ -1,5 +1,4 @@
 # Logs
-dist/
 logs
 *.log
 npm-debug.log*
@@ -8,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+dist/
 node_modules
 *.local
 

@@ -232,7 +232,7 @@ const CarList = () => {
 			<div
 				className={`mb-10 transition-all duration-300 lg:w-1/4 lg:block ${
 					isFiltersOpen ? 'max-h-screen' : 'max-h-0 overflow-hidden'
-				} lg:max-h-none lg:border-r lg:pr-4 dark:lg:border-gray-700`}
+				} lg:max-h-none lg:pr-4 dark:lg:border-gray-700`}
 			>
 				<div className='p-4 border rounded-lg bg-gray-100 lg:bg-white lg:border-0 dark:bg-gray-800 dark:border-gray-700'>
 					<h2 className='text-lg font-bold mb-4 text-black dark:text-white'>

@@ -74,7 +74,7 @@ const Footer = () => {
 
 				{/* Copyright */}
 				<p className='text-center text-gray-500 text-sm mt-4'>
-					© 2024 Glory Traders
+					© {new Date().getFullYear()} Glory Traders
 				</p>
 			</div>
 		</footer>

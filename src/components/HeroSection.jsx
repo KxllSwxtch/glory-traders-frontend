@@ -106,29 +106,6 @@ const HeroSection = () => {
 
 	return (
 		<>
-			<script type='application/ld+json'>
-				{`
-          {
-            "@context": "https://schema.org",
-            "@type": "VideoObject",
-            "name": "Автомобили из Южной Кореи",
-            "description": "Заказывайте автомобили только у Glory Traders",
-            "thumbnailUrl": "https://glory-traders.org/assets/video-thumbnail.jpg",
-            "uploadDate": "2025-01-15",
-            "contentUrl": "https://glory-traders.org/assets/herovideo-mGJI-C8m.mp4",
-            "embedUrl": "https://glory-traders.org/assets/herovideo-mGJI-C8m.mp4",
-            "duration": "PT1M33S",
-            "publisher": {
-              "@type": "Organization",
-              "name": "Glory Traders",
-              "logo": {
-                "@type": "ImageObject",
-                "url": "https://glory-traders.org/assets/logo.png"
-              }
-            }
-          }
-        `}
-			</script>
 			<section className='relative min-h-screen flex items-center justify-center pb-10 pt-10'>
 				{/* Видео на заднем плане */}
 				<video
@@ -138,7 +115,10 @@ const HeroSection = () => {
 					playsInline
 					autoPlay
 					muted
-				></video>
+					preload='metadata'
+				>
+					Ваш браузер не поддерживает видео
+				</video>
 				{/* Затемнение поверх видео */}
 				<div className='absolute inset-0 bg-black bg-opacity-50'></div>
 				{/* Контент поверх видео */}

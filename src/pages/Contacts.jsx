@@ -105,10 +105,16 @@ const Contacts = () => {
 						— Никита
 					</p> */}
 						<p>
+							<a href='tel:+79035957700' className='text-red-500'>
+								+7 903-595-7700
+							</a>{' '}
+							— Геннадий (Москва)
+						</p>
+						<p>
 							<a href='tel:+8210-2329-7807' className='text-red-500'>
 								+82 10-2329-7807
 							</a>{' '}
-							— Вячеслав
+							— Вячеслав (Корея)
 						</p>
 
 						<h2 className='text-2xl font-semibold mt-8 mb-4'>

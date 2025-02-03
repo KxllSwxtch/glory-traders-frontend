@@ -1,11 +1,9 @@
-User-agent: *
 Disallow: /admin/
 Disallow: /login/
 Disallow: /api/
+
+User-agent: *
 Allow: /
-Allow: /catalog
-Allow: /faq
-Allow: /calculator
 
 # Увеличение скорости сканирования
 Crawl-delay: 10

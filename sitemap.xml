@@ -11,7 +11,7 @@
   <url>
     <loc>https://glory-traders.org/catalog</loc>
     <lastmod>2025-01-15T00:00:00+00:00</lastmod>
-    <priority>0.80</priority>
+    <priority>0.90</priority>
   </url>
   <url>
     <loc>https://glory-traders.org/faq</loc>
@@ -20,12 +20,17 @@
   </url>
   <url>
     <loc>https://glory-traders.org/calculator</loc>
-    <lastmod>2025-01-15T00:00:00+00:00</lastmod>
-    <priority>0.60</priority>
+    <lastmod>2025-02-01</lastmod>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://glory-traders.org/contacts</loc>
     <lastmod>2025-01-27T00:00:00+00:00</lastmod>
     <priority>0.50</priority>
+  </url>
+  <url>
+    <loc>https://glory-traders.org/privacy-policy</loc>
+    <lastmod>2025-02-03</lastmod>
+    <priority>0.20</priority>
   </url>
 </urlset>

@@ -317,7 +317,7 @@ const CarListItem = ({ car }) => {
 					</li>
 				</ul>
 				<div className='mt-auto text-center'>
-					<span className='text-sm'>Цена до ключ во Владивостоке</span>
+					<span className='text-sm'>Цена под ключ во Владивостоке</span>
 					<p className='text-lg font-bold text-red-600 dark:text-red-500'>
 						{/* {car.lots?.total_all_format?.toLocaleString() || 'N/A'} ₽ */}
 						{carCostDetails.totalCost.toLocaleString().split('.')[0]} ₽

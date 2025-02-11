@@ -1,6 +1,7 @@
 Disallow: /admin/
 Disallow: /login/
 Disallow: /api/
+Disallow: /cars/
 
 User-agent: *
 Allow: /

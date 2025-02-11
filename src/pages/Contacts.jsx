@@ -8,7 +8,7 @@ const Contacts = () => {
 		<>
 			<Helmet>
 				<title>Glory Traders | Наши контакты</title>
-				<link rel='canonical' href='https://glory-traders.org/contacts' />
+				{/* <link rel='canonical' href='https://glory-traders.org/contacts' /> */}
 				<meta
 					name='description'
 					content='Свяжитесь с Glory Traders для расчета доставки автомобилей из Кореи.'

@@ -453,7 +453,7 @@ const CalculatorPage = () => {
 		<>
 			<Helmet>
 				<title>Glory Traders | Калькулятор</title>
-				<link rel='canonical' href='https://www.glory-traders.org/calculator' />
+				{/* <link rel='canonical' href='https://www.glory-traders.org/calculator' /> */}
 				<meta
 					name='description'
 					content='Рассчитайте стоимость доставки автомобиля из Кореи в СНГ с помощью калькулятора Glory Traders.'

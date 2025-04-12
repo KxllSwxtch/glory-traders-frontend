@@ -83,7 +83,7 @@ const Header = () => {
 					{/* Ссылки на соцсети */}
 					<div className='flex items-center space-x-4'>
 						<a
-							href='https://t.me/GLORYTRADERS'
+							href='https://t.me/GLORY_TRADERS'
 							target='__blank'
 							rel='noopener noreferrer'
 							className='text-gray-600 hover:text-gray-800 transition'
@@ -138,7 +138,7 @@ const Header = () => {
 				{/* Иконки соц сетей для мобильной версии */}
 				<div className='flex items-center space-x-4 md:hidden'>
 					<a
-						href='https://t.me/GLORYTRADERS'
+						href='https://t.me/GLORY_TRADERS'
 						target='__blank'
 						rel='noopener noreferrer'
 						className='text-gray-600 hover:text-gray-800 transition'

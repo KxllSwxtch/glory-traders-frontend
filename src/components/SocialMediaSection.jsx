@@ -27,7 +27,7 @@ const socialLinks = [
 	},
 	{
 		icon: FaTelegramPlane,
-		url: 'https://t.me/GLORYTRADERS',
+		url: 'https://t.me/GLORY_TRADERS',
 		name: 'telegram',
 	},
 	{

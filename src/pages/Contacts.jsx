@@ -67,7 +67,7 @@ const Contacts = () => {
 							/>
 						</a> */}
 							<a
-								href='https://t.me/GLORYTRADERS'
+								href='https://t.me/GLORY_TRADERS'
 								target='_blank'
 								rel='noopener noreferrer'
 							>

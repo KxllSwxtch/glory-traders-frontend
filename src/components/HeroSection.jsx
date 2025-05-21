@@ -110,7 +110,7 @@ const HeroSection = () => {
 				{/* Видео на заднем плане */}
 				<video
 					className='absolute inset-0 w-full h-full object-cover'
-					src='https://res.cloudinary.com/pomegranitedesign/video/upload/v1737511209/GloryTraders/herovideo.mp4'
+					src='/herovideo.mp4'
 					loop
 					playsInline
 					autoPlay
